@@ -47,7 +47,7 @@ public class CarteAbonnement extends Carte {
 		if(montant < 10)
 			throw new Exception("La somme à ajouter doit être de minimum 10€.");
 		if(this.solde + montant < 15) {
-			throw new Exception("Le montant de la carte final doit être de minimum 15€.");
+			throw new Exception("Le montant final de la carte doit être de minimum 15€.");
 		}
 		this.solde += montant;
 	}
