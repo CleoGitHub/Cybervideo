@@ -52,4 +52,16 @@ public class CarteBancaire extends Carte {
 	private void setCode(String code) {
 		this.code = code;
 	}
+
+	@Override
+	public void ajouterLocation(Location l) throws Exception {
+		if(this.getLocationsEnCours().size() >= 1)
+			throw new Exception("Le nombre maximum de locations en cours ne peut pas dépasser 1 pour une carte bancaire.");
+		this.getLocationsEnCours().add(l);
+	}
+
+	@Override
+	public void retirerLocation(Location l) {
+		this.getLocationsEnCours().remove(l);
+	}
 }

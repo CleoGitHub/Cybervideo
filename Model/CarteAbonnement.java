@@ -8,7 +8,7 @@ public class CarteAbonnement extends Carte {
 	private LocalDate dateIns;
 	private int solde;
 	private ArrayList<Genre> genresInterdits = new ArrayList<Genre>();
-	private ArrayList<Location> locations = new ArrayList<Location>();
+	private ArrayList<Location> historique = new ArrayList<Location>();
 	
 	public CarteAbonnement(LocalDate dateIns, int noCarte, String libelle) {
 		super(noCarte, libelle);
@@ -35,6 +35,22 @@ public class CarteAbonnement extends Carte {
 	public void setSolde(int solde) {
 		this.solde = solde;
 	}
+	
+	public void retirerSolde(int montant) throws Exception {
+		if(this.solde - montant < 0)
+			throw new Exception("Le montant de la carte ne peut pas être inférieur à 0.");
+		
+		this.solde -= montant;
+	}
+	
+	public void ajouterSolde(int montant) throws Exception {
+		if(montant < 10)
+			throw new Exception("La somme à ajouter doit être de minimum 10€.");
+		if(this.solde + montant < 15) {
+			throw new Exception("Le montant de la carte final doit être de minimum 15€.");
+		}
+		this.solde += montant;
+	}
 
 	public LocalDate getDateIns() {
 		return dateIns;
@@ -60,19 +76,31 @@ public class CarteAbonnement extends Carte {
 		genresInterdits.remove(i);
 	}
 	
-	public ArrayList<Location> getLocations() {
-		return locations;
+	public ArrayList<Location> getHistorique() {
+		return historique;
 	}
 
-	public void ajouterLocation(Location l) {
-		locations.add(l);
+	public void ajouterLocationHistorique(Location l) {
+		historique.add(l);
 	}
 	
-	public void supprimerLocation(Location l) {
-		locations.remove(l);
+	public void supprimerLocationHistorique(Location l) {
+		historique.remove(l);
 	}
 	
-	public void supprimerLocation(int i) {
-		locations.remove(i);
+	public void supprimerLocationHistorique(int i) {
+		historique.remove(i);
+	}
+
+	@Override
+	public void ajouterLocation(Location l) throws Exception {
+		if(this.getLocationsEnCours().size() >= 3)
+			throw new Exception("Le nombre maximum de locations en cours ne peut pas dépasser 3 pour une carte d'abonné.");
+		this.getLocationsEnCours().add(l);
+	}
+
+	@Override
+	public void retirerLocation(Location l) {
+		this.getLocationsEnCours().remove(l);
 	}
 }
