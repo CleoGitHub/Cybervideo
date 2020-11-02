@@ -3,7 +3,7 @@ import java.time.*;
 import java.util.ArrayList;
 
 public class CarteAbonnement extends Carte {
-	private static final int prixParJour = 5;
+	private static final int prixParJour = 4;
 	
 	private LocalDate dateIns;
 	private int solde;
