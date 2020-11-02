@@ -14,6 +14,8 @@ public class Film {
 		this.titre = titre;
 		this.date = date;
 		this.dvds = new ArrayList();
+		this.genres = new ArrayList();
+		this.acteurs = new ArrayList();
 	}
 
 	public String getTitre() {
@@ -54,6 +56,18 @@ public class Film {
 	
 	public void removeActeur(Acteur acteur) {
 		this.acteurs.remove(acteur);
+	}
+	
+	public ArrayList<Genre> getGenres() {
+		return this.genres;
+	}
+	
+	public void addGenre(Genre genre) {
+		this.genres.add(genre);
+	}
+	
+	public void removeGenre(Genre genre) {
+		this.genres.remove(genre);
 	}
 	
 }
