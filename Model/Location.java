@@ -2,6 +2,7 @@ package Model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.time.temporal.ChronoUnit;
 
 public class Location {
 	private DVD dvdLoue;
@@ -12,7 +13,6 @@ public class Location {
 	public Carte carteLoueur;
 
 	public Location(DVD dvdLoue, LocalDate dateDebut, int nbJours, Carte carteLoueur) {
-		super();
 		this.dvdLoue = dvdLoue;
 		this.dateDebut = dateDebut;
 		this.nbJours = nbJours;
@@ -52,6 +52,15 @@ public class Location {
 		this.dateDebut = dateDebut;
 	}
 	
+	public int getDue() {
+		if (this.rendu) {
+			return 0;
+		} else {
+			int dayDiff = (int) ChronoUnit.DAYS.between(this.dateDebut.plusDays(this.nbJours), LocalDate.now());
+			return dayDiff > 0 ? dayDiff * this.carteLoueur.getPrixParJour() : 0;
+		}
+	}
+	
 	public int getNbJours() {
 		return nbJours;
 	}
@@ -72,6 +81,7 @@ public class Location {
 		if(this.dvdLoue.getCodeBarre() != codeBarre) {
 			throw new Exception("Le dvd rendu n'est pas le même que le dvd loué");
 		} else {
+			this.carteLoueur.retirerLocation(this);
 			this.endommage = endommage;
 			this.rendu = true;
 			return true;
