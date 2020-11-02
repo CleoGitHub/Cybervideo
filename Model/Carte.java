@@ -1,8 +1,12 @@
 package Model;
 
+import java.util.ArrayList;
+
 public abstract class Carte {
 	private int noCarte;
 	private String libelle;
+	
+	private ArrayList<Location> locationsEnCours = new ArrayList<Location>();
 	
 	public Carte(int noCarte, String libelle) {
 		this.noCarte = noCarte;
@@ -10,6 +14,9 @@ public abstract class Carte {
 	}
 	
 	public abstract int getPrixParJour();
+	
+	public abstract void ajouterLocation(Location l) throws Exception;
+	public abstract void retirerLocation(Location l);
 
 	public int getNoCarte() {
 		return noCarte;
@@ -25,5 +32,9 @@ public abstract class Carte {
 
 	public void setLibelle(String libelle) {
 		this.libelle = libelle;
+	}
+
+	public ArrayList<Location> getLocationsEnCours() {
+		return locationsEnCours;
 	}
 }
