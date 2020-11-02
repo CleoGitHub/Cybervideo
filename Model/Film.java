@@ -13,9 +13,9 @@ public class Film {
 	public Film(String titre, LocalDate date) {
 		this.titre = titre;
 		this.date = date;
-		this.dvds = new ArrayList();
-		this.genres = new ArrayList();
-		this.acteurs = new ArrayList();
+		this.dvds = new ArrayList<DVD>();
+		this.genres = new ArrayList<Genre>();
+		this.acteurs = new ArrayList<Acteur>();
 	}
 
 	public String getTitre() {
