@@ -9,9 +9,7 @@ public abstract class Carte {
 		this.libelle = libelle;
 	}
 	
-	public int getPrixParJour() {
-		return -1;
-	}
+	public abstract int getPrixParJour();
 
 	public int getNoCarte() {
 		return noCarte;
