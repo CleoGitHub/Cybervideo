@@ -11,4 +11,9 @@ public enum Genre {
 	private Genre(String libelle) {
 		this.libelle = libelle;
 	}
+	
+	@Override
+	public String toString() {
+		return this.libelle;
+	}
 }
