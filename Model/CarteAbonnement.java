@@ -102,5 +102,6 @@ public class CarteAbonnement extends Carte {
 	@Override
 	public void retirerLocation(Location l) {
 		this.getLocationsEnCours().remove(l);
+		this.ajouterLocationHistorique(l);
 	}
 }
