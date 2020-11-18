@@ -89,5 +89,17 @@ public class Film {
 	public void setRealisateur(Realisateur realisateur) {
 		this.realisateur = realisateur;
 	}
-	
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+
+		Film film = (Film)obj;
+		return (titre.equals(film.titre) && date.equals(film.date));
+	}
 }
