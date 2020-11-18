@@ -52,5 +52,17 @@ public class DVD {
 	public String toString() {
 		return getFilm().getTitre() + "#" + getCodeBarre();
 	}
-	
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+
+		DVD dvd = (DVD)obj;
+		return codeBarre == dvd.codeBarre;
+	}
 }
