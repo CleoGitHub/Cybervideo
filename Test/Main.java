@@ -53,10 +53,11 @@ public class Main {
 		Panier panier = new Panier();
 		
 		
-		System.out.println("============== TEST 1 =============");
-		System.out.println("Paiement avec une carte abonnement de solde 0");
-		System.out.println("Le panier contient 2 DVD.");
-		System.out.println("===================================");
+		System.out.println("================= TEST 1 =================================");
+		System.out.println("== Paiement avec une carte abonnement de solde 0        ==");
+		System.out.println("== Le panier contient 2 DVD.                            ==");
+		System.out.println("== Résultat attendu : solde insuffisante pour les 2dvds ==");
+		System.out.println("==========================================================");
 
 		panier.ajouter(inception.getFirstAvailabeDVD());
 		panier.ajouter(onceUponATimeInHollywood.getFirstAvailabeDVD());
@@ -64,15 +65,16 @@ public class Main {
 		
 		System.out.println("DVDs dans le panier :"+panier.getDvds());
 		System.out.println("Solde de la carte abonnement ca :" + ca.getSolde());
-		System.out.println("Paiement");
+		System.out.println("== Paiement ==)");
 		panier.payer(ca);
 		System.out.println("DVDs dans le panier :"+panier.getDvds());
 		System.out.println("Solde de la carte abonnement ca :" + ca.getSolde());
 		
-		System.out.println("============== TEST 2 =============");
-		System.out.println("Paiement avec une carte abonnement de solde 15");
-		System.out.println("Le panier contient 2 DVD.");
-		System.out.println("===================================");
+		System.out.println("======================= TEST 2 =====================");
+		System.out.println("== Paiement avec une carte abonnement de solde 15 ==");
+		System.out.println("== Le panier contient 2 DVD.                      ==");
+		System.out.println("== Résultat attendu : panier vidé et solde à 7    ==");
+		System.out.println("====================================================");
 		
 		try {
 			ca.ajouterSolde(15);
@@ -88,10 +90,12 @@ public class Main {
 		System.out.println("Solde de la carte abonnement ca :" + ca.getSolde());
 		
 		
-		System.out.println("============== TEST 2 =============");
-		System.out.println("Ajouter 2 Locations à une carte abonnement");
-		System.out.println("possédant déjà 2 locations");
-		System.out.println("===================================");
+		System.out.println("=================== TEST 3 =============================");
+		System.out.println("== Ajouter 2 Locations à une carte abonnement         ==");
+		System.out.println("== possédant déjà 2 locations                         ==");
+		System.out.println("== Resultat attendu : exception levée lors de l'ajout ==");
+		System.out.println("== de la seconde location à la carte                  ==");
+		System.out.println("========================================================");
 		
 		try {
 			ca.ajouterSolde(15);
