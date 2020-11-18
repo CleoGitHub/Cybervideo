@@ -2,12 +2,9 @@ package Model;
 
 public class Acteur {
 	private String nom;
-	private String prenom;
 	
-	public Acteur(String nom, String prenom) {
-		super();
+	public Acteur(String nom) {
 		this.nom = nom;
-		this.prenom = prenom;
 	}
 
 	public String getNom() {
@@ -16,13 +13,5 @@ public class Acteur {
 	
 	public void setNom(String nom) {
 		this.nom = nom;
-	}
-	
-	public String getPrenom() {
-		return prenom;
-	}
-	
-	public void setPrenom(String prenom) {
-		this.prenom = prenom;
 	}
 }

@@ -95,9 +95,9 @@ public class CarteAbonnement extends Carte {
 	@Override
 	public void ajouterLocation(Location l) throws Exception {
 		if(this.getLocationsEnCours().size() >= 3)
-			throw new Exception("Le nombre maximum de locations en cours ne peut pas dépasser 3 pour une carte d'abonné.");
-		this.getLocationsEnCours().add(l);
+			throw new Exception("Le nombre maximum de locations en cours ne peut pas dépasser 3 pour une carte d'abonné.");		
 		this.retirerSolde(l.calculerPrix());
+		this.getLocationsEnCours().add(l);
 	}
 
 	@Override

@@ -4,11 +4,13 @@ public class DVD {
 	private int codeBarre;
 	private boolean endommage;
 	private Location locationEnCours;
+	private Film film;
 	
-	public DVD(int codeBarre) {
+	public DVD(int codeBarre, Film film) {
 		this.codeBarre = codeBarre;
 		this.endommage = false;
 		this.locationEnCours = null;
+		this.film = film;
 	}
 	
 	public int getCodeBarre() {
@@ -38,7 +40,17 @@ public class DVD {
 	public boolean estDisponible() {
 		return this.locationEnCours == null;
 	}
+
+	public Film getFilm() {
+		return film;
+	}
+
+	public void setFilm(Film film) {
+		this.film = film;
+	}
 	
-	
+	public String toString() {
+		return getFilm().getTitre() + "#" + getCodeBarre();
+	}
 	
 }

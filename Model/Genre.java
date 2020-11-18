@@ -4,8 +4,9 @@ public enum Genre {
 	HORREUR("Horreur"),
 	COMEDIE("Comédie"),
 	FICTION("Fiction"),
-	DOCUMENTAIRE("Documentaire");
-	
+	DOCUMENTAIRE("Documentaire"),
+	DRAMA("Drama");
+
 	public final String libelle;
 	
 	private Genre(String libelle) {

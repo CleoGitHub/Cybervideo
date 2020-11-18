@@ -2,12 +2,9 @@ package Model;
 
 public class Realisateur {
 	private String nom;
-	private String prenom;
 	
-	public Realisateur(String nom, String prenom) {
-		super();
+	public Realisateur(String nom) {
 		this.nom = nom;
-		this.prenom = prenom;
 	}
 	
 	public String getNom() {
@@ -17,12 +14,4 @@ public class Realisateur {
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
-	
-	public String getPrenom() {
-		return prenom;
-	}
-	
-	public void setPrenom(String prenom) {
-		this.prenom = prenom;
-	}	
 }

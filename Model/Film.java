@@ -8,6 +8,7 @@ public class Film {
 	private LocalDate date;
 	private ArrayList<Genre> genres;
 	private ArrayList<Acteur> acteurs;
+	private Realisateur realisateur;
 	private ArrayList<DVD> dvds;
 	
 	public Film(String titre, LocalDate date) {
@@ -36,6 +37,17 @@ public class Film {
 	
 	public ArrayList<DVD> getDVDs() {
 		return this.dvds;
+	}
+	
+	public DVD getFirstAvailabeDVD() {
+		DVD d = null;
+		for(DVD dvd : dvds) {
+			if(dvd.estDisponible() && !dvd.estEndommage()) {
+				d = dvd;
+				break;
+			}
+		}
+		return d;
 	}
 	
 	public void addDVD(DVD dvd) {
@@ -68,6 +80,14 @@ public class Film {
 	
 	public void removeGenre(Genre genre) {
 		this.genres.remove(genre);
+	}
+
+	public Realisateur getRealisateur() {
+		return realisateur;
+	}
+
+	public void setRealisateur(Realisateur realisateur) {
+		this.realisateur = realisateur;
 	}
 	
 }

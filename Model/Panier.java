@@ -1,10 +1,12 @@
 package Model;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 
 public class Panier
 {
-  private ArrayList<Location> dvds;//des dvds que l'on ajoute au fur et a mesure de l'utilisation de l'application	 
+	
+	private ArrayList<DVD> dvds;//des dvds que l'on ajoute au fur et a mesure de l'utilisation de l'application	 
 	private Carte carte;		
 			
 	public Panier()
@@ -12,22 +14,23 @@ public class Panier
 		this.dvds = new ArrayList<>();
 	}
 			
-	public ArrayList<Location> getDvds() 
+	public ArrayList<DVD> getDvds() 
 	{
 		return dvds;
 	}
 	
-	public void setDvds(ArrayList<Location> dvds) 
+	public void setDvds(ArrayList<DVD> dvds) 
 	{
 		this.dvds = dvds;
 	}
 
-	public void ajouter(Location dvd)
+	public void ajouter(DVD dvd)
 	{
-		this.dvds.add(dvd);
+		if(dvd != null)
+			this.dvds.add(dvd);
 	}
 	
-	public void retirer(Location dvd)
+	public void retirer(DVD dvd)
 	{
 		this.dvds.remove(dvd);
 	}
@@ -36,17 +39,17 @@ public class Panier
 	{
 		this.carte = c;
 		ArrayList<Location> locationsTraitees = new ArrayList<>();
-		for(int i=0; i<getDvds().size();i++ )
-		{
-			Location dvd = dvds.get(i);
+		ArrayList<DVD> dvdsRestants = (ArrayList<DVD>) dvds.clone();
+		for(DVD dvd : dvds){
 			try {
-				c.ajouterLocation(dvd);
-				locationsTraitees.add(dvd);
-				retirer(dvd);
+				Location l = new Location(dvd, LocalDate.now(), 1, c);
+				locationsTraitees.add(l);
+				dvdsRestants.remove(dvd);
 			} catch (Exception e) {
-				System.out.println(e.getMessage());
+				System.out.println("ERREUR : " + e.getMessage());
 			}
 		}
+		setDvds(dvdsRestants);
 		return locationsTraitees;
 	}
 }
