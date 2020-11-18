@@ -34,5 +34,19 @@ public class Technicien {
 	
 	public void setListeLocations(ArrayList<Location> listeLocations) {
 		this.listeLocations = listeLocations;
-	}	
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+
+		Technicien technicien = (Technicien)obj;
+		return nom.equals(technicien.nom) && password.equals(technicien.password);
+	}
 }
