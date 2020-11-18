@@ -7,8 +7,8 @@ public class CarteAbonnement extends Carte {
 	
 	private LocalDate dateIns;
 	private int solde;
-	private ArrayList<Genre> genresInterdits = new ArrayList<Genre>();
-	private ArrayList<Location> historique = new ArrayList<Location>();
+	private ArrayList<Genre> genresInterdits = new ArrayList<>();
+	private ArrayList<Location> historique = new ArrayList<>();
 	
 	public CarteAbonnement(LocalDate dateIns, int noCarte, String libelle) {
 		super(noCarte, libelle);
@@ -97,6 +97,7 @@ public class CarteAbonnement extends Carte {
 		if(this.getLocationsEnCours().size() >= 3)
 			throw new Exception("Le nombre maximum de locations en cours ne peut pas dépasser 3 pour une carte d'abonné.");
 		this.getLocationsEnCours().add(l);
+		this.retirerSolde(l.calculerPrix());
 	}
 
 	@Override
@@ -104,4 +105,5 @@ public class CarteAbonnement extends Carte {
 		this.getLocationsEnCours().remove(l);
 		this.ajouterLocationHistorique(l);
 	}
+	
 }

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class CarteBancaire extends Carte {
 	private static final int prixParJour = 5;
 	
-	private ArrayList<CarteAbonnement> abonnements = new ArrayList<CarteAbonnement>();
+	private ArrayList<CarteAbonnement> abonnements = new ArrayList<>();
 	private LocalDate dateExp;
 	private String code;
 	

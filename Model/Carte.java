@@ -6,7 +6,7 @@ public abstract class Carte {
 	private int noCarte;
 	private String libelle;
 	
-	private ArrayList<Location> locationsEnCours = new ArrayList<Location>();
+	private ArrayList<Location> locationsEnCours = new ArrayList<>();
 	
 	public Carte(int noCarte, String libelle) {
 		this.noCarte = noCarte;
@@ -17,7 +17,7 @@ public abstract class Carte {
 	
 	public abstract void ajouterLocation(Location l) throws Exception;
 	public abstract void retirerLocation(Location l);
-
+	
 	public int getNoCarte() {
 		return noCarte;
 	}
