@@ -1,14 +1,15 @@
 package View;
 
+import Controller.Controller;
 import Model.CyberVideo;
 import Patterns.Observateur;
 
 import javax.swing.*;
 
 public class VueAccueil extends JPanel implements Observateur {
-    private CyberVideo model;
+    private Controller controller;
 
-    public VueAccueil(CyberVideo model) {
+    public VueAccueil(Controller controller) {
         super();
     }
 
