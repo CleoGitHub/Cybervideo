@@ -1,19 +1,29 @@
 import Model.CyberVideo;
 
 import javax.swing.*;
+
+import Controller.Controller;
+
 import java.util.List;
 
 public class CyberVideoGUI implements Runnable {
-    private CyberVideo model;
-    private List<JPanel> vuesPile;
-    private JLayeredPane contenuPane;
+    private Controller controller;
 
     public CyberVideoGUI() {
-        // TODO: créer controller, et model
+    	CyberVideo model = new CyberVideo();
+    	
+    	// TODO: Initialiser le modèle
+    	
+    	this.controller = new Controller(model);
     }
 
     @Override
     public void run() {
-        // TODO: créer/excuter Jframe
+    	this.controller.start();
     }
+    
+	public static void main(String[] argv) {
+		CyberVideoGUI cvg = new CyberVideoGUI();
+		cvg.run();
+	}
 }

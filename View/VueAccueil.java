@@ -1,19 +1,21 @@
 package View;
 
-import Controller.Controller;
-import Model.CyberVideo;
-import Patterns.Observateur;
+import javax.swing.JPanel;
 
-import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class VueAccueil extends JPanel implements Observateur {
-    private Controller controller;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 
-    public VueAccueil(Controller controller) {
+public class VueAccueil extends JPanel {	
+    public VueAccueil() {
         super();
+        
+        JButton b = new JButton("test");
+        add(b);
     }
 
-    @Override
     public void miseAJour() {
         // TODO: code pour mis a jour la vue
     }
