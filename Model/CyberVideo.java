@@ -2,14 +2,13 @@ package Model;
 
 import Patterns.Observable;
 
-import java.util.Iterator;
-import java.util.List;
+import java.util.ArrayList;
 
 public class CyberVideo extends Observable {
-    private List<Film> films;
-    private List<Realisateur> realisateurs;
-    private List<Technicien> techniciens;
-    private List<Carte> abonnees;
+    private ArrayList<Film> films;
+    private ArrayList<Realisateur> realisateurs;
+    private ArrayList<Technicien> techniciens;
+    private ArrayList<Carte> abonnees;
     private Panier panier;
 
 
@@ -21,7 +20,6 @@ public class CyberVideo extends Observable {
     // actions
 
     void insererFilm(Film film) {
-
         if (films.contains(film))
             return;
 

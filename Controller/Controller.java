@@ -5,61 +5,72 @@ import View.*;
 
 import javax.swing.*;
 
-import java.awt.Dimension;
 import java.util.ArrayList;
+import java.awt.*;
 
 public class Controller {
     private CyberVideo model;
-    private ArrayList<JPanel> vuesPile = new ArrayList<>();
-    private JLayeredPane contenuPane;
-    private VueCyberVideo frame;
-    
-    // ==========
-    // Les vues
+    private ArrayList<JPanel> vuesPile;
+    private JPanel contenuPane;
+
+    // =================
+    // Vues
+    private CyberVideoGUI frame;
     private VueAccueil vueAccueil;
-    
-    public Controller(CyberVideo model) {
-        this.model = model;
-        
-        // TODO: create panels
-        vueAccueil = new VueAccueil();
-    }
-    
-    public void start() {
-        // TODO: créer/excuter Jframe
-    	frame = new VueCyberVideo();
-    	this.suivant(vueAccueil);
-    	
-    	frame.setVisible(true);
-    	frame.setSize(new Dimension(300, 300));
-    }
-    
-    public void suivant(JPanel p) {
-    	// Remove the previous panel
-    	if(vuesPile.size() > 0) {
-    		JPanel oldP = vuesPile.get(vuesPile.size()-1);
-    		oldP.setVisible(false);    		
-    	}
-    	// Add the new JPanel p from Vue v
-    	vuesPile.add(p);
-    	frame.add(p);
-    	p.setVisible(true);
-    }
-    
-    public void prev() {
-    	// There is an available previous view if the size of the array is > 1
-    	if(vuesPile.size() > 1) {
-    		JPanel oldP = vuesPile.get(vuesPile.size()-1);
-    		JPanel newP = vuesPile.get(vuesPile.size()-2);
-    		oldP.setVisible(false);
-    		newP.setVisible(true);
-    		vuesPile.remove(oldP);
-    	}
-    }
-    
+    private VueTechnicien vueTechnicien;
 
-    // TODO: void prev(): changer la vue du contenuPane à la précedenté
+    public Controller() {
+        this.model = new CyberVideo();
+        vuesPile = new ArrayList<JPanel>();
+        contenuPane = new JPanel(new BorderLayout());
 
+        // creations des vues
+        vueAccueil = new VueAccueil(this);
+        vueTechnicien = new VueTechnicien(this);
+
+        start();
+    }
+    
+	public void start() {
+		frame = new CyberVideoGUI(this);
+		frame.setVisible(true);
+        vueSuiv(vueAccueil);
+	}
+
+    // getters & setters
+    public JPanel getContenuPane() {
+        return contenuPane;
+    }
+
+    public VueAccueil getVueAccueil() {
+        return vueAccueil;
+    }
+
+    public VueTechnicien getVueTechnicien() {
+        return vueTechnicien;
+    }
+
+    public void setOnTop(JPanel panel) {
+        contenuPane.removeAll();
+        contenuPane.add(panel);
+        contenuPane.revalidate();
+        contenuPane.repaint();
+    }
+
+    public void vuePrec() {
+        if (vuesPile.size() > 1) {
+            int dernier = vuesPile.size()-1;
+            JPanel precPanel = vuesPile.get(dernier-1);
+            setOnTop(precPanel);
+            vuesPile.remove(dernier);
+        }
+    }
+
+    public void vueSuiv(JPanel panel) {
+        setOnTop(panel);
+        vuesPile.add(panel);
+        frame.pack();
+    }
 
     // TODO: actions utilisant le model
 
