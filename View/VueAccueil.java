@@ -22,19 +22,37 @@ public class VueAccueil extends JPanel implements Observateur {
     private Controller controller;
 
     // buttons
-    private Button technecienBtn;
+    private Button rendreBtn;
+    private Button allouerBtn;
+    private Button technecien;
 
     public VueAccueil(Controller controller) {
         super();
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(800, 600));
-        setBounds(0, 0, 800, 600);
         setBackground(Color.BLUE);
 
         this.controller = controller;
 
-        technecienBtn = new Button("ressources/images/button.png", "Technicien");
-        add(technecienBtn, BorderLayout.CENTER);
+        technecien = new Button();
+        technecien.setText("Autre ?");
+
+        allouerBtn = new Button("ressources/images/button.png", "Allouer un DVD");
+        rendreBtn = new Button("ressources/images/button.png", "Rendre un DVD");
+
+        // buttons panel
+        JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        buttonsPanel.add(allouerBtn);
+        buttonsPanel.add(rendreBtn);
+
+        JPanel bienvenuPanel = new JPanel(new BorderLayout());
+        bienvenuPanel.add(buttonsPanel);
+        bienvenuPanel.add(technecien, BorderLayout.SOUTH);
+
+        JPanel containerPanel = new JPanel(new GridBagLayout());
+        containerPanel.add(bienvenuPanel);
+        // l'ajout du panel
+        add(containerPanel);
 
         // l'ajout du listners
         setNavigationListners();
@@ -47,8 +65,8 @@ public class VueAccueil extends JPanel implements Observateur {
     private void setNavigationListners() {
         NavigationListener listner = new NavigationListener(controller);
         // TODO: add listner to navigation buttons
-        technecienBtn.setId(NavigationListener.TECHNICIEN);
-        technecienBtn.addMouseListener(listner);
+        technecien.setId(NavigationListener.TECHNICIEN);
+        technecien.addMouseListener(listner);
     }
 
 }

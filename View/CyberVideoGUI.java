@@ -26,7 +26,7 @@ public class CyberVideoGUI extends JFrame {
         contenuPane = controller.getContenuPane();
         add(contenuPane, BorderLayout.CENTER);
 
-        precBtn = new Button("ressources/images/button.png", "précedent");
+        precBtn = new Button("ressources/images/back-button.png");
         add(precBtn, BorderLayout.NORTH);
         setNavigationListners();
 
