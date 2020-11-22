@@ -23,6 +23,11 @@ public class VueBienvenu extends Vue {
 
         allouerBtn = new Button("ressources/images/button.png", "Allouer un DVD");
         rendreBtn = new Button("ressources/images/button.png", "Rendre un DVD");
+        Button logo = new Button("ressources/images/logo.png");
+
+        // logo panel
+        JPanel logoPanel = new JPanel(new GridBagLayout());
+        logoPanel.add(logo);
 
         // buttons panel
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -32,6 +37,7 @@ public class VueBienvenu extends Vue {
         JPanel bienvenuPanel = new JPanel(new BorderLayout());
         bienvenuPanel.add(buttonsPanel);
         bienvenuPanel.add(technecien, BorderLayout.SOUTH);
+        bienvenuPanel.add(logoPanel, BorderLayout.NORTH);
 
         JPanel containerPanel = new JPanel(new GridBagLayout());
         containerPanel.add(bienvenuPanel);

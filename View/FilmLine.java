@@ -41,7 +41,7 @@ public class FilmLine extends JPanel {
 		// Bouton Ajouter au panier
 		DVD d;
 		if((d = c.getFirstAvailabeDVD(film)) != null) {
-			JButton addPanier = new JButton("Ajouter au panier");
+			Button addPanier = new Button("ressources/images/button-thick-long.png","Ajouter au panier");
 			buttonsPanel.add(addPanier);
 			addPanier.addMouseListener(new MouseInputAdapter() {
 				@Override
@@ -56,11 +56,12 @@ public class FilmLine extends JPanel {
 					}
 				}
 			});
-			addPanier.setAction(new AddPanierAction(film, c));
+			// addPanier.setAction(new AddPanierAction(film, c));
+
 		}
 
 		// Bouton Info
-		JButton info = new JButton("+ d'infos");
+		Button info = new Button("ressources/images/button-thick.png","+ d'infos");
 		buttonsPanel.add(info);
 	}
 }

@@ -9,7 +9,9 @@ import java.awt.event.MouseListener;
 public class NavigationListener extends MouseAdapter {
     static final int PREC = 0;
     static final int TECHNICIEN = 1;
-    static final int PANIER = 2;
+    static final int ACCUEIL = 2;
+    static final int RENDRE = 3;
+    static final int PANIER = 4;
 
     private Controller controller;
 
@@ -33,6 +35,9 @@ public class NavigationListener extends MouseAdapter {
             case PANIER:
                 controller.vueSuiv(controller.getVuePanier());
                 break;
+
+            case ACCUEIL:
+                controller.vueSuiv(controller.getVueAccueil());
 
             default:
                 break;
