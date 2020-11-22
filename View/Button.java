@@ -2,7 +2,7 @@ package View;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import java.awt.Dimension;
+import java.awt.*;
 
 public class Button extends JLabel {
 
@@ -25,6 +25,7 @@ public class Button extends JLabel {
     Button(String imagePath) {
         super();
         id = 0;
+        setForeground(Color.WHITE);
         try {
             this.setIcon(new ImageIcon(imagePath));
         } catch (Exception e) {
