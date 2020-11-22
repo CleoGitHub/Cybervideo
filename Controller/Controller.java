@@ -20,6 +20,7 @@ public class Controller {
     // =================
     // Vues
     private CyberVideoGUI frame;
+    private VueBienvenu vueBienvenu;
     private VueAccueil vueAccueil;
     private VueTechnicien vueTechnicien;
     private VuePanier vuePanier;
@@ -30,6 +31,7 @@ public class Controller {
         contenuPane = new JPanel(new BorderLayout());
 
         // Creations des Vues
+        vueBienvenu = new VueBienvenu(this);
         vueAccueil = new VueAccueil(this, model.getFilms());
         vuePanier = new VuePanier(this, model.getPanier());
         vueTechnicien = new VueTechnicien(this);
@@ -40,12 +42,16 @@ public class Controller {
 	public void start() {
 		frame = new CyberVideoGUI(this);
 		frame.setVisible(true);
-        vueSuiv(vueAccueil);
+        vueSuiv(vueBienvenu);
 	}
 
     // getters & setters
     public JPanel getContenuPane() {
         return contenuPane;
+    }
+
+    public VueBienvenu getVueBienvenu() {
+        return vueBienvenu;
     }
 
     public VueAccueil getVueAccueil() {
