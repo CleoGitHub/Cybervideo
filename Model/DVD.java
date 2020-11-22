@@ -38,7 +38,7 @@ public class DVD {
 	}
 	
 	public boolean estDisponible() {
-		return this.locationEnCours == null;
+		return this.locationEnCours == null && !this.estEndommage();
 	}
 
 	public Film getFilm() {

@@ -31,10 +31,15 @@ public class VuePanier extends Vue {
         add(dvdsList);
     }
     
-    public void addDVD(DVD d) {
-    	JPanel dvdInfo = new JPanel(new BorderLayout());
-    	JLabel dvdTitre = new JLabel(d.getFilm().getTitre());
-    	dvdInfo.add(dvdTitre, BorderLayout.NORTH);
-    	dvdsList.add(dvdInfo);
+    public void updateDVDs() {
+    	remove(dvdsList);
+        dvdsList = new JPanel(new StackLayout());
+        for(DVD dvd : dvds) {
+        	JPanel dvdInfo = new JPanel(new BorderLayout());
+        	JLabel dvdTitre = new JLabel(dvd.getFilm().getTitre());
+        	dvdInfo.add(dvdTitre, BorderLayout.NORTH);
+        	dvdsList.add(dvdInfo);
+        }
+        add(dvdsList);
     }
 }

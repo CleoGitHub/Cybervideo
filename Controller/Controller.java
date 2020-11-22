@@ -90,9 +90,21 @@ public class Controller {
     }
 
     // TODO: actions utilisant le model
-    public void ajouterPanier(DVD d) {
-    	model.ajouterPanier(d);
-    	vuePanier.addDVD(d);
+    public void ajouterPanier(Film f) {
+    	model.ajouterPanier(getFirstAvailabeDVD(f));
+    	vuePanier.updateDVDs();
     }
+    
+	public DVD getFirstAvailabeDVD(Film f) {
+		DVD d = null;
+		for(DVD dvd : f.getDVDs()) {
+			ArrayList<DVD> dvdsPanier = model.getPanier().getDvds();
+			if(dvd.estDisponible() && !dvdsPanier.contains(dvd)) {
+				d = dvd;
+				break;
+			}
+		}
+		return d;
+	}
 
 }

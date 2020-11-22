@@ -26,8 +26,9 @@ public class Panier
 
 	public void ajouter(DVD dvd)
 	{
-		if(dvd != null)
+		if(dvd != null && !this.dvds.contains(dvd)) {
 			this.dvds.add(dvd);
+		}
 	}
 	
 	public void retirer(DVD dvd)

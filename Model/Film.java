@@ -39,17 +39,6 @@ public class Film {
 		return this.dvds;
 	}
 	
-	public DVD getFirstAvailabeDVD() {
-		DVD d = null;
-		for(DVD dvd : dvds) {
-			if(dvd.estDisponible() && !dvd.estEndommage()) {
-				d = dvd;
-				break;
-			}
-		}
-		return d;
-	}
-	
 	public void addDVD(DVD dvd) {
 		this.dvds.add(dvd);
 	}

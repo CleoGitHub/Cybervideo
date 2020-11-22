@@ -6,6 +6,18 @@ import java.util.ArrayList;
 import Model.*;
 
 public class Main {
+	public static DVD getFirstAvailabeDVD(Panier p, Film f) {
+		DVD d = null;
+		for(DVD dvd : f.getDVDs()) {
+			ArrayList<DVD> dvdsPanier = p.getDvds();
+			if(dvd.estDisponible() && !dvdsPanier.contains(dvd)) {
+				d = dvd;
+				break;
+			}
+		}
+		return d;
+	}
+	
 	public static void main(String[] args) {
 		ArrayList<Acteur> acteurs = new ArrayList<>();
 		ArrayList<Realisateur> realisateurs = new ArrayList<>();
@@ -61,9 +73,9 @@ public class Main {
 		System.out.println("== Résultat attendu : solde insuffisante pour les 2dvds ==");
 		System.out.println("==========================================================");
 
-		panier.ajouter(films.get(0).getFirstAvailabeDVD()); // Interstellar
-		panier.ajouter(films.get(1).getFirstAvailabeDVD()); // Inception
-		panier.ajouter(films.get(2).getFirstAvailabeDVD()); // onceUponATime
+		panier.ajouter(getFirstAvailabeDVD(panier, films.get(0))); // Interstellar
+		panier.ajouter(getFirstAvailabeDVD(panier, films.get(1))); // Inception
+		panier.ajouter(getFirstAvailabeDVD(panier, films.get(2))); // onceUponATime
 		
 		System.out.println("DVDs dans le panier :"+panier.getDvds());
 		System.out.println("Solde de la carte abonnement ca :" + ca.getSolde());
@@ -106,8 +118,8 @@ public class Main {
 		}
 		films.get(1).addDVD(new DVD(11, films.get(1)));
 		films.get(1).addDVD(new DVD(12, films.get(1)));
-		panier.ajouter(films.get(1).getFirstAvailabeDVD());
-		panier.ajouter(films.get(1).getFirstAvailabeDVD());
+		panier.ajouter(getFirstAvailabeDVD(panier, films.get(1)));
+		panier.ajouter(getFirstAvailabeDVD(panier, films.get(1)));
 
 		System.out.println("DVDs dans le panier :"+panier.getDvds());
 		System.out.println("Solde de la carte abonnement ca :" + ca.getSolde());

@@ -13,6 +13,7 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.MouseInputAdapter;
+import javax.swing.event.MouseInputListener;
 
 import Controller.Controller;
 import Model.DVD;
@@ -39,10 +40,23 @@ public class FilmLine extends JPanel {
 		
 		// Bouton Ajouter au panier
 		DVD d;
-		if((d = film.getFirstAvailabeDVD()) != null) {
+		if((d = c.getFirstAvailabeDVD(film)) != null) {
 			JButton addPanier = new JButton("Ajouter au panier");
 			buttonsPanel.add(addPanier);
-			addPanier.setAction(new AddPanierAction(d, c));
+			addPanier.addMouseListener(new MouseInputAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					c.ajouterPanier(film);
+					// Check if there is an other DVD available after adding one
+					if(c.getFirstAvailabeDVD(film) == null) {
+						// If not remove the button
+						buttonsPanel.remove(addPanier);
+						buttonsPanel.revalidate();
+						buttonsPanel.repaint();
+					}
+				}
+			});
+			addPanier.setAction(new AddPanierAction(film, c));
 		}
 
 		// Bouton Info

@@ -21,9 +21,7 @@ import java.util.ArrayList;
 public class VueAccueil extends Vue implements Observateur {
 
 
-    private Controller controller;
-    private ArrayList<Film> films;
-    
+    private Controller controller; 
     JPanel filmsList;
 
     // buttons
@@ -38,7 +36,6 @@ public class VueAccueil extends Vue implements Observateur {
         setPreferredSize(new Dimension(800, 600));
         setBounds(0, 0, 800, 600);
 
-        this.films = films;
         this.controller = controller;
         
         filmsList = new FilmsList(films, controller);
@@ -79,4 +76,11 @@ public class VueAccueil extends Vue implements Observateur {
         technecien.addMouseListener(listner);
     }
 
+    public void setFilms(ArrayList<Film> films) {
+    	remove(filmsList);
+    	filmsList = new FilmsList(films, controller);
+        add(filmsList);
+        revalidate();
+        repaint();
+    }
 }
