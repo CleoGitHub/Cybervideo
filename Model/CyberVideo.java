@@ -88,6 +88,10 @@ public class CyberVideo {
     public void ajouterPanier(DVD dvd) {
     	panier.ajouter(dvd);
     }
+    
+    public void retirerPanier(DVD dvd) {
+    	panier.retirer(dvd);
+    }
 
     // TODO: actions de client
 

@@ -23,6 +23,7 @@ public class VueAccueil extends Vue implements Observateur {
 
     private Controller controller; 
     JPanel filmsList;
+    ArrayList<Film> films;
 
     // buttons
     private Button rendreBtn;
@@ -38,7 +39,8 @@ public class VueAccueil extends Vue implements Observateur {
 
         this.controller = controller;
         
-        filmsList = new FilmsList(films, controller);
+        this.films = films;
+        filmsList = new ItemList<Film, FilmLine>("Nos films", films, controller, Film.class, FilmLine.class);
         add(filmsList);
     }
 
@@ -77,8 +79,13 @@ public class VueAccueil extends Vue implements Observateur {
     }
 
     public void setFilms(ArrayList<Film> films) {
+    	this.films = films;
+    	updateFilms();
+    }
+    
+    public void updateFilms() {
     	remove(filmsList);
-    	filmsList = new FilmsList(films, controller);
+        filmsList = new ItemList<Film, FilmLine>("Nos films", films, controller, Film.class, FilmLine.class);
         add(filmsList);
         revalidate();
         repaint();

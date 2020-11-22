@@ -31,7 +31,7 @@ public class Controller {
 
         // Creations des Vues
         vueAccueil = new VueAccueil(this, model.getFilms());
-        vuePanier = new VuePanier(this, model.getPanier().getDvds());
+        vuePanier = new VuePanier(this, model.getPanier());
         vueTechnicien = new VueTechnicien(this);
 
         start();
@@ -65,6 +65,7 @@ public class Controller {
         contenuPane.add(panel);
         contenuPane.revalidate();
         contenuPane.repaint();
+        contenuPane.updateUI();
     }
 
     public void vuePrec() {
@@ -93,6 +94,11 @@ public class Controller {
     public void ajouterPanier(Film f) {
     	model.ajouterPanier(getFirstAvailabeDVD(f));
     	vuePanier.updateDVDs();
+    }
+    
+    public void retirerPanier(DVD d) {
+    	model.retirerPanier(d);
+    	vueAccueil.updateFilms();
     }
     
 	public DVD getFirstAvailabeDVD(Film f) {
