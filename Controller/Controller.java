@@ -72,6 +72,12 @@ public class Controller {
         frame.pack();
     }
 
+    public void setVue(JPanel panel) {
+        vuesPile.clear();
+        vuesPile.add(vueAccueil);
+        setOnTop(panel);
+    }
+
     // TODO: actions utilisant le model
 
 }
