@@ -1,9 +1,11 @@
 package View;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.util.ArrayList;
 
 import javax.swing.Box;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.border.EmptyBorder;
@@ -20,6 +22,10 @@ public class FilmsList extends JPanel {
 		super(new StackLayout());
 		this.films = films;
 		this.c = c;
+		
+		JLabel label = new JLabel("Nos films");
+		label.setFont(new Font(label.getFont().getName(), Font.BOLD, 24));
+		add(label);
 		
 		for(Film film : films) {
 			addFilm(film);

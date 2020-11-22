@@ -39,6 +39,7 @@ public class CyberVideoGUI extends JFrame {
         navigationPanel.add(precBtn);
         navigationPanel.add(techBtn);
         navigationPanel.add(panierBtn);
+        navigationPanel.setBackground(Color.gray);
 
         setNavigationListeners();
 
