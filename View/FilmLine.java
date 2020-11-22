@@ -1,11 +1,17 @@
 package View;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.MouseEvent;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.MouseInputAdapter;
 
 import Controller.Controller;
@@ -21,10 +27,14 @@ public class FilmLine extends JPanel {
 		this.c = c;
 		this.film = film;
 		
+		this.setBackground(Color.white);
+		setBorder(new EmptyBorder(5,5,5,5));
+		
 		JLabel titreFilm = new JLabel(film.getTitre());
 		add(titreFilm, BorderLayout.NORTH);
 		
 		JPanel buttonsPanel = new JPanel();
+		buttonsPanel.setOpaque(false);
 		add(buttonsPanel, BorderLayout.EAST);
 		
 		// Bouton Ajouter au panier
@@ -34,7 +44,7 @@ public class FilmLine extends JPanel {
 			buttonsPanel.add(addPanier);
 			addPanier.setAction(new AddPanierAction(d, c));
 		}
-		
+
 		// Bouton Info
 		JButton info = new JButton("+ d'infos");
 		buttonsPanel.add(info);

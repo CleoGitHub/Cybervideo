@@ -32,7 +32,7 @@ public class CyberVideoGUI extends JFrame {
         JPanel navigationPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         add(navigationPanel, BorderLayout.NORTH);
 
-        precBtn = new Button("ressources/images/button.png", "précedent");
+        precBtn = new Button("ressources/images/back-button.png","Précedent");
         techBtn = new Button("ressources/images/button.png", "Technicien");
         panierBtn = new Button("ressources/images/button.png", "Panier");
 
@@ -40,12 +40,12 @@ public class CyberVideoGUI extends JFrame {
         navigationPanel.add(techBtn);
         navigationPanel.add(panierBtn);
 
-        setNavigationListners();
+        setNavigationListeners();
 
         pack();
     }
 
-    private void setNavigationListners() {
+    private void setNavigationListeners() {
         NavigationListener listener = new NavigationListener(controller);
         // TODO: add listener to navigation buttons
         precBtn.setId(NavigationListener.PREC);
@@ -57,6 +57,4 @@ public class CyberVideoGUI extends JFrame {
         panierBtn.setId(NavigationListener.PANIER);
         panierBtn.addMouseListener(listener);
     }
-
-
 }

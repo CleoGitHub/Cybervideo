@@ -14,7 +14,7 @@ import java.beans.PropertyChangeSupport;
 
 public class Controller {
     private CyberVideo model;
-    private ArrayList<JPanel> vuesPile;
+    private ArrayList<Vue> vuesPile;
     private JPanel contenuPane;
 
     // =================
@@ -26,7 +26,7 @@ public class Controller {
 
     public Controller() {
         this.model = new CyberVideo();
-        vuesPile = new ArrayList<JPanel>();
+        vuesPile = new ArrayList<Vue>();
         contenuPane = new JPanel(new BorderLayout());
 
         // Creations des Vues
@@ -60,7 +60,7 @@ public class Controller {
         return vuePanier;
     }
 
-    public void setOnTop(JPanel panel) {
+    public void setOnTop(Vue panel) {
         contenuPane.removeAll();
         contenuPane.add(panel);
         contenuPane.revalidate();
@@ -70,21 +70,26 @@ public class Controller {
     public void vuePrec() {
         if (vuesPile.size() > 1) {
             int dernier = vuesPile.size()-1;
-            JPanel precPanel = vuesPile.get(dernier-1);
+            Vue precPanel = vuesPile.get(dernier-1);
             setOnTop(precPanel);
             vuesPile.remove(dernier);
             frame.pack();
         }
     }
 
-    public void vueSuiv(JPanel panel) {
+    public void vueSuiv(Vue panel) {
         setOnTop(panel);
         vuesPile.add(panel);
         frame.pack();
     }
-    
+
+    public void setVue(Vue panel) {
+        vuesPile.clear();
+        vuesPile.add(vueAccueil);
+        setOnTop(panel);
+    }
+
     // TODO: actions utilisant le model
-    
     public void ajouterPanier(DVD d) {
     	model.ajouterPanier(d);
     	vuePanier.addDVD(d);

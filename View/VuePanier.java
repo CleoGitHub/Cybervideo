@@ -10,7 +10,7 @@ import Controller.Controller;
 import Model.DVD;
 import Model.Film;
 
-public class VuePanier extends JPanel {
+public class VuePanier extends Vue {
 
 	private Controller controller;
 	private ArrayList<DVD> dvds;

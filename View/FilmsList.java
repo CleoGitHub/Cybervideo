@@ -1,8 +1,12 @@
 package View;
 
+import java.awt.Dimension;
 import java.util.ArrayList;
 
+import javax.swing.Box;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.border.EmptyBorder;
 
 import Controller.Controller;
 import Model.Film;
@@ -26,6 +30,7 @@ public class FilmsList extends JPanel {
 		FilmLine fl = new FilmLine(f, c);
 		filmLines.add(fl);
 		add(fl);
+		add(Box.createRigidArea(new Dimension(0, 5)));
 	}
 	
 	public void setFilms(ArrayList<Film> films) {
