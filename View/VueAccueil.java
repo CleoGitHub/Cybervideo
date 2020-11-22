@@ -16,7 +16,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class VueAccueil extends JPanel implements Observateur {
+public class VueAccueil extends Vue implements Observateur {
 
 
     private Controller controller;
@@ -28,8 +28,6 @@ public class VueAccueil extends JPanel implements Observateur {
 
     public VueAccueil(Controller controller) {
         super();
-        setLayout(new BorderLayout());
-        setPreferredSize(new Dimension(800, 600));
         setBackground(Color.BLUE);
 
         this.controller = controller;
