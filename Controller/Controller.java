@@ -1,12 +1,16 @@
 package Controller;
 
 import Model.CyberVideo;
+import Model.DVD;
+import Model.Film;
 import View.*;
 
 import javax.swing.*;
 
 import java.util.ArrayList;
 import java.awt.*;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 public class Controller {
     private CyberVideo model;
@@ -18,14 +22,16 @@ public class Controller {
     private CyberVideoGUI frame;
     private VueAccueil vueAccueil;
     private VueTechnicien vueTechnicien;
+    private VuePanier vuePanier;
 
     public Controller() {
         this.model = new CyberVideo();
         vuesPile = new ArrayList<JPanel>();
         contenuPane = new JPanel(new BorderLayout());
 
-        // creations des vues
-        vueAccueil = new VueAccueil(this);
+        // Creations des Vues
+        vueAccueil = new VueAccueil(this, model.getFilms());
+        vuePanier = new VuePanier(this, model.getPanier().getDvds());
         vueTechnicien = new VueTechnicien(this);
 
         start();
@@ -49,6 +55,10 @@ public class Controller {
     public VueTechnicien getVueTechnicien() {
         return vueTechnicien;
     }
+    
+    public VuePanier getVuePanier() {
+        return vuePanier;
+    }
 
     public void setOnTop(JPanel panel) {
         contenuPane.removeAll();
@@ -63,6 +73,7 @@ public class Controller {
             JPanel precPanel = vuesPile.get(dernier-1);
             setOnTop(precPanel);
             vuesPile.remove(dernier);
+            frame.pack();
         }
     }
 
@@ -71,7 +82,12 @@ public class Controller {
         vuesPile.add(panel);
         frame.pack();
     }
-
+    
     // TODO: actions utilisant le model
+    
+    public void ajouterPanier(DVD d) {
+    	model.ajouterPanier(d);
+    	vuePanier.addDVD(d);
+    }
 
 }
