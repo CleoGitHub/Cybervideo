@@ -49,15 +49,10 @@ public class VueAccueil extends Vue implements Observateur {
     }
 
     public void setFilms(ArrayList<Film> films) {
-    	this.films = films;
-    	updateFilms();
+    	((ItemList<Film, FilmLine>) filmsList).setItems(films);
     }
     
     public void updateFilms() {
-    	remove(filmsList);
-        filmsList = new ItemList<Film, FilmLine>("Nos films", films, controller, Film.class, FilmLine.class);
-        add(filmsList);
-        revalidate();
-        repaint();
+    	((ItemList<Film, FilmLine>) filmsList).updateView();
     }
 }
