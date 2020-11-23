@@ -24,6 +24,7 @@ public class Button extends JLabel {
 
     public Button(String imagePath) {
         this();
+        setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         setForeground(Color.WHITE);
         try {
             this.setIcon(new ImageIcon(imagePath));

@@ -58,8 +58,6 @@ public class FilmLine extends JPanel {
 					}
 				}
 			});
-			// addPanier.setAction(new AddPanierAction(film, c));
-
 		}
 
 		// Bouton Info

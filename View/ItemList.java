@@ -25,7 +25,7 @@ public class ItemList<T, E extends JPanel> extends JPanel {
 	
 	public ItemList(String desc, ArrayList<T> items, Controller c, Class<T> clazz, Class<E> clazzLine) {
 		super(new StackLayout());
-		this.items = items;
+		this.items = (ArrayList<T>) items.clone();
 		this.c = c;
 		this.clazz = clazz;
 		this.clazzLine = clazzLine;
