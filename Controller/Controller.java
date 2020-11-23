@@ -24,6 +24,7 @@ public class Controller {
     private VueAccueil vueAccueil;
     private VueTechnicien vueTechnicien;
     private VuePanier vuePanier;
+    private VueInfoFilm vueInfoFilm;
 
     public Controller() {
         this.model = new CyberVideo();
@@ -35,6 +36,7 @@ public class Controller {
         vueAccueil = new VueAccueil(this, model.getFilms());
         vuePanier = new VuePanier(this, model.getPanier());
         vueTechnicien = new VueTechnicien(this);
+        vueInfoFilm = new VueInfoFilm(this);
 
         start();
     }
@@ -64,6 +66,10 @@ public class Controller {
     
     public VuePanier getVuePanier() {
         return vuePanier;
+    }
+    
+    public VueInfoFilm getVueInfoFilm() {
+        return vueInfoFilm;
     }
 
     public void setOnTop(Vue panel) {

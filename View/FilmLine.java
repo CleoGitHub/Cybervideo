@@ -22,9 +22,11 @@ import Model.Film;
 public class FilmLine extends JPanel {
 	Film film;
 	Controller c;
+	private Button info;
 	
 	public FilmLine(Film film, Controller c) {
 		super(new BorderLayout());
+		
 		this.c = c;
 		this.film = film;
 		
@@ -61,7 +63,14 @@ public class FilmLine extends JPanel {
 		}
 
 		// Bouton Info
-		Button info = new Button("ressources/images/button-thick.png","+ d'infos");
+		info = new Button("ressources/images/button-thick.png","+ d'infos");
 		buttonsPanel.add(info);
+		setNavigationListeners();
 	}
+
+    private void setNavigationListeners() {
+        NavigationListener listener = new NavigationListener(c);
+        info.setId(NavigationListener.INFO_FILM);
+        info.addMouseListener(listener);
+    }
 }

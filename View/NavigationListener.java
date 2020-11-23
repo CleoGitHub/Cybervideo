@@ -12,6 +12,7 @@ public class NavigationListener extends MouseAdapter {
     static final int ACCUEIL = 2;
     static final int RENDRE = 3;
     static final int PANIER = 4;
+    static final int INFO_FILM = 5;
 
     private Controller controller;
 
@@ -22,6 +23,7 @@ public class NavigationListener extends MouseAdapter {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+    	
         int action = ((Button)e.getSource()).getId();
         switch (action) {
             case PREC:
@@ -38,6 +40,11 @@ public class NavigationListener extends MouseAdapter {
 
             case ACCUEIL:
                 controller.vueSuiv(controller.getVueAccueil());
+                break;
+                
+            case INFO_FILM:
+            	controller.vueSuiv(controller.getVueInfoFilm());
+                break;
 
             default:
                 break;
