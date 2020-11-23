@@ -125,4 +125,8 @@ public class Controller {
 		return d;
 	}
 
+	
+	public void setFimVueInfoFilm(Film film) {
+		vueInfoFilm.setFilm(film);
+	}
 }

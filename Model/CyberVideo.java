@@ -32,6 +32,7 @@ public class CyberVideo {
 		Film interstellar = new Film("Interstellar", LocalDate.of(2014, 11, 5));
 		interstellar.addActeur(acteurs.get(5));
 		interstellar.addGenre(Genre.FICTION);
+		interstellar.addGenre(Genre.DOCUMENTAIRE);
 		interstellar.setRealisateur(realisateurs.get(2));
 		films.add(interstellar);
 		

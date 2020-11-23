@@ -63,6 +63,13 @@ public class FilmLine extends JPanel {
 		// Bouton Info
 		info = new Button("ressources/images/button-thick.png","+ d'infos");
 		buttonsPanel.add(info);
+		info.addMouseListener(new MouseInputAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				c.setFimVueInfoFilm(film);
+			}				
+		});
+		
 		setNavigationListeners();
 	}
 
