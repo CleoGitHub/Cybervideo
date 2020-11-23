@@ -21,7 +21,7 @@ public class VueBienvenu extends Vue {
         technecien = new Button();
         technecien.setText("Autre ?");
 
-        allouerBtn = new Button("ressources/images/button.png", "Allouer un DVD");
+        allouerBtn = new Button("ressources/images/button.png", "Louer un DVD");
         rendreBtn = new Button("ressources/images/button.png", "Rendre un DVD");
         Button logo = new Button("ressources/images/logo.png");
 

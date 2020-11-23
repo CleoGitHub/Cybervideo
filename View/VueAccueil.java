@@ -35,10 +35,6 @@ public class VueAccueil extends Vue implements Observateur {
         this.films = films;
         filmsList = new ItemList<Film, FilmLine>("Nos films", films, controller, Film.class, FilmLine.class);
         add(filmsList);
-
-        // buttons
-        panierBtn = new Button("ressources/images/button.png", "Panier");
-
     }
 
     public void miseAJour() {

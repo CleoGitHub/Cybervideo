@@ -16,6 +16,7 @@ public class CyberVideoGUI extends JFrame {
     private Controller controller;
     private JPanel contenuPane;
     private Button precBtn;
+    private Button panierBtn;
 
     public CyberVideoGUI(Controller controller) {
         super("CyberVideo");
@@ -31,8 +32,11 @@ public class CyberVideoGUI extends JFrame {
         add(navigationPanel, BorderLayout.NORTH);
 
         precBtn = new Button("ressources/images/back-button.png");
+        panierBtn = new Button("ressources/images/button-thick.png", "Panier");
 
         navigationPanel.add(precBtn);
+        navigationPanel.add(panierBtn);
+
         // navigationPanel.setBackground(Color.gray);
 
         setNavigationListeners();
@@ -45,6 +49,7 @@ public class CyberVideoGUI extends JFrame {
         // TODO: add listener to navigation buttons
         precBtn.setId(NavigationListener.PREC);
         precBtn.addMouseListener(listener);
-
+        panierBtn.setId(NavigationListener.PANIER);
+        panierBtn.addMouseListener(listener);
     }
 }

@@ -40,7 +40,7 @@ public class DVDLine extends JPanel {
 		add(buttonsPanel, BorderLayout.EAST);
 		
 		// Bouton Retirer du panier
-		JButton retirerPanier = new JButton("-");
+		Button retirerPanier = new Button("ressources/images/button-thick.png","-");
 		buttonsPanel.add(retirerPanier);
 		retirerPanier.addMouseListener(new MouseInputAdapter() {
 			@Override
