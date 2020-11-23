@@ -30,7 +30,7 @@ public class VuePanier extends Vue {
     }
     
     public void updateDVDs() {
-    	((ItemList<DVD, DVDLine>) dvdsList).setItems(panier.getDvds());
+    	((ItemList<DVD, DVDLine>) dvdsList).updateView();
     }
     
     private void initializeDVDList() {

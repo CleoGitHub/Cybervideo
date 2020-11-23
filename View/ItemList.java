@@ -25,7 +25,7 @@ public class ItemList<T, E extends JPanel> extends JPanel {
 	
 	public ItemList(String desc, ArrayList<T> items, Controller c, Class<T> clazz, Class<E> clazzLine) {
 		super(new StackLayout());
-		this.items = (ArrayList<T>) items.clone();
+		this.items = items;
 		this.c = c;
 		this.clazz = clazz;
 		this.clazzLine = clazzLine;
@@ -58,11 +58,15 @@ public class ItemList<T, E extends JPanel> extends JPanel {
 	}
 	
 	public void setItems(ArrayList<T> arrayOfT) {
+		this.items = arrayOfT;
+		updateView();
+	}
+	
+	public void updateView() {
 		removeAll();
-		this.items.clear();
 		this.lines.clear();
-		for(T t : arrayOfT) {
-			addItem(t);
+		for(T item : items) {
+			addItem(item);
 		}
 		revalidate();
 		repaint();
