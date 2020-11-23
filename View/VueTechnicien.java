@@ -6,20 +6,10 @@ import Patterns.Observateur;
 import javax.swing.*;
 import java.awt.*;
 
-public class VueTechnicien extends Vue implements Observateur {
-    private Controller controller;
-
+public class VueTechnicien extends Vue {
     public VueTechnicien(Controller controller) {
-        super();
+        super(controller);
         setBackground(Color.RED);
-
-
-        this.controller = controller;
-
-    }
-
-    @Override
-    public void miseAJour() {
 
     }
 }

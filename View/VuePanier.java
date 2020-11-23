@@ -16,28 +16,21 @@ import Model.Panier;
 
 public class VuePanier extends Vue {
 
-	private Controller controller;
 	private Panier panier;
 	private JPanel dvdsList;
 	
     public VuePanier(Controller controller, Panier panier) {
-        super();
-        this.controller = controller;
+        super(controller);
+        this.setLayout(new BorderLayout());
+        
         this.panier = panier;
         
         dvdsList = new ItemList<DVD, DVDLine>("Votre Panier", panier.getDvds(), controller, DVD.class, DVDLine.class);
-        add(dvdsList);
+        add(dvdsList, BorderLayout.CENTER);
     }
     
     public void updateDVDs() {
-    	((ItemList<DVD, DVDLine>) dvdsList).updateView();
+    	((ItemList<DVD, DVDLine>) dvdsList).drawView();
     }
-    
-    private void initializeDVDList() {
-    	remove(dvdsList);
-        dvdsList = new ItemList<DVD, DVDLine>("Votre Panier", panier.getDvds(), controller, DVD.class, DVDLine.class);
-        add(dvdsList);
-        revalidate();
-        repaint();
-    }
+   
 }

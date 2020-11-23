@@ -2,6 +2,7 @@ package View;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
@@ -23,6 +24,7 @@ public class FilmLine extends JPanel {
 	Film film;
 	Controller c;
 	private Button info;
+	private JPanel buttonsPanel;
 	
 	public FilmLine(Film film, Controller c) {
 		super(new BorderLayout());
@@ -36,7 +38,7 @@ public class FilmLine extends JPanel {
 		JLabel titreFilm = new JLabel(film.getTitre());
 		add(titreFilm, BorderLayout.NORTH);
 		
-		JPanel buttonsPanel = new JPanel();
+		buttonsPanel = new JPanel(new BorderLayout());
 		buttonsPanel.setOpaque(false);
 		add(buttonsPanel, BorderLayout.EAST);
 		
@@ -44,7 +46,7 @@ public class FilmLine extends JPanel {
 		DVD d;
 		if((d = c.getFirstAvailabeDVD(film)) != null) {
 			Button addPanier = new Button("ressources/images/button-thick-long.png","Ajouter au panier");
-			buttonsPanel.add(addPanier);
+			buttonsPanel.add(addPanier, BorderLayout.WEST);
 			addPanier.addMouseListener(new MouseInputAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
@@ -55,20 +57,27 @@ public class FilmLine extends JPanel {
 						buttonsPanel.remove(addPanier);
 						buttonsPanel.revalidate();
 						buttonsPanel.repaint();
+						addNotAvailableLabel();
 					}
 				}
 			});
+		} else {
+			addNotAvailableLabel();
 		}
 
 		// Bouton Info
 		info = new Button("ressources/images/button-thick.png","+ d'infos");
-		buttonsPanel.add(info);
+		buttonsPanel.add(info, BorderLayout.EAST);
 		info.addMouseListener(new MouseInputAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				c.setFimVueInfoFilm(film);
 			}				
 		});
+		
+		// Filler
+		buttonsPanel.add(Box.createRigidArea(new Dimension(5, 0)), BorderLayout.CENTER);
+
 		
 		setNavigationListeners();
 	}
@@ -77,5 +86,10 @@ public class FilmLine extends JPanel {
         NavigationListener listener = new NavigationListener(c);
         info.setId(NavigationListener.INFO_FILM);
         info.addMouseListener(listener);
+    }
+    
+    public void addNotAvailableLabel() {
+		JLabel notAvailable = new JLabel("Pas de DVD disponible.");
+		buttonsPanel.add(notAvailable, BorderLayout.WEST);
     }
 }

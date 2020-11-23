@@ -11,9 +11,10 @@ public class CyberVideo {
     private ArrayList<Film> films = new ArrayList<>();
     private ArrayList<Realisateur> realisateurs = new ArrayList<>();
     private ArrayList<Technicien> techniciens = new ArrayList<>();
-    private ArrayList<Carte> abonnees = new ArrayList<>();
     private Panier panier = new Panier();
-
+    private CarteBancaire cb;
+    private CarteAbonnement ca;
+    
     public CyberVideo() {
 		ArrayList<Acteur> acteurs = new ArrayList<>();
 		acteurs = new ArrayList<>();
@@ -93,6 +94,22 @@ public class CyberVideo {
     public void retirerPanier(DVD dvd) {
     	panier.retirer(dvd);
     }
+
+	public CarteBancaire getCb() {
+		return cb;
+	}
+
+	public void setCb(CarteBancaire cb) {
+		this.cb = cb;
+	}
+
+	public CarteAbonnement getCa() {
+		return ca;
+	}
+
+	public void setCa(CarteAbonnement ca) {
+		this.ca = ca;
+	}
 
     // TODO: actions de client
 

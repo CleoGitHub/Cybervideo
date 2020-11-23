@@ -17,6 +17,7 @@ public class CyberVideoGUI extends JFrame {
     private JPanel contenuPane;
     private Button precBtn;
     private Button panierBtn;
+    private Button loginBtn;
 
     public CyberVideoGUI(Controller controller) {
         super("CyberVideo");
@@ -28,15 +29,19 @@ public class CyberVideoGUI extends JFrame {
         contenuPane = controller.getContenuPane();
         add(contenuPane, BorderLayout.CENTER);
         
-        JPanel navigationPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel navigationPanel = new JPanel(new BorderLayout());
+        JPanel rightNavigationPanel = new JPanel();
         add(navigationPanel, BorderLayout.NORTH);
 
         precBtn = new Button("ressources/images/back-button.png");
         panierBtn = new Button("ressources/images/button-thick.png", "Panier");
+        loginBtn = new Button("ressources/images/button-thick.png", "Mon Compte");
 
-        navigationPanel.add(precBtn);
-        navigationPanel.add(panierBtn);
-
+        rightNavigationPanel.add(panierBtn);
+        rightNavigationPanel.add(loginBtn);
+        navigationPanel.add(precBtn, BorderLayout.WEST);
+        navigationPanel.add(rightNavigationPanel, BorderLayout.EAST);
+        
         // navigationPanel.setBackground(Color.gray);
 
         setNavigationListeners();
@@ -51,5 +56,7 @@ public class CyberVideoGUI extends JFrame {
         precBtn.addMouseListener(listener);
         panierBtn.setId(NavigationListener.PANIER);
         panierBtn.addMouseListener(listener);
+        loginBtn.setId(NavigationListener.ACCOUNT);
+        loginBtn.addMouseListener(listener);
     }
 }

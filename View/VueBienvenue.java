@@ -5,18 +5,14 @@ import Controller.Controller;
 import javax.swing.*;
 import java.awt.*;
 
-public class VueBienvenu extends Vue {
-    private Controller controller;
-
+public class VueBienvenue extends Vue {
     // buttons
     private Button rendreBtn;
     private Button allouerBtn;
     private Button technecien;
 
-
-
-    public VueBienvenu(Controller controller) {
-        this.controller = controller;
+    public VueBienvenue(Controller controller) {
+    	super(controller);
 
         technecien = new Button();
         technecien.setText("Autre ?");
@@ -49,7 +45,7 @@ public class VueBienvenu extends Vue {
     }
 
     private void setNavigationListeners() {
-        NavigationListener listner = new NavigationListener(controller);
+        NavigationListener listner = new NavigationListener(getController());
         // TODO: add listener to navigation buttons
         technecien.setId(NavigationListener.TECHNICIEN);
         technecien.addMouseListener(listner);

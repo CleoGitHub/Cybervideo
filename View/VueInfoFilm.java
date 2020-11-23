@@ -26,20 +26,18 @@ import Model.Panier;
 
 public class VueInfoFilm extends Vue {
 
-	private Controller controller;
 	private JPanel dvdsList;
 	private Film film;
 	
     public VueInfoFilm(Controller controller) {
-        super();
-        this.controller = controller;
+        super(controller);
         
         setNavigationListeners();
     }
     
 
     private void setNavigationListeners() {
-        NavigationListener listner = new NavigationListener(controller);
+        NavigationListener listner = new NavigationListener(getController());
     }
     
     public void setFilm(Film film) {

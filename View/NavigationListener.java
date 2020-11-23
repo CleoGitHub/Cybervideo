@@ -13,6 +13,7 @@ public class NavigationListener extends MouseAdapter {
     static final int RENDRE = 3;
     static final int PANIER = 4;
     static final int INFO_FILM = 5;
+    static final int ACCOUNT = 6;
 
     private Controller controller;
 
@@ -44,6 +45,10 @@ public class NavigationListener extends MouseAdapter {
                 
             case INFO_FILM:
             	controller.vueSuiv(controller.getVueInfoFilm());
+                break;
+                
+            case ACCOUNT:
+            	controller.vueSuiv(controller.getVueMonCompte());
                 break;
 
             default:

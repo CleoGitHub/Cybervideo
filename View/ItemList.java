@@ -21,6 +21,7 @@ public class ItemList<T, E extends JPanel> extends JPanel {
 	private Class<E> clazzLine;
 	private Class<T> clazz;
 	private Controller c;
+	String desc;
 	
 	
 	public ItemList(String desc, ArrayList<T> items, Controller c, Class<T> clazz, Class<E> clazzLine) {
@@ -29,14 +30,9 @@ public class ItemList<T, E extends JPanel> extends JPanel {
 		this.c = c;
 		this.clazz = clazz;
 		this.clazzLine = clazzLine;
-
-		JLabel label = new JLabel(desc);
-		label.setFont(new Font(label.getFont().getName(), Font.BOLD, 24));
-		add(label);
+		this.desc = desc;
 		
-		for(T item : items) {
-			addItem(item);
-		}
+		drawView();
 	}
 	
 	public E buildLine(T t, Controller c) {
@@ -59,11 +55,16 @@ public class ItemList<T, E extends JPanel> extends JPanel {
 	
 	public void setItems(ArrayList<T> arrayOfT) {
 		this.items = arrayOfT;
-		updateView();
+		drawView();
 	}
 	
-	public void updateView() {
+	public void drawView() {
 		removeAll();
+		
+		JLabel label = new JLabel(desc);
+		label.setFont(new Font(label.getFont().getName(), Font.BOLD, 24));
+		add(label);
+		
 		this.lines.clear();
 		for(T item : items) {
 			addItem(item);

@@ -18,10 +18,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
-public class VueAccueil extends Vue implements Observateur {
+public class VueAccueil extends Vue {
 
 
-    private Controller controller; 
     JPanel filmsList;
     ArrayList<Film> films;
 
@@ -29,8 +28,7 @@ public class VueAccueil extends Vue implements Observateur {
 
 
     public VueAccueil(Controller controller, ArrayList<Film> films) {
-        super();
-        this.controller = controller;
+        super(controller);
 
         this.films = films;
         filmsList = new ItemList<Film, FilmLine>("Nos films", films, controller, Film.class, FilmLine.class);
@@ -42,7 +40,7 @@ public class VueAccueil extends Vue implements Observateur {
     }
 
     private void setNavigationListeners() {
-        NavigationListener listener = new NavigationListener(controller);
+        NavigationListener listener = new NavigationListener(getController());
         // TODO: add listener to navigation buttons
         panierBtn.setId(NavigationListener.PANIER);
         panierBtn.addMouseListener(listener);
@@ -53,6 +51,6 @@ public class VueAccueil extends Vue implements Observateur {
     }
     
     public void updateFilms() {
-    	((ItemList<Film, FilmLine>) filmsList).updateView();
+    	((ItemList<Film, FilmLine>) filmsList).drawView();
     }
 }
