@@ -15,7 +15,7 @@ public class CyberVideo {
     private CarteBancaire slotCarteBancaire;
     private CarteAbonnement slotCarteAbonnement;
     private Panier panier = new Panier();
-
+    
     public CyberVideo() {
 		ArrayList<Acteur> acteurs = new ArrayList<>();
 		acteurs = new ArrayList<>();
@@ -55,6 +55,14 @@ public class CyberVideo {
 		onceUponATimeInHollywood.addDVD(new DVD(3, onceUponATimeInHollywood));
 		films.add(onceUponATimeInHollywood);
 		
+		Carte carte;
+		for(int i = 0; i < 25; i++) {
+			if(i%2 == 0)
+				carte = new CarteAbonnement(LocalDate.of(2020, 1, 8), i, "mr carte" + i);
+			else 
+				carte = new CarteBancaire(i, "mr carte" + i, LocalDate.of(2020, 1, 8), "15 151 151 5351 51 53");
+			this.abonnees.add(carte);
+		}
         // TODO: load data from DB
 
     }
@@ -96,12 +104,20 @@ public class CyberVideo {
     	panier.retirer(dvd);
     }
     
+    public ArrayList<Carte> getCartes() {
+    	return this.abonnees;
+    }
+    
     public CarteBancaire getCarteSlotCarteBancaire() {
     	return this.slotCarteBancaire;
     }
     
-    public void insererCarteBancaire(CarteBancaire carte) {
-    	
+    public void insererCarteBancaire(CarteBancaire carte) throws Exception {
+    	if(this.slotCarteBancaire != null) {
+    		throw new Exception("Une carte bancaire est déjà présente dans le slot carte bancaire");
+    	} else {
+    		this.slotCarteBancaire = carte;
+    	}
     }
     
     public CarteAbonnement getCarteSlotCarteAbonnement() {
@@ -119,7 +135,5 @@ public class CyberVideo {
         	}
     	}
     }
-
-    // TODO: actions de client
 
 }

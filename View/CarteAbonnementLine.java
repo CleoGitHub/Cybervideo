@@ -20,13 +20,13 @@ import Controller.Controller;
 import Model.DVD;
 import Model.Film;
 
-public class FilmLine extends JPanel {
+public class CarteAbonnementLine extends JPanel {
 	Film film;
 	Controller c;
 	private Button info;
 	private JPanel buttonsPanel;
 	
-	public FilmLine(Film film, Controller c) {
+	public CarteAbonnementLine(Film film, Controller c) {
 		super(new BorderLayout());
 		
 		this.c = c;
