@@ -12,6 +12,8 @@ public class CyberVideo {
     private ArrayList<Realisateur> realisateurs = new ArrayList<>();
     private ArrayList<Technicien> techniciens = new ArrayList<>();
     private ArrayList<Carte> abonnees = new ArrayList<>();
+    private CarteBancaire slotCarteBancaire;
+    private CarteAbonnement slotCarteAbonnement;
     private Panier panier = new Panier();
 
     public CyberVideo() {
@@ -92,6 +94,30 @@ public class CyberVideo {
     
     public void retirerPanier(DVD dvd) {
     	panier.retirer(dvd);
+    }
+    
+    public CarteBancaire getCarteSlotCarteBancaire() {
+    	return this.slotCarteBancaire;
+    }
+    
+    public void insererCarteBancaire(CarteBancaire carte) {
+    	
+    }
+    
+    public CarteAbonnement getCarteSlotCarteAbonnement() {
+    	return this.slotCarteAbonnement;
+    }
+    
+    public void insererCarteAbonnement(CarteAbonnement carte) throws Exception {
+    	if(this.slotCarteAbonnement != null) {
+    		throw new Exception("Une carte abonnement est déjà présente dans le slot carte abonnement");
+    	} else {
+        	if(this.slotCarteBancaire != null && !this.slotCarteBancaire.getAbonnement().contains(carte) ) {
+        		throw new Exception("La carte abonnement inseré n'appartient pas a la carte bancaire présente dans le slot carte bancaire");
+        	} else {
+        		this.slotCarteAbonnement = carte;
+        	}
+    	}
     }
 
     // TODO: actions de client
