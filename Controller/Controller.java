@@ -10,6 +10,7 @@ import View.*;
 
 import javax.swing.*;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.awt.*;
 import java.beans.PropertyChangeListener;
@@ -30,6 +31,7 @@ public class Controller {
     private VueInfoFilm vueInfoFilm;
     private VueMonCompte vueMonCompte;
     private VueCartes vueCartes;
+    private VueGestionFilms vueGestionFilms;
 
     public Controller() {
         this.model = new CyberVideo();
@@ -44,6 +46,7 @@ public class Controller {
         vueInfoFilm = new VueInfoFilm(this);
         vueMonCompte = new VueMonCompte(this);
         vueCartes = new VueCartes(this);
+        vueGestionFilms = new VueGestionFilms(this);
 
         start();
     }
@@ -86,6 +89,12 @@ public class Controller {
     public VueCartes getVueCartes() {
     	return vueCartes;
     }
+
+    public VueGestionFilms getVueGestionFilms() {
+        return vueGestionFilms;
+    }
+
+    // navigation between panels
 
     public void setOnTop(Vue panel) {
         contenuPane.removeAll();
@@ -163,4 +172,12 @@ public class Controller {
 	public void insererCarteBancaire(CarteBancaire cb) throws Exception {
 		this.model.insererCarteBancaire(cb);
 	}
+
+	public ArrayList<Film> getFilms() {
+        return model.getFilms();
+    }
+
+    //public void insererFilm(Film) {
+    //model.
+    //Vue}
 }
