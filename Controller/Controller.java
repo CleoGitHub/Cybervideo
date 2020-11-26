@@ -7,6 +7,7 @@ import javax.swing.*;
 
 import Exceptions.DVDNotFoundException;
 import Exceptions.DVDNotRentedException;
+import Exceptions.ForbiddenGenreException;
 import Exceptions.LocationCountExceededException;
 import Exceptions.NoCardInSlotException;
 import Exceptions.NotEnoughMoneyException;
@@ -180,7 +181,7 @@ public class Controller {
         return model.getFilms();
     }
 
-	public void payer(Boolean withCb) throws NotEnoughMoneyException, LocationCountExceededException, NoCardInSlotException, PanierEmptyException {
+	public void payer(Boolean withCb) throws NotEnoughMoneyException, LocationCountExceededException, NoCardInSlotException, PanierEmptyException, ForbiddenGenreException {
 		if(withCb) { 
 			// Paiement avec carte bancaire
 			if(model.getCarteSlotCarteBancaire() == null)

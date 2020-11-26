@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.event.MouseInputAdapter;
 
 import Controller.Controller;
+import Exceptions.ForbiddenGenreException;
 import Exceptions.LocationCountExceededException;
 import Exceptions.NoCardInSlotException;
 import Exceptions.NotEnoughMoneyException;
@@ -110,7 +111,7 @@ public class VuePanier extends Vue {
 		try {
 			getController().payer(withCb);
 			Dialog.showSuccess("Paiement effectué !");
-		} catch (LocationCountExceededException | NotEnoughMoneyException | PanierEmptyException e1) {
+		} catch (LocationCountExceededException | NotEnoughMoneyException | PanierEmptyException | ForbiddenGenreException e1) {
 			Dialog.showError(e1.getMessage());
 		} catch (NoCardInSlotException e1) {
 			Dialog.showError(e1.getMessage());

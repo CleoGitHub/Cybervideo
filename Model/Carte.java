@@ -2,6 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 
+import Exceptions.ForbiddenGenreException;
 import Exceptions.LocationCountExceededException;
 import Exceptions.NotEnoughMoneyException;
 
@@ -18,9 +19,9 @@ public abstract class Carte {
 	
 	public abstract int getPrixParJour();
 	
-	public abstract void ajouterLocation(Location l) throws Exception;
+	public abstract void ajouterLocation(Location l) throws LocationCountExceededException, NotEnoughMoneyException;
 	public abstract void retirerLocation(Location l);
-	public abstract boolean canPay(int nb) throws NotEnoughMoneyException, LocationCountExceededException ;
+	public abstract boolean canPay(ArrayList<DVD> dvds) throws NotEnoughMoneyException, LocationCountExceededException, ForbiddenGenreException;
 	
 	public int getNoCarte() {
 		return noCarte;

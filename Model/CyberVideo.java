@@ -7,6 +7,8 @@ import java.beans.PropertyChangeSupport;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import Exceptions.IncorrectAmountException;
+
 public class CyberVideo {
     private ArrayList<Film> films = new ArrayList<>();
     private ArrayList<Acteur> acteurs = new ArrayList<>();
@@ -69,8 +71,15 @@ public class CyberVideo {
 			CarteBancaire carteB = new CarteBancaire(i, "Joe Doe " + i, LocalDate.of(2020, 1, 8), "15 151 151 5351 51 53");	
 			cartesBancaires.add(carteB);
 			for(int j = 0; j < 4; j++) {
-				CarteAbonnement carteA = new CarteAbonnement(carteB, LocalDate.of(2020, 1, 8), j+(j*i), "Abonnement de " + i + " n°" + j);
-				cartesAbonnements.add(carteA);
+				try {
+					CarteAbonnement carteA = new CarteAbonnement(carteB, LocalDate.of(2020, 1, 8), j+(j*i), "Abonnement de " + i + " n°" + j);
+					carteA.ajouterSolde(15);
+					carteA.ajouterGenreInterdit(Genre.COMEDIE);
+					cartesAbonnements.add(carteA);
+				} catch (IncorrectAmountException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
         // TODO: load data from DB
