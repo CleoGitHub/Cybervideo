@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public class CyberVideo {
     private ArrayList<Film> films = new ArrayList<>();
+    private ArrayList<Acteur> acteurs = new ArrayList<>();
     private ArrayList<Realisateur> realisateurs = new ArrayList<>();
     private ArrayList<Technicien> techniciens = new ArrayList<>();
     private ArrayList<Carte> abonnees = new ArrayList<>();
@@ -17,8 +18,6 @@ public class CyberVideo {
     private Panier panier = new Panier();
     
     public CyberVideo() {
-		ArrayList<Acteur> acteurs = new ArrayList<>();
-		acteurs = new ArrayList<>();
 
 		acteurs.add(new Acteur("Brad Pitt"));
 		acteurs.add(new Acteur("Leonardo Dicaprio"));
@@ -77,7 +76,23 @@ public class CyberVideo {
     	return panier;
     }
 
-    void insererFilm(Film film) {
+	public ArrayList<Realisateur> getRealisateurs() {
+		return realisateurs;
+	}
+
+	public ArrayList<Acteur> getActeurs() {
+		return acteurs;
+	}
+
+	public ArrayList<Technicien> getTechniciens() {
+		return techniciens;
+	}
+
+	public ArrayList<Carte> getAbonnees() {
+		return abonnees;
+	}
+
+	public void insererFilm(Film film) {
         if (films.contains(film))
             return;
 
@@ -85,7 +100,7 @@ public class CyberVideo {
         // TODO: insere dans la BD
     }
 
-    void supprimerFilm(Film film, Technicien technicien) {
+    public void supprimerFilm(Film film, Technicien technicien) {
 
         if (!techniciens.contains(technicien))
             return;
@@ -95,6 +110,12 @@ public class CyberVideo {
         films.remove(film);
         // TODO: mise a jour db
     }
+
+    public void supprimerFilm(int film) {
+    	films.remove(film);
+		// TODO: mise a jour db
+
+	}
     
     public void ajouterPanier(DVD dvd) {
     	panier.ajouter(dvd);
