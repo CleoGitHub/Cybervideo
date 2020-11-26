@@ -13,10 +13,12 @@ import Exceptions.NotEnoughMoneyException;
 import Exceptions.PanierEmptyException;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.awt.*;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.List;
 
 public class Controller {
     private CyberVideo model;
@@ -218,6 +220,23 @@ public class Controller {
         model.supprimerFilm(film);
     }
 
+    public void ajouterFilm(String titre, String realisateur, String[] nomsActeurs, LocalDate date, int dvds) {
+        ArrayList<Acteur> acteurs = new ArrayList<>();
+        Film film = new Film(titre,date);
+
+        // ajout du acteurs
+        for (String nom : nomsActeurs) {
+            Acteur acteur = model.getActeur(nom);
+            film.addActeur(acteur);
+        }
+
+        // l'ajout du DVDs
+        for (int i = 0; i < dvds; i++)
+            film.addDVD(new DVD(i, film));
+
+        model.ajouterNouvFilm(film);
+    }
+
     public ArrayList<String> getRealisateurs() {
         ArrayList<String> realisateurs = new ArrayList<String>();
         for (Realisateur realisateur : model.getRealisateurs())
@@ -230,5 +249,21 @@ public class Controller {
         for (Acteur acteur : model.getActeurs())
             acteurs.add(acteur.getNom());
         return acteurs;
+    }
+
+    public void ajouterNouvActeur(String nom) {
+        model.ajouterActeur(nom);
+    }
+
+    public void supprimerActeur(String nom) {
+        model.supprimerActeur(nom);
+    }
+
+    public void ajouterNouvRealisateur(String nom) {
+        model.ajouterRealisateur(nom);
+    }
+
+    public void supprimerRealisateur(String nom) {
+        model.supprimerRealisateur(nom);
     }
 }
