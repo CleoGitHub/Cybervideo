@@ -2,12 +2,12 @@ package View;
 
 import Controller.Controller;
 import Model.Film;
-import Patterns.Observateur;
 
 import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -25,9 +25,9 @@ public class VueTechnicien extends Vue {
         setBackground(Color.WHITE);
 
         // creation du films model/pane
-        filmsModel = new DefaultTableModel(new Object[] {"titre", "genres", "date", "realisateur", "acteurs"}, 0);
+        filmsModel = new DefaultTableModel(new Object[] {"titre", "genres", "date", "realisateur", "acteurs", "DVDs disponible"}, 0);
         films = new JTable(filmsModel);
-        initTableModel();
+        chargerFilms();
         JScrollPane filmsPane = new JScrollPane(films);
 
         // ajouter/supprimer buttons
@@ -49,7 +49,7 @@ public class VueTechnicien extends Vue {
 
     }
 
-    private void initTableModel() {
+    private void chargerFilms() {
         ArrayList<Film> films = getController().getFilms();
         for (Film film : films)
             insererFilm(film);
@@ -61,7 +61,8 @@ public class VueTechnicien extends Vue {
                 film.getGenres().toString(),
                 film.getDate().toString(),
                 film.getRealisateur().getNom(),
-                film.getActeurs().toString()
+                film.getActeurs().toString(),
+                film.getDVDs().size()
         });
     }
 
@@ -81,7 +82,7 @@ public class VueTechnicien extends Vue {
         if (input == 0)
             for (int i = 0; i < nb_films; i++) {
                 filmsModel.removeRow(filmSelectionnes[i]-i);
-                // delete film using controller
+                getController().supprimerFilm(filmSelectionnes[i]-i);
             }
     }
 
@@ -119,5 +120,28 @@ public class VueTechnicien extends Vue {
         MouseListener listener = new NavigationListener(getController());
         insererFilmBtn.addMouseListener(listener);
 
+        // Jtable listner (modifier films)
+        KeyListener kListner = new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    int film = films.getSelectedRow();
+                    // TODO: update film
+                    System.out.println(film);
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
+        };
+
+        films.addKeyListener(kListner);
     }
 }
