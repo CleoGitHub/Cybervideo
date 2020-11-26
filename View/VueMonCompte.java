@@ -15,9 +15,13 @@ import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.MouseInputAdapter;
+import javax.swing.table.DefaultTableModel;
 
 import Controller.Controller;
 
@@ -40,7 +44,9 @@ public class VueMonCompte extends Vue {
 	private JPanel cardsPanel;
 	private JPanel panelAbo;
 	private JPanel panelBancaire;
-	private JPanel panelLocations;
+	private JTable locations;
+    private DefaultTableModel locationsModel;
+    private JPanel panelCrediterBancaire;
 
 	
 	public VueMonCompte(Controller c, CyberVideo model) {
@@ -49,8 +55,15 @@ public class VueMonCompte extends Vue {
         this.cartesBancairesDispo = this.cartesBancaires;
         this.cartesAbonnements= model.getCartesAbonnements();
         this.cartesAbonnementsDispo = this.cartesAbonnements;
+
+
+		locationsModel = new DefaultTableModel(new Object[] {"Date début", "Nombre de jours", "status", "carte", "film", "genres"}, 0);
+        locations = new JTable(locationsModel);  
+
+        JScrollPane locationsScrollPanel = new JScrollPane(locations);
         
 		setLayout(new BorderLayout());
+        add(locationsScrollPanel);
 		
 		model.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
@@ -209,26 +222,78 @@ public class VueMonCompte extends Vue {
 	}
 	
 	public void drawLocations() {
-		if(panelLocations != null)
-			remove(panelLocations);
+		locationsModel.setRowCount(0);
 		
-		ArrayList<Location> locs;
 		if(ca != null) {
-			locs =  ca.getLocationsEnCours();
-		} else if(cb != null) {
-			locs = cb.getLocationsEnCours();
-		} else
-			locs = new ArrayList<Location>();
-			
-		panelLocations = new ItemList("Locations en cours", locs, super.getController(), Location.class, LocationLine.class);
+			chargerLocations(ca.getLocationsEnCours(),"abonnemnet");
+		}
+		if(cb != null) {
+			chargerLocations(cb.getLocationsEnCours(),"bancaire");
+		} 
 		
-		add(panelLocations);
+	}
+	
+	public void chargerLocations(ArrayList<Location> locations, String carte) {
+		for(Location loc : locations) {
+			addLocation(loc, carte);
+		}
+	}
+	
+	public void addLocation(Location loc, String carte) {
+		locationsModel.addRow(new Object[]{
+				loc.getDateDebut().toString(),
+				loc.getNbJours(),
+				loc.estRendu() ? "RENDU" : "A RENDRE",
+				carte,
+				loc.getDvdLoue().getFilm().getTitre(),
+				loc.getDvdLoue().getFilm().getGenres()
+		});
+	}
+	
+	public void drawCrediterCarteAbonenement() {
+		if(panelCrediterBancaire != null)
+			cardsPanel.remove(panelCrediterBancaire);
+		
+		if(ca != null && cb != null) {
+			
+			panelCrediterBancaire = new JPanel(new BorderLayout());
+			
+			JTextField montanAjoutCarteAbonne = new JTextField();
+			panelCrediterBancaire.add(montanAjoutCarteAbonne,BorderLayout.CENTER);
+			
+			JLabel labelCrediter = new JLabel("Ajouter a la carte abonnement");
+			panelCrediterBancaire.add(labelCrediter,BorderLayout.NORTH);
+			
+			Button validerCreditCarte = new Button("ressources/images/button-thick-long.png", "Valider");
+			panelCrediterBancaire.add(validerCreditCarte, BorderLayout.SOUTH);
+			
+			validerCreditCarte.addMouseListener(new MouseInputAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					String texte = montanAjoutCarteAbonne.getText();
+					if(texte.length() > 0 && Integer.parseInt(texte) > 10) {
+						try {
+							ca.ajouterSolde(Integer.parseInt(texte));
+							montanAjoutCarteAbonne.setText("");
+							Dialog.showSuccess("Vous venez d'ajouter " + texte + " a votre carte abonnement");
+						} catch(Exception ex) {
+							Dialog.showError(ex.getMessage());
+						}
+					} else {
+						Dialog.showError("Le montant minimum est de 10 pour recharger une carte abonnement");
+					}
+				}
+			});		
+			
+			cardsPanel.add(panelCrediterBancaire);
+		}
 	}
 	
 	public void setCb(CarteBancaire cb) {
 		this.cb = cb;
 		drawPanelBancaire();
 		drawLocations();
+		drawCrediterCarteAbonenement();
 		// this.cartesAbonnementsDispo = cb == null ? this.cartesAbonnements : cb.getAbonnements();
 		// drawPanelAbo();
 	}
@@ -244,5 +309,6 @@ public class VueMonCompte extends Vue {
 		
 		drawPanelAbo();
 		drawLocations();
+		drawCrediterCarteAbonenement();
 	}
 }

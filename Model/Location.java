@@ -67,6 +67,7 @@ public class Location {
 		this.nbJours = nbJours;
 	}
 	
+	
 	public boolean estRendu() {
 		return rendu;
 	}
