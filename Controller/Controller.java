@@ -187,6 +187,7 @@ public class Controller {
 				throw new NoCardInSlotException("Insérez une carte bancaire.");
 			
 			model.getPanier().payer(getSlotCarteBancaire());
+			vueMonCompte.drawLocations();
 			
 		} else {
 			// Paiement avec carte abonnement
@@ -194,6 +195,7 @@ public class Controller {
 				throw new NoCardInSlotException("Insérez une carte d'abonnement.");
 			
 			model.getPanier().payer(getSlotCarteAbonnement());
+			vueMonCompte.drawLocations();
 		}
 		vuePanier.updateDVDs();
 		vueTechnicien.refreshModel(); // Update DVDs available count

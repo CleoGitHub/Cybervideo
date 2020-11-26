@@ -20,6 +20,7 @@ import javax.swing.event.MouseInputAdapter;
 import Controller.Controller;
 import Model.CarteAbonnement;
 import Model.CarteBancaire;
+import Model.Location;
 
 public class VueMonCompte extends Vue {
 	private ArrayList<CarteBancaire> cartesBancaires;
@@ -34,6 +35,7 @@ public class VueMonCompte extends Vue {
 	private JPanel cardsPanel;
 	private JPanel panelAbo;
 	private JPanel panelBancaire;
+	private JPanel panelLocations;
 
 	
 	public VueMonCompte(Controller c, ArrayList<CarteBancaire> cartesBancaires, ArrayList<CarteAbonnement> cartesAbonnements) {
@@ -50,6 +52,7 @@ public class VueMonCompte extends Vue {
 
 	private void drawView() {
 		drawCards();
+		drawLocations();
 	}
 	
 	private void drawCards() {
@@ -192,9 +195,27 @@ public class VueMonCompte extends Vue {
 		repaint();
 	}
 	
+	public void drawLocations() {
+		if(panelLocations != null)
+			remove(panelLocations);
+		
+		ArrayList<Location> locs;
+		if(ca != null) {
+			locs =  ca.getLocationsEnCours();
+		} else if(cb != null) {
+			locs = cb.getLocationsEnCours();
+		} else
+			locs = new ArrayList<Location>();
+			
+		panelLocations = new ItemList("Locations en cours", locs, super.getController(), Location.class, LocationLine.class);
+		
+		add(panelLocations);
+	}
+	
 	public void setCb(CarteBancaire cb) {
 		this.cb = cb;
 		drawPanelBancaire();
+		drawLocations();
 		// this.cartesAbonnementsDispo = cb == null ? this.cartesAbonnements : cb.getAbonnements();
 		// drawPanelAbo();
 	}
@@ -209,5 +230,6 @@ public class VueMonCompte extends Vue {
 		*/
 		
 		drawPanelAbo();
+		drawLocations();
 	}
 }
