@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.MouseInputAdapter;
@@ -40,6 +41,7 @@ public class VueMonCompte extends Vue {
 	private JPanel panelBancaire;
 	private JTable locations;
     private DefaultTableModel locationsModel;
+    private JPanel panelCrediterBancaire;
 
 	
 	public VueMonCompte(Controller c, ArrayList<CarteBancaire> cartesBancaires, ArrayList<CarteAbonnement> cartesAbonnements) {
@@ -236,13 +238,49 @@ public class VueMonCompte extends Vue {
 	}
 	
 	public void drawCrediterCarteAbonenement() {
+		if(panelCrediterBancaire != null)
+			cardsPanel.remove(panelCrediterBancaire);
+		
+		if(ca != null && cb != null) {
 			
+			panelCrediterBancaire = new JPanel(new BorderLayout());
+			
+			JTextField montanAjoutCarteAbonne = new JTextField();
+			panelCrediterBancaire.add(montanAjoutCarteAbonne,BorderLayout.CENTER);
+			
+			JLabel labelCrediter = new JLabel("Ajouter a la carte abonnement");
+			panelCrediterBancaire.add(labelCrediter,BorderLayout.NORTH);
+			
+			Button validerCreditCarte = new Button("ressources/images/button-thick-long.png", "Valider");
+			panelCrediterBancaire.add(validerCreditCarte, BorderLayout.SOUTH);
+			
+			validerCreditCarte.addMouseListener(new MouseInputAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					String texte = montanAjoutCarteAbonne.getText();
+					if(texte.length() > 0 && Integer.parseInt(texte) > 10) {
+						try {
+							ca.ajouterSolde(Integer.parseInt(texte));
+							montanAjoutCarteAbonne.setText("");
+							Dialog.showSuccess("Vous venez d'ajouter " + texte + " a votre carte abonnement");
+						} catch(Exception ex) {
+							Dialog.showError(ex.getMessage());
+						}
+					} else {
+						Dialog.showError("Le montant minimum est de 10 pour recharger une carte abonnement");
+					}
+				}
+			});		
+			
+			cardsPanel.add(panelCrediterBancaire);
+		}
 	}
 	
 	public void setCb(CarteBancaire cb) {
 		this.cb = cb;
 		drawPanelBancaire();
 		drawLocations();
+		drawCrediterCarteAbonenement();
 		// this.cartesAbonnementsDispo = cb == null ? this.cartesAbonnements : cb.getAbonnements();
 		// drawPanelAbo();
 	}
@@ -258,7 +296,6 @@ public class VueMonCompte extends Vue {
 		
 		drawPanelAbo();
 		drawLocations();
-		if(cb != null)
-			drawCrediterCarteAbonenement();
+		drawCrediterCarteAbonenement();
 	}
 }
