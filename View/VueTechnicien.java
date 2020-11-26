@@ -4,6 +4,7 @@ import Controller.Controller;
 import Model.Film;
 
 import javax.swing.*;
+import javax.swing.event.MouseInputAdapter;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -18,6 +19,7 @@ public class VueTechnicien extends Vue {
     private DefaultTableModel filmsModel;
     private Button suppFilmBtn;
     private Button insererFilmBtn;
+    private Button refreshBtn;
 
     public VueTechnicien(Controller controller) {
         super(controller);
@@ -33,10 +35,24 @@ public class VueTechnicien extends Vue {
         // ajouter/supprimer buttons
         suppFilmBtn = new Button("ressources/images/button-thick.png", "-");
         insererFilmBtn = new Button("ressources/images/button-thick.png", "+");
+        refreshBtn = new Button("ressources/images/button-thick.png", "Actualiser");
+        refreshBtn.addMouseListener(new MouseInputAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		filmsModel.setRowCount(0);
+        		chargerFilms();
+        	}
+        });
+
         insererFilmBtn.setId(NavigationListener.GESTION);
-        JPanel actionsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        actionsPanel.add(insererFilmBtn);
-        actionsPanel.add(suppFilmBtn);
+        JPanel actionsPanel = new JPanel(new BorderLayout());
+        JPanel rightActionPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JPanel leftActionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        actionsPanel.add(rightActionPanel, BorderLayout.EAST);
+        actionsPanel.add(leftActionPanel, BorderLayout.WEST);
+        rightActionPanel.add(insererFilmBtn);
+        rightActionPanel.add(suppFilmBtn);
+        leftActionPanel.add(refreshBtn);
 
         // films container
         JPanel filmsContainer = new JPanel(new BorderLayout());
@@ -62,7 +78,7 @@ public class VueTechnicien extends Vue {
                 film.getDate().toString(),
                 film.getRealisateur().getNom(),
                 film.getActeurs().toString(),
-                film.getDVDs().size()
+                film.getDvdsDisponiblesCount()
         });
     }
 

@@ -39,6 +39,15 @@ public class Film {
 		return this.dvds;
 	}
 	
+	public int getDvdsDisponiblesCount() {
+		int count = 0;
+		for(DVD dvd : dvds) {
+			if(dvd.estDisponible())
+				count++;
+		}
+		return count;
+	}
+	
 	public void addDVD(DVD dvd) {
 		this.dvds.add(dvd);
 	}
