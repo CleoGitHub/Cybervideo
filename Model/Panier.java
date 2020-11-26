@@ -2,6 +2,7 @@ package Model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import Exceptions.ForbiddenGenreException;
 import Exceptions.LocationCountExceededException;
 import Exceptions.NotEnoughMoneyException;
 import Exceptions.PanierEmptyException;
@@ -42,23 +43,23 @@ public class Panier
 		this.dvds.remove(dvd);
 	}
 	
-	public ArrayList<Location> payer(Carte c) throws LocationCountExceededException, NotEnoughMoneyException, PanierEmptyException
+	public ArrayList<Location> payer(Carte c) throws LocationCountExceededException, NotEnoughMoneyException, PanierEmptyException, ForbiddenGenreException
 	{
 		if(getDvds().size() == 0)
 			throw new PanierEmptyException("Veuillez ajouter des DVDs avant de payer.");
-		
+				
 		// Check if the card can pay
-		if(c.canPay(getDvds().size())) {
+		// That includes : 
+		// 	=> does not exceed the amount of on going Location per card
+		//	=> enough money in a CarteAbonnement
+		//	=> no forbidden genres in CarteAbonnement
+		if(c.canPay(getDvds())) {
 			ArrayList<Location> locationsTraitees = new ArrayList<>();
 			// Pour chaque dvd, créer une location
 			for(DVD dvd : dvds){
 				Location l;
-				try {
 					l = new Location(dvd, LocalDate.now(), 1, c);
 					locationsTraitees.add(l);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
 			}
 			// Vider le panier
 			dvds.clear();

@@ -2,6 +2,10 @@ package Model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+
+import Exceptions.LocationCountExceededException;
+import Exceptions.NotEnoughMoneyException;
+
 import java.time.temporal.ChronoUnit;
 
 public class Location {
@@ -11,7 +15,7 @@ public class Location {
 	private boolean rendu;
 	public Carte carteLoueur;
 
-	public Location(DVD dvdLoue, LocalDate dateDebut, int nbJours, Carte carteLoueur) throws Exception {
+	public Location(DVD dvdLoue, LocalDate dateDebut, int nbJours, Carte carteLoueur) throws LocationCountExceededException, NotEnoughMoneyException {
 		this.dvdLoue = dvdLoue;
 		this.dateDebut = dateDebut;
 		this.nbJours = nbJours;

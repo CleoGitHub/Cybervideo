@@ -2,6 +2,7 @@ package Model;
 import java.time.*;
 import java.util.ArrayList;
 
+import Exceptions.ForbiddenGenreException;
 import Exceptions.IncorrectAmountException;
 import Exceptions.LocationCountExceededException;
 import Exceptions.NotEnoughMoneyException;
@@ -122,12 +123,22 @@ public class CarteAbonnement extends Carte {
 	}
 
 	@Override
-	public boolean canPay(int nb) throws NotEnoughMoneyException, LocationCountExceededException {
+	public boolean canPay(ArrayList<DVD> dvds) throws NotEnoughMoneyException, LocationCountExceededException, ForbiddenGenreException {
+		// Check si pas de genres interdits
+		for(DVD dvd: dvds) {
+			for(Genre genre : genresInterdits) {
+				if(dvd.getFilm().getGenres().contains(genre))
+					throw new ForbiddenGenreException("Le genre " + genre + " est interdit.");
+			}
+		}
+		
 		// Check si la carte a assez d'argent pour payer
+		int nb = dvds.size();
 		int montantADeduire = nb * getPrixParJour();
 		if(this.solde - montantADeduire < 0)
 			throw new NotEnoughMoneyException("Le montant de la carte ne peut pas être inférieur à 0.");
 		
+		// Check si il y a de la place pour de nouvelles locations
 		if(this.getLocationsEnCours().size() + nb >= 3)
 			throw new LocationCountExceededException("Le nombre maximum de locations en cours ne peut pas dépasser 3 pour une carte d'abonné.");	
 		
