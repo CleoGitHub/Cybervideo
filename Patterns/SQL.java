@@ -351,3 +351,7 @@ public class sql {
         removeTechnicien(technicien.getNom());
         createTechnicien(technicien);
     }
+    public void connect(){
+        connect = DBConnection.getInstance();
+        System.out.println("connected:");
+    }
