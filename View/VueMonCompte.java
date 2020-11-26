@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -18,8 +20,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.MouseInputAdapter;
 
 import Controller.Controller;
+
+import Model.EventType;
 import Model.CarteAbonnement;
 import Model.CarteBancaire;
+import Model.CyberVideo;
 import Model.Location;
 
 public class VueMonCompte extends Vue {
@@ -38,14 +43,22 @@ public class VueMonCompte extends Vue {
 	private JPanel panelLocations;
 
 	
-	public VueMonCompte(Controller c, ArrayList<CarteBancaire> cartesBancaires, ArrayList<CarteAbonnement> cartesAbonnements) {
-		super(c);
-        this.cartesBancaires = cartesBancaires;
+	public VueMonCompte(Controller c, CyberVideo model) {
+        super(c, model);
+        this.cartesBancaires = model.getCartesBancaires();
         this.cartesBancairesDispo = this.cartesBancaires;
-        this.cartesAbonnements= cartesAbonnements;
+        this.cartesAbonnements= model.getCartesAbonnements();
         this.cartesAbonnementsDispo = this.cartesAbonnements;
         
 		setLayout(new BorderLayout());
+		
+		model.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent e) {
+				if(e.getPropertyName() == EventType.PAYMENT.toString())
+					drawView();
+			}
+		});
 		
 		drawView();
 	}

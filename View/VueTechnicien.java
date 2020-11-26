@@ -1,6 +1,8 @@
 package View;
 
 import Controller.Controller;
+import Model.CyberVideo;
+import Model.EventType;
 import Model.Film;
 
 import javax.swing.*;
@@ -11,19 +13,22 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 public class VueTechnicien extends Vue {
 
     private JTable films;
+    private ArrayList<Film> filmsList;
     private DefaultTableModel filmsModel;
     private Button suppFilmBtn;
     private Button insererFilmBtn;
     private Button refreshBtn;
 
-    public VueTechnicien(Controller controller) {
-        super(controller);
-
+    public VueTechnicien(Controller controller, CyberVideo model) {
+        super(controller, model);
+        this.filmsList = model.getFilms();
         setBackground(Color.WHITE);
 
         // creation du films model/pane
@@ -41,8 +46,16 @@ public class VueTechnicien extends Vue {
         	public void mouseClicked(MouseEvent e) {
         		refreshModel();
         	}
-        });
-
+        });		
+        
+        model.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent e) {
+				if(e.getPropertyName() == EventType.PAYMENT.toString())
+					refreshModel();
+			}
+		});
+		
         insererFilmBtn.setId(NavigationListener.GESTION);
         JPanel actionsPanel = new JPanel(new BorderLayout());
         JPanel rightActionPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -70,7 +83,7 @@ public class VueTechnicien extends Vue {
     }
 
     private void chargerFilms() {
-        ArrayList<Film> films = getController().getFilms();
+        ArrayList<Film> films = filmsList;
         for (Film film : films)
             insererFilm(film);
     }

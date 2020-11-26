@@ -1,6 +1,7 @@
 package View;
 
 import Controller.Controller;
+import Model.CyberVideo;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,8 +12,8 @@ public class VueBienvenue extends Vue {
     private Button allouerBtn;
     private Button technecien;
 
-    public VueBienvenue(Controller controller) {
-    	super(controller);
+    public VueBienvenue(Controller controller, CyberVideo model) {
+        super(controller, model);
 
         technecien = new Button();
         technecien.setText("Autre ?");

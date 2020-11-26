@@ -3,6 +3,8 @@ package View;
 import javax.swing.JPanel;
 
 import Controller.Controller;
+import Model.CyberVideo;
+import Model.EventType;
 import Model.Film;
 import Patterns.Observateur;
 
@@ -16,6 +18,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 public class VueAccueil extends Vue {
@@ -27,12 +31,21 @@ public class VueAccueil extends Vue {
     private Button panierBtn;
 
 
-    public VueAccueil(Controller controller, ArrayList<Film> films) {
-        super(controller);
+    public VueAccueil(Controller controller, CyberVideo model) {
+        super(controller, model);
 
-        this.films = films;
+        this.films = model.getFilms();
         filmsList = new ItemList<Film, FilmLine>("Nos films", films, controller, Film.class, FilmLine.class);
         add(filmsList);
+        
+        model.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent e) {
+				if(e.getPropertyName() == EventType.PANIER.toString() 
+						|| e.getPropertyName() == EventType.RENDU.toString())
+					updateFilms();
+			}
+        });
     }
 
     public void miseAJour() {
@@ -46,11 +59,11 @@ public class VueAccueil extends Vue {
         panierBtn.addMouseListener(listener);
     }
 
-    public void setFilms(ArrayList<Film> films) {
+    private void setFilms(ArrayList<Film> films) {
     	((ItemList<Film, FilmLine>) filmsList).setItems(films);
     }
     
-    public void updateFilms() {
+    private void updateFilms() {
     	((ItemList<Film, FilmLine>) filmsList).drawView();
     }
 }

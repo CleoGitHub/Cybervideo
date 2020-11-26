@@ -44,14 +44,14 @@ public class Controller {
         contenuPane = new JPanel(new BorderLayout());
 
         // Creations des Vues
-        vueBienvenu = new VueBienvenue(this);
-        vueAccueil = new VueAccueil(this, model.getFilms());
-        vuePanier = new VuePanier(this, model.getPanier());
-        vueTechnicien = new VueTechnicien(this);
-        vueInfoFilm = new VueInfoFilm(this);
-        vueMonCompte = new VueMonCompte(this, model.getCartesBancaires(), model.getCartesAbonnements());
-        vueGestionFilms = new VueGestionFilms(this);
-        vueRendreDVD = new VueRendreDVD(this);
+        vueBienvenu = new VueBienvenue(this, model);
+        vueAccueil = new VueAccueil(this, model);
+        vuePanier = new VuePanier(this, model);
+        vueTechnicien = new VueTechnicien(this, model);
+        vueInfoFilm = new VueInfoFilm(this, model);
+        vueMonCompte = new VueMonCompte(this, model);
+        vueGestionFilms = new VueGestionFilms(this, model);
+        vueRendreDVD = new VueRendreDVD(this, model);
 
         start();
     }
@@ -136,13 +136,10 @@ public class Controller {
     // TODO: actions utilisant le model
     public void ajouterPanier(Film f) throws Exception {
     	model.ajouterPanier(getFirstAvailabeDVD(f));
-    	vuePanier.updateDVDs();
     }
     
     public void retirerPanier(DVD d) {
     	model.retirerPanier(d);
-    	vueAccueil.updateFilms();
-    	vuePanier.updateDVDs();
     }
     
 	public DVD getFirstAvailabeDVD(Film f) {
@@ -177,46 +174,12 @@ public class Controller {
 		this.model.insererCarteBancaire(cb);
 	}
 
-	public ArrayList<Film> getFilms() {
-        return model.getFilms();
-    }
-
 	public void payer(Boolean withCb) throws NotEnoughMoneyException, LocationCountExceededException, NoCardInSlotException, PanierEmptyException, ForbiddenGenreException {
-		if(withCb) { 
-			// Paiement avec carte bancaire
-			if(model.getCarteSlotCarteBancaire() == null)
-				throw new NoCardInSlotException("Insérez une carte bancaire.");
-			
-			model.getPanier().payer(getSlotCarteBancaire());
-			vueMonCompte.drawLocations();
-			
-		} else {
-			// Paiement avec carte abonnement
-		if(model.getCarteSlotCarteAbonnement() == null)
-				throw new NoCardInSlotException("Insérez une carte d'abonnement.");
-			
-			model.getPanier().payer(getSlotCarteAbonnement());
-			vueMonCompte.drawLocations();
-		}
-		vuePanier.updateDVDs();
-		vueTechnicien.refreshModel(); // Update DVDs available count
+		model.payer(withCb);
 	}
 	
 	public void rendreDVD(int codeBarre, boolean estEndommage) throws DVDNotFoundException, DVDNotRentedException {
-		// Find the DVD
-		DVD d = model.findDvd(codeBarre);
-		
-		if(d == null)
-			throw new DVDNotFoundException("DVD non reconnu.");
-		
-		Location l = d.getLocationEnCours();
-		
-		// Check if the found DVD has a Location on going
-		if(l == null)
-			throw new DVDNotRentedException("Ce DVD n'est pas loué.");
-		
-		l.rendreDVD(estEndommage);
-		vueAccueil.updateFilms();
+		model.rendreDVD(codeBarre, estEndommage);
 	}
 
     public void supprimerFilm(int film) {

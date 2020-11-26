@@ -1,4 +1,6 @@
 package Model;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -12,7 +14,7 @@ import Exceptions.PanierFullException;
 public class Panier
 {
 	private ArrayList<DVD> dvds;//des dvds que l'on ajoute au fur et a mesure de l'utilisation de l'application
-			
+	
 	public Panier()
 	{
 		this.dvds = new ArrayList<>();

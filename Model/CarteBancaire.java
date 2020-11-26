@@ -71,9 +71,9 @@ public class CarteBancaire extends Carte {
 	@Override
 	public boolean canPay(ArrayList<DVD> dvds) throws LocationCountExceededException {
 		// On admet que la carte bancaire a toujours assez d'argent pour payer.
-		
+
 		// Check si la carte n'a pas déjà une location en cours.
-		if(this.getLocationsEnCours().size() >= 1)
+		if(this.getLocationsEnCours().size() + dvds.size() > 1)
 			throw new LocationCountExceededException("Le nombre maximum de locations en cours ne peut pas dépasser 1 pour une carte bancaire.");
 		
 		return true;

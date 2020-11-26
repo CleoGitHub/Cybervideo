@@ -7,7 +7,14 @@ import java.beans.PropertyChangeSupport;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import Exceptions.DVDNotFoundException;
+import Exceptions.DVDNotRentedException;
+import Exceptions.ForbiddenGenreException;
 import Exceptions.IncorrectAmountException;
+import Exceptions.LocationCountExceededException;
+import Exceptions.NoCardInSlotException;
+import Exceptions.NotEnoughMoneyException;
+import Exceptions.PanierEmptyException;
 
 public class CyberVideo {
     private ArrayList<Film> films = new ArrayList<>();
@@ -21,8 +28,10 @@ public class CyberVideo {
     private CarteAbonnement slotCarteAbonnement;
     private Panier panier = new Panier();
     
-    public CyberVideo() {
+	private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
+    public CyberVideo() {
+    	// Test data
 		acteurs.add(new Acteur("Brad Pitt"));
 		acteurs.add(new Acteur("Leonardo Dicaprio"));
 		acteurs.add(new Acteur("Vincent Cassel"));
@@ -193,10 +202,12 @@ public class CyberVideo {
     
     public void ajouterPanier(DVD dvd) throws Exception {
     	panier.ajouter(dvd);
+		this.pcs.firePropertyChange(EventType.PANIER.toString(), null, null);
     }
     
     public void retirerPanier(DVD dvd) {
     	panier.retirer(dvd);
+		this.pcs.firePropertyChange(EventType.PANIER.toString(), null, null);
     }
     
     public ArrayList<CarteAbonnement> getCartesAbonnements() {
@@ -208,8 +219,8 @@ public class CyberVideo {
     }
     
     public void insererCarteBancaire(CarteBancaire carte) throws Exception {
-    	// Retirer la carte
     	if(carte == null) {
+    		// Retirer la carte
     		this.slotCarteBancaire = null;
     		return;    		
     	}
@@ -226,8 +237,8 @@ public class CyberVideo {
     }
     
     public void insererCarteAbonnement(CarteAbonnement carte) throws Exception {
-    	// Retirer la carte
     	if(carte == null) {
+    		// Retirer la carte
     		this.slotCarteAbonnement = null;
     		return;    		
     	}
@@ -258,4 +269,50 @@ public class CyberVideo {
 		}
 		return null;
 	}
+
+	public void rendreDVD(int codeBarre, boolean estEndommage) throws DVDNotFoundException, DVDNotRentedException {
+		// Find the DVD
+		DVD d = findDvd(codeBarre);
+		
+		if(d == null)
+			throw new DVDNotFoundException("DVD non reconnu.");
+		
+		Location l = d.getLocationEnCours();
+		
+		// Check if the found DVD has a Location on going
+		if(l == null)
+			throw new DVDNotRentedException("Ce DVD n'est pas loué.");
+		
+		l.rendreDVD(estEndommage);
+		
+		this.pcs.firePropertyChange(EventType.RENDU.toString(), null, null);
+	}
+
+	public void payer(Boolean withCb) throws NoCardInSlotException, LocationCountExceededException, NotEnoughMoneyException, PanierEmptyException, ForbiddenGenreException {
+		if(withCb) { 
+			// Paiement avec carte bancaire
+			if(getCarteSlotCarteBancaire() == null)
+				throw new NoCardInSlotException("Insérez une carte bancaire.");
+			
+			getPanier().payer(getCarteSlotCarteBancaire());
+			
+		} else {
+			// Paiement avec carte abonnement
+		if(getCarteSlotCarteAbonnement() == null)
+				throw new NoCardInSlotException("Insérez une carte d'abonnement.");
+			
+			getPanier().payer(getCarteSlotCarteAbonnement());
+		}
+		
+		this.pcs.firePropertyChange(EventType.PANIER.toString(), null, null);
+		this.pcs.firePropertyChange(EventType.PAYMENT.toString(), null, null);
+	}
+	
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        this.pcs.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        this.pcs.removePropertyChangeListener(listener);
+    }
 }

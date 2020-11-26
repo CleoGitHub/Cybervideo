@@ -5,6 +5,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 import javax.swing.Box;
@@ -22,7 +24,9 @@ import Exceptions.NotEnoughMoneyException;
 import Exceptions.PanierEmptyException;
 import Model.CarteAbonnement;
 import Model.CarteBancaire;
+import Model.CyberVideo;
 import Model.DVD;
+import Model.EventType;
 import Model.Film;
 import Model.Panier;
 
@@ -34,14 +38,22 @@ public class VuePanier extends Vue {
 	private JLabel labelTotalB;
 	private JLabel labelTotalA;
 	
-    public VuePanier(Controller controller, Panier panier) {
-        super(controller);
+    public VuePanier(Controller controller, CyberVideo model) {
+        super(controller, model);
         this.setLayout(new BorderLayout());
-        this.panier = panier;
+        this.panier = model.getPanier();
         drawView();
+        
+        model.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent e) {
+				if(e.getPropertyName() == EventType.PANIER.toString())
+					updateDVDs();
+			}
+        });
     }
     
-    public void updateDVDs() {
+    private void updateDVDs() {
     	((ItemList<DVD, DVDLine>) dvdsList).drawView();
     	int n = panier.getDvds().size();
     	labelTotalB.setText("Total : " + CarteBancaire.prixParJour * n);

@@ -13,11 +13,12 @@ import javax.swing.event.MouseInputAdapter;
 import Controller.Controller;
 import Exceptions.DVDNotFoundException;
 import Exceptions.DVDNotRentedException;
+import Model.CyberVideo;
 
 public class VueRendreDVD extends Vue {
 
-	public VueRendreDVD(Controller c) {
-		super(c);
+	public VueRendreDVD(Controller c, CyberVideo model) {
+        super(c, model);
 		
 		setLayout(new BorderLayout());
 		

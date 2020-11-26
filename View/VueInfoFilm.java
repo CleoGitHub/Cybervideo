@@ -19,6 +19,7 @@ import javax.swing.event.MouseInputAdapter;
 
 import Controller.Controller;
 import Model.Acteur;
+import Model.CyberVideo;
 import Model.DVD;
 import Model.Film;
 import Model.Genre;
@@ -28,8 +29,8 @@ public class VueInfoFilm extends Vue {
 
 	private Film film;
 	
-    public VueInfoFilm(Controller controller) {
-        super(controller);
+    public VueInfoFilm(Controller controller, CyberVideo model) {
+        super(controller, model);
         
         setNavigationListeners();
     }

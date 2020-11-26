@@ -1,6 +1,7 @@
 package View;
 
 import Controller.Controller;
+import Model.CyberVideo;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,8 +35,8 @@ public class VueGestionFilms extends Vue {
 
     private int dvds;
 
-    public VueGestionFilms(Controller controller) {
-        super(controller);
+    public VueGestionFilms(Controller controller, CyberVideo model) {
+        super(controller, model);
 
         ArrayList<String> acteurs = controller.getActeurs();
         ArrayList<String> realisateurs = controller.getRealisateurs();
@@ -191,7 +192,6 @@ public class VueGestionFilms extends Vue {
         realisateur = (String)realisateursBox.getSelectedItem();
         LocalDate date = LocalDate.parse(dateField.getText(), DateTimeFormatter.ofPattern("d/MM/yyyy"));
 
-        System.out.println(getController().getFilms().size());
         getController().ajouterFilm(
                 titre,
                 realisateur,
