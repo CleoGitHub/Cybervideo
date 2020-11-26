@@ -97,6 +97,64 @@ public class CyberVideo {
         films.add(film);
         // TODO: insere dans la BD
     }
+    
+    public Acteur getActeur(String nom) {
+    	Acteur acteur;
+		for (int i = 0; i < acteurs.size(); i++) {
+			acteur = acteurs.get(i);
+			if (acteur.getNom().equals(nom))
+				return acteur;
+		}
+
+		return null;
+	}
+
+    public void ajouterActeur(String nom) {
+    	Acteur nouvActeur = new Acteur(nom);
+    	if (!acteurs.contains(nouvActeur)) {
+    		acteurs.add(nouvActeur);
+    		// TODO: update BD
+		} else
+    		throw new IllegalArgumentException("Acteur existe");
+
+	}
+
+	public void supprimerActeur(String nom) {
+    	Acteur acteur = new Acteur(nom);
+		if (acteurs.contains(acteur)) {
+			acteurs.remove(acteur);
+			// TODO: update BD
+		} else
+			throw new IllegalArgumentException("Acteur n'existe pas");
+	}
+
+	public void ajouterRealisateur(String nom) {
+		Realisateur nouvRealisateur = new Realisateur(nom);
+		if (!realisateurs.contains(nouvRealisateur)) {
+			realisateurs.add(nouvRealisateur);
+			// TODO: update BD
+		} else
+			throw new IllegalArgumentException("Realisateur existe");
+
+	}
+
+	public void supprimerRealisateur(String nom) {
+		Realisateur realisateur = new Realisateur(nom);
+		if (realisateurs.contains(realisateur)) {
+			realisateurs.remove(realisateur);
+			// TODO: update BD
+		} else
+			throw new IllegalArgumentException("Realisateur n'existe pas");
+	}
+
+	public void ajouterNouvFilm(Film film) {
+		if (!films.contains(film)) {
+			films.add(film);
+			// TODO: update BD
+		} else
+			throw new IllegalArgumentException("Film existe");
+    	// TODO: update BD & notify observers
+	}
 
     public void supprimerFilm(Film film, Technicien technicien) {
 
