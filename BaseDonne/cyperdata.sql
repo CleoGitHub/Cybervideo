@@ -99,9 +99,9 @@ insert into LesCarteBancaires values (100003 ,  'abcddddd', '571428',to_date('20
 insert into LesCarteBancaires values (100004 ,  'abcdeeee', '571428',to_date('2021-06-22','YYYY-MM-DD'));
 
 ------
-insert into LesCarteAbonnements values (900000, 'dcbaaaaa', to_date('2019-02-22','YYYY-MM-DD'),'13', 'abcdaaaa');
-insert into LesCarteAbonnements values (900001, 'dcbabbbb', to_date('2018-07-27','YYYY-MM-DD'),'200' ,'abcdbbbb');
-insert into LesCarteAbonnements values (900002, 'dcbacccc', to_date('2017-12-17','YYYY-MM-DD'),'25', 'abcdcccc');
+insert into LesCarteAbonnements values (900000, 'dcbaaaaa', to_date('2019-02-22','YYYY-MM-DD'),13, 'abcdaaaa');
+insert into LesCarteAbonnements values (900001, 'dcbabbbb', to_date('2018-07-27','YYYY-MM-DD'),200,'abcdbbbb');
+insert into LesCarteAbonnements values (900002, 'dcbacccc', to_date('2017-12-17','YYYY-MM-DD'),25,'abcdcccc');
 
 -------
 insert into LesInterdits values ('dcbaaaaa' ,  'Horreur');
