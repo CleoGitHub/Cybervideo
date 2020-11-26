@@ -22,7 +22,6 @@ import Exceptions.PanierEmptyException;
 import Model.CarteAbonnement;
 import Model.CarteBancaire;
 import Model.DVD;
-import Model.ErrorDialog;
 import Model.Film;
 import Model.Panier;
 
@@ -72,14 +71,7 @@ public class VuePanier extends Vue {
     	buttonPayerB.addMouseListener(new MouseInputAdapter() {
     		@Override
     		public void mouseClicked(MouseEvent e) {
-				try {
-					getController().payer(true);
-				} catch (LocationCountExceededException | NotEnoughMoneyException | PanierEmptyException e1) {
-					ErrorDialog.show(e1.getMessage());
-				} catch (NoCardInSlotException e1) {
-					ErrorDialog.show(e1.getMessage());
-					getController().vueSuiv(getController().getVueMonCompte());
-				}
+    			payer(true);
     		}
     	});
     	
@@ -100,14 +92,7 @@ public class VuePanier extends Vue {
     	buttonPayerA.addMouseListener(new MouseInputAdapter() {
     		@Override
     		public void mouseClicked(MouseEvent e) {
-				try {
-					getController().payer(false);
-				} catch (LocationCountExceededException | NotEnoughMoneyException | PanierEmptyException e1) {
-					ErrorDialog.show(e1.getMessage());
-				} catch (NoCardInSlotException e1) {
-					ErrorDialog.show(e1.getMessage());
-					getController().vueSuiv(getController().getVueMonCompte());
-				}
+    			payer(false);
     		}
     	});
     	
@@ -119,6 +104,18 @@ public class VuePanier extends Vue {
     	panel.add(panelTotals);
     	panel.add(Box.createRigidArea(new Dimension(20, 0)));
     	add(panel, BorderLayout.SOUTH);
+    }
+    
+    private void payer(boolean withCb) {
+		try {
+			getController().payer(withCb);
+			Dialog.showSuccess("Paiement effectué !");
+		} catch (LocationCountExceededException | NotEnoughMoneyException | PanierEmptyException e1) {
+			Dialog.showError(e1.getMessage());
+		} catch (NoCardInSlotException e1) {
+			Dialog.showError(e1.getMessage());
+			getController().vueSuiv(getController().getVueMonCompte());
+		}
     }
 
 }

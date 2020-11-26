@@ -5,6 +5,8 @@ import View.*;
 
 import javax.swing.*;
 
+import Exceptions.DVDNotFoundException;
+import Exceptions.DVDNotRentedException;
 import Exceptions.LocationCountExceededException;
 import Exceptions.NoCardInSlotException;
 import Exceptions.NotEnoughMoneyException;
@@ -31,6 +33,7 @@ public class Controller {
     private VueInfoFilm vueInfoFilm;
     private VueMonCompte vueMonCompte;
     private VueGestionFilms vueGestionFilms;
+    private VueRendreDVD vueRendreDVD;
 
     public Controller() {
         this.model = new CyberVideo();
@@ -45,6 +48,7 @@ public class Controller {
         vueInfoFilm = new VueInfoFilm(this);
         vueMonCompte = new VueMonCompte(this, model.getCartesBancaires(), model.getCartesAbonnements());
         vueGestionFilms = new VueGestionFilms(this);
+        vueRendreDVD = new VueRendreDVD(this);
 
         start();
     }
@@ -88,6 +92,10 @@ public class Controller {
         return vueGestionFilms;
     }
 
+	public VueRendreDVD getVueRendreDVD() {
+		return vueRendreDVD;
+	}
+	
     // navigation between panels
 
     public void setOnTop(Vue panel) {
@@ -131,6 +139,7 @@ public class Controller {
     public void retirerPanier(DVD d) {
     	model.retirerPanier(d);
     	vueAccueil.updateFilms();
+    	vuePanier.updateDVDs();
     }
     
 	public DVD getFirstAvailabeDVD(Film f) {
@@ -186,6 +195,23 @@ public class Controller {
 		}
 		vuePanier.updateDVDs();
 		vueTechnicien.refreshModel(); // Update DVDs available count
+	}
+	
+	public void rendreDVD(int codeBarre, boolean estEndommage) throws DVDNotFoundException, DVDNotRentedException {
+		// Find the DVD
+		DVD d = model.findDvd(codeBarre);
+		
+		if(d == null)
+			throw new DVDNotFoundException("DVD non reconnu.");
+		
+		Location l = d.getLocationEnCours();
+		
+		// Check if the found DVD has a Location on going
+		if(l == null)
+			throw new DVDNotRentedException("Ce DVD n'est pas loué.");
+		
+		l.rendreDVD(estEndommage);
+		vueAccueil.updateFilms();
 	}
 
     public void supprimerFilm(int film) {

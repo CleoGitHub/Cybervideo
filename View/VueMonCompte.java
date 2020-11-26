@@ -20,7 +20,6 @@ import javax.swing.event.MouseInputAdapter;
 import Controller.Controller;
 import Model.CarteAbonnement;
 import Model.CarteBancaire;
-import Model.ErrorDialog;
 
 public class VueMonCompte extends Vue {
 	private ArrayList<CarteBancaire> cartesBancaires;
@@ -91,7 +90,7 @@ public class VueMonCompte extends Vue {
 						getController().insererCarteBancaire(cb);
 						setCb(cb);
 					} catch (Exception e1) {
-						ErrorDialog.show(e1.getMessage());
+						Dialog.showError(e1.getMessage());
 					}
 				}
 			});
@@ -109,7 +108,7 @@ public class VueMonCompte extends Vue {
 						getController().insererCarteBancaire(null);
 						setCb(null);
 					} catch (Exception e1) {
-						ErrorDialog.show(e1.getMessage());
+						Dialog.showError(e1.getMessage());
 					}
 				}
 			});
@@ -158,7 +157,7 @@ public class VueMonCompte extends Vue {
 						getController().insererCarteAbonnement(ca);
 						setCa(ca);
 					} catch (Exception e1) {
-						ErrorDialog.show(e1.getMessage());
+						Dialog.showError(e1.getMessage());
 					}
 				}
 			});
@@ -176,7 +175,7 @@ public class VueMonCompte extends Vue {
 						getController().insererCarteAbonnement(null);
 						setCa(null);
 					} catch (Exception e1) {
-						ErrorDialog.show(e1.getMessage());
+						Dialog.showError(e1.getMessage());
 					}
 				}
 			});

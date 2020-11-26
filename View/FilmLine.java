@@ -18,7 +18,6 @@ import javax.swing.event.MouseInputListener;
 
 import Controller.Controller;
 import Model.DVD;
-import Model.ErrorDialog;
 import Model.Film;
 
 public class FilmLine extends JPanel {
@@ -62,7 +61,7 @@ public class FilmLine extends JPanel {
 							addNotAvailableLabel();
 						}
 					} catch (Exception e1) {
-						ErrorDialog.show(e1.getMessage());
+						Dialog.showError(e1.getMessage());
 					}
 				}
 			});

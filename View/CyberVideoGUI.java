@@ -5,6 +5,8 @@ import Model.CyberVideo;
 import View.Button;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -18,13 +20,14 @@ public class CyberVideoGUI extends JFrame {
     private Button precBtn;
     private Button panierBtn;
     private Button loginBtn;
+    private Button menuBtn;
 
     public CyberVideoGUI(Controller controller) {
         super("CyberVideo");
         setLayout(new BorderLayout());
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(800, 600));
-        
+
         this.controller = controller;
 
         contenuPane = controller.getContenuPane();
@@ -32,15 +35,19 @@ public class CyberVideoGUI extends JFrame {
         
         JPanel navigationPanel = new JPanel(new BorderLayout());
         JPanel rightNavigationPanel = new JPanel();
+        JPanel leftNavigationPanel = new JPanel();
         add(navigationPanel, BorderLayout.NORTH);
-
+        
         precBtn = new Button("ressources/images/back-button.png");
+        menuBtn = new Button("ressources/images/button-thick.png", "Menu");
         panierBtn = new Button("ressources/images/button-thick.png", "Panier");
         loginBtn = new Button("ressources/images/button-thick.png", "Mon Compte");
 
         rightNavigationPanel.add(panierBtn);
         rightNavigationPanel.add(loginBtn);
-        navigationPanel.add(precBtn, BorderLayout.WEST);
+        leftNavigationPanel.add(precBtn);
+        leftNavigationPanel.add(menuBtn);
+        navigationPanel.add(leftNavigationPanel, BorderLayout.WEST);
         navigationPanel.add(rightNavigationPanel, BorderLayout.EAST);
         
         // navigationPanel.setBackground(Color.gray);
@@ -62,5 +69,7 @@ public class CyberVideoGUI extends JFrame {
         panierBtn.addMouseListener(listener);
         loginBtn.setId(NavigationListener.ACCOUNT);
         loginBtn.addMouseListener(listener);
+        menuBtn.setId(NavigationListener.MENU);
+        menuBtn.addMouseListener(listener);
     }
 }

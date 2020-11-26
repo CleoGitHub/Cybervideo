@@ -14,6 +14,7 @@ public class CyberVideo {
     private ArrayList<Technicien> techniciens = new ArrayList<>();
     private ArrayList<CarteAbonnement> cartesAbonnements = new ArrayList<>();
     private ArrayList<CarteBancaire> cartesBancaires = new ArrayList<>();
+    private ArrayList<DVD> dvds = new ArrayList<>();
     private CarteBancaire slotCarteBancaire;
     private CarteAbonnement slotCarteAbonnement;
     private Panier panier = new Panier();
@@ -36,14 +37,18 @@ public class CyberVideo {
 		interstellar.addGenre(Genre.FICTION);
 		interstellar.addGenre(Genre.DOCUMENTAIRE);
 		interstellar.setRealisateur(realisateurs.get(2));
-		interstellar.addDVD(new DVD(4, interstellar));
+		DVD dvdInterstellar = new DVD(4, interstellar);
+		getDvds().add(dvdInterstellar);
+		interstellar.addDVD(dvdInterstellar);
 		films.add(interstellar);
 		
 		Film inception = new Film("Inception", LocalDate.of(2010, 07, 21));
 		inception.addGenre(Genre.FICTION);
 		inception.addActeur(acteurs.get(1));
 		inception.setRealisateur(realisateurs.get(2));
-		inception.addDVD(new DVD(1, inception));
+		DVD dvdInception = new DVD(1, inception);
+		getDvds().add(dvdInception);
+		inception.addDVD(dvdInception);
 		films.add(inception);
 		
 		Film onceUponATimeInHollywood = new Film("Once Upon a Time... in Hollywood", LocalDate.of(2019, 07, 24));
@@ -52,8 +57,12 @@ public class CyberVideo {
 		onceUponATimeInHollywood.setRealisateur(realisateurs.get(0));
 		onceUponATimeInHollywood.addActeur(acteurs.get(0));
 		onceUponATimeInHollywood.addActeur(acteurs.get(1));
-		onceUponATimeInHollywood.addDVD(new DVD(2, onceUponATimeInHollywood));
-		onceUponATimeInHollywood.addDVD(new DVD(3, onceUponATimeInHollywood));
+		DVD onceUponATimeInHollywood1 = new DVD(2, onceUponATimeInHollywood);
+		DVD onceUponATimeInHollywood2 = new DVD(3, onceUponATimeInHollywood);
+		getDvds().add(onceUponATimeInHollywood2);
+		getDvds().add(onceUponATimeInHollywood1);
+		onceUponATimeInHollywood.addDVD(onceUponATimeInHollywood1);
+		onceUponATimeInHollywood.addDVD(onceUponATimeInHollywood2);
 		films.add(onceUponATimeInHollywood);
 		
 		for(int i = 0; i < 25; i++) {
@@ -169,5 +178,17 @@ public class CyberVideo {
 
 	public ArrayList<CarteBancaire> getCartesBancaires() {
 		return cartesBancaires;
+	}
+
+	public ArrayList<DVD> getDvds() {
+		return dvds;
+	}
+	
+	public DVD findDvd(int codeBarre) {
+		for(DVD dvd : dvds) {
+			if(dvd.getCodeBarre() == codeBarre)
+				return dvd;
+		}
+		return null;
 	}
 }

@@ -9,7 +9,6 @@ public class Location {
 	private LocalDate dateDebut;
 	private int nbJours;
 	private boolean rendu;
-	private boolean endommage;
 	public Carte carteLoueur;
 
 	public Location(DVD dvdLoue, LocalDate dateDebut, int nbJours, Carte carteLoueur) throws Exception {
@@ -21,14 +20,6 @@ public class Location {
 		
 		dvdLoue.setLocationEnCours(this);
 		carteLoueur.ajouterLocation(this);
-	}
-
-	public boolean estEndommage() {
-		return endommage;
-	}
-
-	public void setEndommage(boolean endommage) {
-		this.endommage = endommage;
 	}
 
 	public Carte getCarteLoueur() {
@@ -80,16 +71,11 @@ public class Location {
 		this.rendu = rendu;
 	}
 	
-	public boolean rendre(int codeBarre, boolean endommage) throws Exception {
-		if(this.dvdLoue.getCodeBarre() != codeBarre) {
-			throw new Exception("Le dvd rendu n'est pas le même que le dvd loué");
-		} else {
-			this.carteLoueur.retirerLocation(this);
-			this.dvdLoue.setLocationEnCours(null);
-			this.endommage = endommage;
-			this.rendu = true;
-			return true;
-		}
+	public void rendreDVD(boolean endommage) {
+		this.carteLoueur.retirerLocation(this);
+		this.dvdLoue.setLocationEnCours(null);
+		this.dvdLoue.setEndommage(endommage);
+		this.rendu = true;
 	}
 	
 	public int calculerPrix() {

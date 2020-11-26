@@ -10,6 +10,7 @@ import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -32,8 +33,15 @@ public class DVDLine extends JPanel {
 		this.setBackground(Color.white);
 		setBorder(new EmptyBorder(5,5,5,5));
 		
+		JPanel dvdInfoPanel = new JPanel(new BorderLayout());
+		dvdInfoPanel.setOpaque(false);
+		
 		JLabel titreFilm = new JLabel(dvd.getFilm().getTitre());
-		add(titreFilm, BorderLayout.NORTH);
+		JLabel dvdCodeBarre = new JLabel("#" + Integer.toString(dvd.getCodeBarre()));
+		dvdInfoPanel.add(titreFilm, BorderLayout.WEST);
+		dvdInfoPanel.add(dvdCodeBarre, BorderLayout.EAST);
+		
+		add(dvdInfoPanel, BorderLayout.NORTH);
 		
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.setOpaque(false);
@@ -46,15 +54,7 @@ public class DVDLine extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				c.retirerPanier(dvd);
-				removeItself();
 			}
 		});
-	}
-	
-	public void removeItself() {
-		JPanel parent = (JPanel) getParent();
-		parent.remove(this);
-		parent.revalidate();
-		parent.repaint();
 	}
 }
