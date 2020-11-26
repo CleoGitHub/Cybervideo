@@ -297,7 +297,7 @@ public class SQL {
             else {
                 ((PreparedStatement) req).setString(4,"non");
             }
-            if(l.estEndommage()){
+            if(l.getDvdLoue().estEndommage()){
                 ((PreparedStatement) req).setString(5,"oui");
             }
             else {

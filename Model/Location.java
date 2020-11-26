@@ -86,9 +86,4 @@ public class Location {
 	public int calculerPrix() {
 		return this.carteLoueur.getPrixParJour() * this.nbJours;
 	}
-
-	public boolean estEndommage() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 }
