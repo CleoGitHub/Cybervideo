@@ -3,8 +3,11 @@ package Model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import Exceptions.LocationCountExceededException;
+import Exceptions.NotEnoughMoneyException;
+
 public class CarteBancaire extends Carte {
-	private static final int prixParJour = 5;
+	public static final int prixParJour = 5;
 	
 	private ArrayList<CarteAbonnement> abonnements = new ArrayList<>();
 	private LocalDate dateExp;
@@ -21,7 +24,7 @@ public class CarteBancaire extends Carte {
 		return prixParJour;
 	}
 	
-	public ArrayList<CarteAbonnement> getAbonnement() {
+	public ArrayList<CarteAbonnement> getAbonnements() {
 		return abonnements;
 	}
 
@@ -63,5 +66,16 @@ public class CarteBancaire extends Carte {
 	@Override
 	public void retirerLocation(Location l) {
 		this.getLocationsEnCours().remove(l);
+	}
+
+	@Override
+	public boolean canPay(int nb) throws LocationCountExceededException, NotEnoughMoneyException{
+		// On admet que la carte bancaire a toujours assez d'argent pour payer.
+		
+		// Check si la carte n'a pas déjà une location en cours.
+		if(this.getLocationsEnCours().size() >= 1)
+			throw new LocationCountExceededException("Le nombre maximum de locations en cours ne peut pas dépasser 1 pour une carte bancaire.");
+		
+		return true;
 	}
 }

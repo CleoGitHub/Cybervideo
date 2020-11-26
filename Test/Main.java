@@ -61,8 +61,7 @@ public class Main {
 		films.add(onceUponATimeInHollywood);
 		
 		CarteBancaire cb = new CarteBancaire(1, "Carte bancaire de Jean", LocalDate.of(2022, 04, 21), "4978111122223333");
-		CarteAbonnement ca = new CarteAbonnement(LocalDate.now(), 2, "Abonnement de Jean");
-		cb.ajouterAbonnement(ca);
+		CarteAbonnement ca = new CarteAbonnement(cb, LocalDate.now(), 2, "Abonnement de Jean");
 		
 		Panier panier = new Panier();
 		
@@ -73,14 +72,23 @@ public class Main {
 		System.out.println("== Résultat attendu : solde insuffisante pour les 2dvds ==");
 		System.out.println("==========================================================");
 
-		panier.ajouter(getFirstAvailabeDVD(panier, films.get(0))); // Interstellar
-		panier.ajouter(getFirstAvailabeDVD(panier, films.get(1))); // Inception
-		panier.ajouter(getFirstAvailabeDVD(panier, films.get(2))); // onceUponATime
+		try {
+			panier.ajouter(getFirstAvailabeDVD(panier, films.get(0))); // Interstellar
+			panier.ajouter(getFirstAvailabeDVD(panier, films.get(1))); // Inception
+			panier.ajouter(getFirstAvailabeDVD(panier, films.get(2))); // onceUponATime
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		} 
 		
 		System.out.println("DVDs dans le panier :"+panier.getDvds());
 		System.out.println("Solde de la carte abonnement ca :" + ca.getSolde());
 		System.out.println("== Paiement ==)");
-		panier.payer(ca);
+		try {
+			panier.payer(ca);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		System.out.println("DVDs dans le panier :"+panier.getDvds());
 		System.out.println("Solde de la carte abonnement ca :" + ca.getSolde());
 		
@@ -99,7 +107,12 @@ public class Main {
 		System.out.println("DVDs dans le panier :"+panier.getDvds());
 		System.out.println("Solde de la carte abonnement ca :" + ca.getSolde());
 		System.out.println("=== Paiement ===");
-		ArrayList<Location> ls = panier.payer(ca);
+		try {
+			ArrayList<Location> ls = panier.payer(ca);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		System.out.println("DVDs dans le panier :"+panier.getDvds());
 		System.out.println("Solde de la carte abonnement ca :" + ca.getSolde());
 		
@@ -118,14 +131,24 @@ public class Main {
 		}
 		films.get(1).addDVD(new DVD(11, films.get(1)));
 		films.get(1).addDVD(new DVD(12, films.get(1)));
-		panier.ajouter(getFirstAvailabeDVD(panier, films.get(1)));
-		panier.ajouter(getFirstAvailabeDVD(panier, films.get(1)));
+		try {
+			panier.ajouter(getFirstAvailabeDVD(panier, films.get(1)));
+			panier.ajouter(getFirstAvailabeDVD(panier, films.get(1)));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		System.out.println("DVDs dans le panier :"+panier.getDvds());
 		System.out.println("Solde de la carte abonnement ca :" + ca.getSolde());
 		System.out.println("Nombre de DVDs loués de ca : " + ca.getLocationsEnCours().size());
 		System.out.println("=== Paiement ===");
-		panier.payer(ca);
+		try {
+			panier.payer(ca);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println("DVDs dans le panier :"+panier.getDvds());
 		System.out.println("Solde de la carte abonnement ca :" + ca.getSolde());
 		System.out.println("Nombre de DVDs loués de ca : " + ca.getLocationsEnCours().size());

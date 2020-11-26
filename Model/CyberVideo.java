@@ -11,7 +11,8 @@ public class CyberVideo {
     private ArrayList<Film> films = new ArrayList<>();
     private ArrayList<Realisateur> realisateurs = new ArrayList<>();
     private ArrayList<Technicien> techniciens = new ArrayList<>();
-    private ArrayList<Carte> abonnees = new ArrayList<>();
+    private ArrayList<CarteAbonnement> cartesAbonnements = new ArrayList<>();
+    private ArrayList<CarteBancaire> cartesBancaires = new ArrayList<>();
     private CarteBancaire slotCarteBancaire;
     private CarteAbonnement slotCarteAbonnement;
     private Panier panier = new Panier();
@@ -36,6 +37,7 @@ public class CyberVideo {
 		interstellar.addGenre(Genre.FICTION);
 		interstellar.addGenre(Genre.DOCUMENTAIRE);
 		interstellar.setRealisateur(realisateurs.get(2));
+		interstellar.addDVD(new DVD(4, interstellar));
 		films.add(interstellar);
 		
 		Film inception = new Film("Inception", LocalDate.of(2010, 07, 21));
@@ -55,13 +57,13 @@ public class CyberVideo {
 		onceUponATimeInHollywood.addDVD(new DVD(3, onceUponATimeInHollywood));
 		films.add(onceUponATimeInHollywood);
 		
-		Carte carte;
 		for(int i = 0; i < 25; i++) {
-			if(i%2 == 0)
-				carte = new CarteAbonnement(LocalDate.of(2020, 1, 8), i, "mr carte" + i);
-			else 
-				carte = new CarteBancaire(i, "mr carte" + i, LocalDate.of(2020, 1, 8), "15 151 151 5351 51 53");
-			this.abonnees.add(carte);
+			CarteBancaire carteB = new CarteBancaire(i, "Joe Doe " + i, LocalDate.of(2020, 1, 8), "15 151 151 5351 51 53");	
+			cartesBancaires.add(carteB);
+			for(int j = 0; j < 4; j++) {
+				CarteAbonnement carteA = new CarteAbonnement(carteB, LocalDate.of(2020, 1, 8), j+(j*i), "Abonnement de " + i + " n°" + j);
+				cartesAbonnements.add(carteA);
+			}
 		}
         // TODO: load data from DB
 
@@ -96,7 +98,7 @@ public class CyberVideo {
         // TODO: mise a jour db
     }
     
-    public void ajouterPanier(DVD dvd) {
+    public void ajouterPanier(DVD dvd) throws Exception {
     	panier.ajouter(dvd);
     }
     
@@ -104,8 +106,8 @@ public class CyberVideo {
     	panier.retirer(dvd);
     }
     
-    public ArrayList<Carte> getCartes() {
-    	return this.abonnees;
+    public ArrayList<CarteAbonnement> getCartesAbonnements() {
+    	return this.cartesAbonnements;
     }
     
     public CarteBancaire getCarteSlotCarteBancaire() {
@@ -113,6 +115,12 @@ public class CyberVideo {
     }
     
     public void insererCarteBancaire(CarteBancaire carte) throws Exception {
+    	// Retirer la carte
+    	if(carte == null) {
+    		this.slotCarteBancaire = null;
+    		return;    		
+    	}
+    	
     	if(this.slotCarteBancaire != null) {
     		throw new Exception("Une carte bancaire est déjà présente dans le slot carte bancaire");
     	} else {
@@ -125,10 +133,16 @@ public class CyberVideo {
     }
     
     public void insererCarteAbonnement(CarteAbonnement carte) throws Exception {
+    	// Retirer la carte
+    	if(carte == null) {
+    		this.slotCarteAbonnement = null;
+    		return;    		
+    	}
+    		
     	if(this.slotCarteAbonnement != null) {
     		throw new Exception("Une carte abonnement est déjà présente dans le slot carte abonnement");
     	} else {
-        	if(this.slotCarteBancaire != null && !this.slotCarteBancaire.getAbonnement().contains(carte) ) {
+        	if(this.slotCarteBancaire != null && !this.slotCarteBancaire.getAbonnements().contains(carte) ) {
         		throw new Exception("La carte abonnement inseré n'appartient pas a la carte bancaire présente dans le slot carte bancaire");
         	} else {
         		this.slotCarteAbonnement = carte;
@@ -136,4 +150,7 @@ public class CyberVideo {
     	}
     }
 
+	public ArrayList<CarteBancaire> getCartesBancaires() {
+		return cartesBancaires;
+	}
 }

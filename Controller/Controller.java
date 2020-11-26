@@ -10,6 +10,11 @@ import View.*;
 
 import javax.swing.*;
 
+import Exceptions.LocationCountExceededException;
+import Exceptions.NoCardInSlotException;
+import Exceptions.NotEnoughMoneyException;
+import Exceptions.PanierEmptyException;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.awt.*;
@@ -30,7 +35,6 @@ public class Controller {
     private VuePanier vuePanier;
     private VueInfoFilm vueInfoFilm;
     private VueMonCompte vueMonCompte;
-    private VueCartes vueCartes;
     private VueGestionFilms vueGestionFilms;
 
     public Controller() {
@@ -44,8 +48,7 @@ public class Controller {
         vuePanier = new VuePanier(this, model.getPanier());
         vueTechnicien = new VueTechnicien(this);
         vueInfoFilm = new VueInfoFilm(this);
-        vueMonCompte = new VueMonCompte(this);
-        vueCartes = new VueCartes(this);
+        vueMonCompte = new VueMonCompte(this, model.getCartesBancaires(), model.getCartesAbonnements());
         vueGestionFilms = new VueGestionFilms(this);
 
         start();
@@ -85,10 +88,6 @@ public class Controller {
     public VueMonCompte getVueMonCompte() {
         return vueMonCompte;
     }
-    
-    public VueCartes getVueCartes() {
-    	return vueCartes;
-    }
 
     public VueGestionFilms getVueGestionFilms() {
         return vueGestionFilms;
@@ -115,6 +114,8 @@ public class Controller {
     }
 
     public void vueSuiv(Vue panel) {
+    	if(vuesPile.size() > 1 && panel == vuesPile.get(vuesPile.size()-1))
+    		return;
         setOnTop(panel);
         vuesPile.add(panel);
         frame.pack();
@@ -127,7 +128,7 @@ public class Controller {
     }
 
     // TODO: actions utilisant le model
-    public void ajouterPanier(Film f) {
+    public void ajouterPanier(Film f) throws Exception {
     	model.ajouterPanier(getFirstAvailabeDVD(f));
     	vuePanier.updateDVDs();
     }
@@ -147,10 +148,6 @@ public class Controller {
 			}
 		}
 		return d;
-	}
-	
-	public ArrayList<Carte> getCartes() {
-		return this.model.getCartes();
 	}
 	
 	public void setFimVueInfoFilm(Film film) {
@@ -176,6 +173,24 @@ public class Controller {
 	public ArrayList<Film> getFilms() {
         return model.getFilms();
     }
+
+	public void payer(Boolean withCb) throws NotEnoughMoneyException, LocationCountExceededException, NoCardInSlotException, PanierEmptyException {
+		if(withCb) { 
+			// Paiement avec carte bancaire
+			if(model.getCarteSlotCarteBancaire() == null)
+				throw new NoCardInSlotException("Insérez une carte bancaire.");
+			
+			model.getPanier().payer(getSlotCarteBancaire());
+			
+		} else {
+			// Paiement avec carte abonnement
+		if(model.getCarteSlotCarteAbonnement() == null)
+				throw new NoCardInSlotException("Insérez une carte d'abonnement.");
+			
+			model.getPanier().payer(getSlotCarteAbonnement());
+		}
+		vuePanier.updateDVDs();
+	}
 
     //public void insererFilm(Film) {
     //model.

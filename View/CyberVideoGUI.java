@@ -18,13 +18,13 @@ public class CyberVideoGUI extends JFrame {
     private Button precBtn;
     private Button panierBtn;
     private Button loginBtn;
-    private Button cartes;
 
     public CyberVideoGUI(Controller controller) {
         super("CyberVideo");
         setLayout(new BorderLayout());
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-
+        setPreferredSize(new Dimension(800, 600));
+        
         this.controller = controller;
 
         contenuPane = controller.getContenuPane();
@@ -37,11 +37,9 @@ public class CyberVideoGUI extends JFrame {
         precBtn = new Button("ressources/images/back-button.png");
         panierBtn = new Button("ressources/images/button-thick.png", "Panier");
         loginBtn = new Button("ressources/images/button-thick.png", "Mon Compte");
-        cartes = new Button("ressources/images/button-thick.png", "Cartes");
 
         rightNavigationPanel.add(panierBtn);
         rightNavigationPanel.add(loginBtn);
-        rightNavigationPanel.add(cartes);
         navigationPanel.add(precBtn, BorderLayout.WEST);
         navigationPanel.add(rightNavigationPanel, BorderLayout.EAST);
         
@@ -50,6 +48,9 @@ public class CyberVideoGUI extends JFrame {
         setNavigationListeners();
 
         pack();
+        
+        // Centering the frame
+        setLocationRelativeTo(null);
     }
 
     private void setNavigationListeners() {
@@ -61,7 +62,5 @@ public class CyberVideoGUI extends JFrame {
         panierBtn.addMouseListener(listener);
         loginBtn.setId(NavigationListener.ACCOUNT);
         loginBtn.addMouseListener(listener);
-        cartes.setId(NavigationListener.CARTES);
-        cartes.addMouseListener(listener);
     }
 }

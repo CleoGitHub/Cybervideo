@@ -18,6 +18,7 @@ import javax.swing.event.MouseInputListener;
 
 import Controller.Controller;
 import Model.DVD;
+import Model.ErrorDialog;
 import Model.Film;
 
 public class FilmLine extends JPanel {
@@ -50,14 +51,18 @@ public class FilmLine extends JPanel {
 			addPanier.addMouseListener(new MouseInputAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					c.ajouterPanier(film);
-					// Check if there is an other DVD available after adding one
-					if(c.getFirstAvailabeDVD(film) == null) {
-						// If not remove the button
-						buttonsPanel.remove(addPanier);
-						buttonsPanel.revalidate();
-						buttonsPanel.repaint();
-						addNotAvailableLabel();
+					try {
+						c.ajouterPanier(film);
+						// Check if there is an other DVD available after adding one
+						if(c.getFirstAvailabeDVD(film) == null) {
+							// If not remove the button
+							buttonsPanel.remove(addPanier);
+							buttonsPanel.revalidate();
+							buttonsPanel.repaint();
+							addNotAvailableLabel();
+						}
+					} catch (Exception e1) {
+						ErrorDialog.show(e1.getMessage());
 					}
 				}
 			});

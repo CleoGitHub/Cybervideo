@@ -58,6 +58,10 @@ public class ItemList<T, E extends JPanel> extends JPanel {
 		drawView();
 	}
 	
+	public ArrayList<T> getItems(){
+		return this.items;
+	}
+	
 	public void drawView() {
 		removeAll();
 		
