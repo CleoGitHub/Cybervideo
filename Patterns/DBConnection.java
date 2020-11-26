@@ -1,4 +1,4 @@
-package Pattern;
+package Patterns;
 
 import java.sql.*;
 public class DBConnection {
