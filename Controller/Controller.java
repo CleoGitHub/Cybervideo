@@ -1,11 +1,6 @@
 package Controller;
 
-import Model.Carte;
-import Model.CarteAbonnement;
-import Model.CarteBancaire;
-import Model.CyberVideo;
-import Model.DVD;
-import Model.Film;
+import Model.*;
 import View.*;
 
 import javax.swing.*;
@@ -192,7 +187,21 @@ public class Controller {
 		vuePanier.updateDVDs();
 	}
 
-    //public void insererFilm(Film) {
-    //model.
-    //Vue}
+    public void supprimerFilm(int film) {
+        model.supprimerFilm(film);
+    }
+
+    public ArrayList<String> getRealisateurs() {
+        ArrayList<String> realisateurs = new ArrayList<String>();
+        for (Realisateur realisateur : model.getRealisateurs())
+            realisateurs.add(realisateur.getNom());
+        return realisateurs;
+    }
+
+    public ArrayList<String> getActeurs() {
+        ArrayList<String> acteurs = new ArrayList<String>();
+        for (Acteur acteur : model.getActeurs())
+            acteurs.add(acteur.getNom());
+        return acteurs;
+    }
 }
