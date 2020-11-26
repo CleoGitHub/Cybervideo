@@ -1,20 +1,18 @@
-package Patterns;
+package Pattern;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
+import java.sql.*;
 public class DBConnection {
     private String url = "jdbc:oracle:thin:@im2ag-oracle.e.ujf-grenoble.fr:1521:im2ag";
-    private String user = "sbaihian";
+    private String user = "xxx";
     private String passwd = "xxx";
+
+
     private static Connection connect;
 
     private DBConnection(){
         try {  connect = DriverManager.getConnection(url, user, passwd); }
         catch (SQLException e) { e.printStackTrace(); }
     }
-
     public static Connection getInstance(){
         if(connect == null){
             new DBConnection();
@@ -23,5 +21,14 @@ public class DBConnection {
         else { System.out.println("CONNEXION SQL EXISTANTE ! ");  }
         return connect;
     }
+    public static void disconnect(){
+        try {
+            connect.close();
+            System.out.println("disconnected!");
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+
 }
 
