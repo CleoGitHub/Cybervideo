@@ -39,8 +39,7 @@ public class VueTechnicien extends Vue {
         refreshBtn.addMouseListener(new MouseInputAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
-        		filmsModel.setRowCount(0);
-        		chargerFilms();
+        		refreshModel();
         	}
         });
 
@@ -63,6 +62,11 @@ public class VueTechnicien extends Vue {
         setListners();
         add(filmsContainer);
 
+    }
+
+    public void refreshModel() {
+		filmsModel.setRowCount(0);
+		chargerFilms();
     }
 
     private void chargerFilms() {

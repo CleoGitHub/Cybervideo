@@ -185,6 +185,7 @@ public class Controller {
 			model.getPanier().payer(getSlotCarteAbonnement());
 		}
 		vuePanier.updateDVDs();
+		vueTechnicien.refreshModel(); // Update DVDs available count
 	}
 
     public void supprimerFilm(int film) {
