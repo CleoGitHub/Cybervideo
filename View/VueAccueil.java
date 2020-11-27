@@ -41,8 +41,9 @@ public class VueAccueil extends Vue {
         model.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent e) {
-				if(e.getPropertyName() == EventType.PANIER.toString() 
-						|| e.getPropertyName() == EventType.RENDU.toString())
+				if(e.getPropertyName() == EventType.PANIER_UPDATE.toString() 
+						|| e.getPropertyName() == EventType.RENDU.toString()
+						|| e.getPropertyName() == EventType.FILMS_UPDATE.toString())
 					updateFilms();
 			}
         });

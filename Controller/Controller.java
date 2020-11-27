@@ -205,10 +205,8 @@ public class Controller {
         film.setRealisateur(realisateur);
 
         // ajout du acteurs
-        System.out.println(nomsActeurs.length);
         for (String nom : nomsActeurs) {
             Acteur acteur = model.getActeur(nom);
-            System.out.println(acteur);
             film.addActeur(acteur);
         }
 
@@ -221,11 +219,8 @@ public class Controller {
                 film.addGenre(GenresList[i]);
             i++;
         }
-        // l'ajout du DVDs
-        for (i = 0; i < dvds; i++)
-            film.addDVD(new DVD(i, film));
 
-        model.ajouterNouvFilm(film);
+        model.ajouterNouvFilm(film, dvds);
     }
 
     public ArrayList<String> getRealisateurs() {

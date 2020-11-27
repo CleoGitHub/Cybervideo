@@ -47,7 +47,7 @@ public class VuePanier extends Vue {
         model.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent e) {
-				if(e.getPropertyName() == EventType.PANIER.toString())
+				if(e.getPropertyName() == EventType.PANIER_UPDATE.toString())
 					updateDVDs();
 			}
         });

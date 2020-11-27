@@ -15,6 +15,7 @@ import Exceptions.LocationCountExceededException;
 import Exceptions.NoCardInSlotException;
 import Exceptions.NotEnoughMoneyException;
 import Exceptions.PanierEmptyException;
+import Exceptions.PanierFullException;
 
 public class CyberVideo {
     private ArrayList<Film> films = new ArrayList<>();
@@ -185,12 +186,30 @@ public class CyberVideo {
 			throw new IllegalArgumentException("Realisateur n'existe pas");
 	}
 
-	public void ajouterNouvFilm(Film film) {
+	public void ajouterNouvFilm(Film film, int nbDvds) {
 		if (!films.contains(film)) {
 			films.add(film);
+			
+	        // Find highest code barre existing
+			int max = 0;
+			for(DVD dvd : dvds) {
+				if(dvd.getCodeBarre() > max) {
+					max = dvd.getCodeBarre();
+				}
+			}
+			
+			// Ajout des DVDs
+	        for (int i = max+1; i < max + 1 + nbDvds; i++) {
+	        	DVD dvd = new DVD(i, film);
+	        	film.addDVD(dvd);
+	        	dvds.add(dvd);
+	        }
+	        
 			// TODO: update BD
 		} else
 			throw new IllegalArgumentException("Film existe");
+		
+		this.pcs.firePropertyChange(EventType.FILMS_UPDATE.toString(), null, null);
     	// TODO: update BD & notify observers
 	}
 
@@ -202,23 +221,25 @@ public class CyberVideo {
             return;
 
         films.remove(film);
+		this.pcs.firePropertyChange(EventType.FILMS_UPDATE.toString(), null, null);
         // TODO: mise a jour db
     }
 
     public void supprimerFilm(int film) {
     	films.remove(film);
+		this.pcs.firePropertyChange(EventType.FILMS_UPDATE.toString(), null, null);
 		// TODO: mise a jour db
 
 	}
     
-    public void ajouterPanier(DVD dvd) throws Exception {
+    public void ajouterPanier(DVD dvd) throws PanierFullException {
     	panier.ajouter(dvd);
-		this.pcs.firePropertyChange(EventType.PANIER.toString(), null, null);
+		this.pcs.firePropertyChange(EventType.PANIER_UPDATE.toString(), null, null);
     }
     
     public void retirerPanier(DVD dvd) {
     	panier.retirer(dvd);
-		this.pcs.firePropertyChange(EventType.PANIER.toString(), null, null);
+		this.pcs.firePropertyChange(EventType.PANIER_UPDATE.toString(), null, null);
     }
     
     public ArrayList<CarteAbonnement> getCartesAbonnements() {
@@ -321,7 +342,7 @@ public class CyberVideo {
 			getPanier().payer(getCarteSlotCarteAbonnement());
 		}
 		
-		this.pcs.firePropertyChange(EventType.PANIER.toString(), null, null);
+		this.pcs.firePropertyChange(EventType.PANIER_UPDATE.toString(), null, null);
 		this.pcs.firePropertyChange(EventType.PAYMENT.toString(), null, null);
 	}
 	
