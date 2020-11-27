@@ -3,6 +3,11 @@ package Test;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import Exceptions.ForbiddenGenreException;
+import Exceptions.LocationCountExceededException;
+import Exceptions.NotEnoughMoneyException;
+import Exceptions.PanierEmptyException;
+import Exceptions.PanierFullException;
 import Model.*;
 
 public class Main {
@@ -66,6 +71,7 @@ public class Main {
 		Panier panier = new Panier();
 		
 		
+		System.out.println();
 		System.out.println("================= TEST 1 - SOLDE INSUFFISANT ==============");
 		System.out.println("== Paiement avec une carte abonnement de solde 0        ==");
 		System.out.println("== Le panier contient 2 DVD.                            ==");
@@ -91,6 +97,7 @@ public class Main {
 		System.out.println("DVDs dans le panier :"+panier.getDvds());
 		System.out.println("Solde de la carte abonnement ca :" + ca.getSolde());
 		
+		System.out.println();
 		System.out.println("============= TEST 2 - PAIEMENT SUCCESS ============");
 		System.out.println("== Paiement avec une carte abonnement de solde 15 ==");
 		System.out.println("== Le panier contient 2 DVD.                      ==");
@@ -115,6 +122,7 @@ public class Main {
 		System.out.println("Solde de la carte abonnement ca :" + ca.getSolde());
 		System.out.println("DVDs en cours pour la carte d'abonnement"+ca.getLocationsEnCours());
 		
+		System.out.println();
 		System.out.println("============== TEST 3 - TROP DE LOCATIONS ==============");
 		System.out.println("== Ajouter 2 Locations à une carte abonnement         ==");
 		System.out.println("== possédant déjà 2 locations                         ==");
@@ -150,6 +158,7 @@ public class Main {
 		System.out.println("Solde de la carte abonnement ca :" + ca.getSolde());
 		System.out.println("Nombre de DVDs loués de ca : " + ca.getLocationsEnCours().size());
 		
+		System.out.println();
 		System.out.println("=================== TEST 4 - RENDU =====================");
 		System.out.println("== Rendu du DVD possédant le code barre #11           ==");
 		System.out.println("== Resultat attendu : -ca n'a plus la location de #11 ==");
@@ -169,13 +178,72 @@ public class Main {
 		System.out.println("Historique de location pour la carte d'abonnement "+ca.getHistorique());
 		System.out.println("Location en cours de #11 : " + l.getDvdLoue().getLocationEnCours());
 		
-		
+		System.out.println();
 		System.out.println("=================== TEST 5 - HISTORIQUE =================");
-		System.out.println("== Historique de la CB qui a la CA comme abonnement   ==");
-		System.out.println("== Resultat attendu : - l'historique de CA s'affiche  ==");
-		System.out.println("========================================================");
+		System.out.println("== Historique de la CB qui a la CA comme abonnement    ==");
+		System.out.println("== Resultat attendu : - l'historique de CA s'affiche   ==");
+		System.out.println("=========================================================");
 		
 		System.out.println("Historique de la carte bancaire : " + cb.getHistorique());
+		
+		System.out.println();
+		System.out.println("=================== TEST 6 - PANIER VIDE ================");
+		System.out.println("== Paiement d'un panier vide                           ==");
+		System.out.println("== Resultat attendu : - exception levée                ==");
+		System.out.println("=========================================================");
+		
+		panier.vider();
+		System.out.println("Contenu du panier : " + panier.getDvds());
+		System.out.println("=== Paiement ===");
+		try {
+			panier.payer(ca);
+		} catch (LocationCountExceededException | NotEnoughMoneyException | PanierEmptyException
+				| ForbiddenGenreException e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println();
+		System.out.println("=================== TEST 7 - PANIER PLEIN ===============");
+		System.out.println("== Ajout d'un DVD dans un panier qui en contient déjà 3==");
+		System.out.println("== Resultat attendu : - exception levée                ==");
+		System.out.println("=========================================================");
+		
+		try {
+			System.out.println("Ajout d'un DVD d'inception dans le panier ");
+			panier.ajouter(getFirstAvailabeDVD(panier, inception));
+			System.out.println("Ajout d'un DVD d'inception dans le panier ");
+			panier.ajouter(getFirstAvailabeDVD(panier, inception));	
+			System.out.println("Ajout d'un DVD d'inception dans le panier ");
+			panier.ajouter(getFirstAvailabeDVD(panier, inception));
+			System.out.println("Contenu du panier : " + panier.getDvds());
+			System.out.println("Ajout d'un DVD de interstellar dans le panier ");
+			panier.ajouter(getFirstAvailabeDVD(panier, interstellar));
+			System.out.println("Contenu du panier : " + panier.getDvds());
+		} catch (PanierFullException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		System.out.println();
+		System.out.println("=================== TEST 8 - GENRE INTERDIT =============");
+		System.out.println("== Paiement avec la carte abonnement d'un film qui     ==");
+		System.out.println("== possède un genre interdit par la carte abonnement   ==");
+		System.out.println("== Resultat attendu : - exception levée                ==");
+		System.out.println("=========================================================");
+		
+		panier.vider();
+		try {
+			ca.ajouterGenreInterdit(Genre.FICTION);
+			panier.ajouter(dvd11); // Inception possède le genre FICTION
+			System.out.println("Contenu du panier : " + panier.getDvds());
+			System.out.println("Genres interdits par la carte abonnement : " + ca.getGenresInterdits());
+			System.out.println("Genres de Inception : " + inception.getGenres());
+			System.out.println("=== Paiement ===");
+			panier.payer(ca);
+		} catch (LocationCountExceededException | NotEnoughMoneyException | PanierEmptyException
+				| PanierFullException |ForbiddenGenreException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
