@@ -192,13 +192,17 @@ public class Controller {
         model.supprimerFilm(film);
     }
 
-    public void ajouterFilm(String titre, String realisateur, String[] nomsActeurs, LocalDate date, int dvds) {
+    public void ajouterFilm(String titre, String nomRealisateur, String[] nomsActeurs, LocalDate date, int dvds) {
         ArrayList<Acteur> acteurs = new ArrayList<>();
         Film film = new Film(titre,date);
+        Realisateur realisateur = model.getRealisateur(nomRealisateur);
+        film.setRealisateur(realisateur);
 
         // ajout du acteurs
+        System.out.println(nomsActeurs.length);
         for (String nom : nomsActeurs) {
             Acteur acteur = model.getActeur(nom);
+            System.out.println(acteur);
             film.addActeur(acteur);
         }
 
