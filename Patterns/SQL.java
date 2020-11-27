@@ -67,13 +67,13 @@ public class SQL {
         }
         return buf;
     }
-    public static ArrayList<Genre> genreInterdit(String carteAbonnement){
+    public static ArrayList<Genre> genreInterdit(int noCarte){
         ArrayList<Genre> buf = new ArrayList<Genre>();
         try{
             Statement req = connect.createStatement();
             ResultSet resultat = req.executeQuery("select distinct genreInterdit " +
                     "from LesInterdits" +
-                    " where carteAbonnement='"+carteAbonnement+"'");
+                    " where carteAbonnement='"+noCarte+"'");
             while (resultat.next()){
                 String g = resultat.getString("genreInterdit");
                 for(Genre G : Genre.values()){
@@ -103,18 +103,18 @@ public class SQL {
         return buf;
     }
     
-        public static CarteBancaire getCarteBancaire(String libelle) {
+        public static CarteBancaire getCarteBancaire(int noCarte) {
     //CarteBancaire cartebancaire = new CarteBancaire(0, libelle, null, null);
     CarteBancaire cartebancaire=null;
     try{
 
         Statement req = connect.createStatement();
         ResultSet resultat = req.executeQuery("select *" +
-                "from LesCarteBancaires "+"where libelle='"+libelle+"'");//noCarte,libelle,code,dateExp,solde
+                "from LesCarteBancaires "+"where noCarte='"+noCarte+"'");//noCarte,libelle,code,dateExp,solde
 
         while (resultat.next())
         {
-            int noCarte = resultat.getInt("noCarte");
+            String libelle = resultat.getString("libelle");
             String code = resultat.getString("code");
 
             //date transformer aux localdate
@@ -166,21 +166,20 @@ public class SQL {
 
         return libelles;
     }
-    public static Location getLocation(int codeDVD, LocalDate dateDebut,String libelleCarte){
+    public static Location getLocation(int codeDVD, LocalDate dateDebut,int noCarte){
         Location location;
         try{
             Statement req = connect.prepareStatement("select * from LesLocations where DVD=? and dateDebut=? and carteLoueur=?");
             ((PreparedStatement) req).setInt(1,codeDVD);
             ((PreparedStatement) req).setDate(2,Date.valueOf(dateDebut));
-            ((PreparedStatement) req).setString(3,libelleCarte);
+            ((PreparedStatement) req).setInt(3,noCarte);
 
             ResultSet res = ((PreparedStatement) req).executeQuery();
             if(res.next()) {
                 DVD dvd = new DVD(res.getInt(1), null);
                 try {
-                    location = new Location(dvd, dateDebut, res.getInt(3), getCarteBancaire(libelleCarte));
+                    location = new Location(dvd, dateDebut, res.getInt(3), getCarteBancaire(noCarte));
                     location.setRendu(res.getString(4) == "oui");
-                    location.setEndommage(res.getString(5) == "oui");
                     return location;
                 } catch (Exception e) {
                     System.out.println("erreur de construction de location");
@@ -198,15 +197,15 @@ public class SQL {
         ArrayList<Location> list = new ArrayList<>();
         int code;
         LocalDate dateDebut;
-        String libelleCarte;
+        int noCarte;
         try{
             Statement req = connect.prepareStatement("select * from LesLocations");
             ResultSet res = ((PreparedStatement) req).executeQuery();
             while (res.next()){
                 code = res.getInt(1);
                 dateDebut = res.getDate(2).toLocalDate();
-                libelleCarte = res.getString(6);
-                list.add(getLocation(code,dateDebut,libelleCarte));
+                noCarte = res.getInt(6);
+                list.add(getLocation(code,dateDebut,noCarte));
             }
             req.close();
         }catch(SQLException e){
@@ -215,14 +214,14 @@ public class SQL {
 
         return list;
     }
-    public static ArrayList<Location> locationsSousAbonnement(String libelle){
+    public static ArrayList<Location> locationsSousAbonnement(int noCarte){
         ArrayList<Location> list = new ArrayList<>();
         try{
             Statement req = connect.prepareStatement("select DVD,dateDebut from LesLocations where carteLoueur=?");
-            ((PreparedStatement) req).setString(1,libelle);
+            ((PreparedStatement) req).setInt(1,noCarte);
             ResultSet res = ((PreparedStatement) req).executeQuery();
             while (res.next()){
-                list.add(getLocation(res.getInt(1),res.getDate(2).toLocalDate(),libelle));
+                list.add(getLocation(res.getInt(1),res.getDate(2).toLocalDate(),noCarte));
             }
             req.close();
         }catch(SQLException e){
@@ -310,7 +309,7 @@ public class SQL {
             {
                 LocalDate dateDebutA = resultat.getDate("dateDebut").toLocalDate();
                 //(int codeDVD, LocalDate dateDebut,String libelleCarte)
-                location = getLocation(codeBarre,dateDebutA,resultat.getString("carteLoueur"));
+                location = getLocation(codeBarre,dateDebutA,resultat.getInt("carteLoueur"));
                 dvd.setLocationEnCours(location);
             }
             else
@@ -343,18 +342,18 @@ public class SQL {
         }
         return buf;
     }
-    public static CarteAbonnement getCarteAbonnement(String libelle) {
-        CarteAbonnement carteabonnement= new CarteAbonnement(null,0,libelle,genreInterdit(libelle));
+    public static CarteAbonnement getCarteAbonnement(int noCarte) {
+        CarteAbonnement carteabonnement= new CarteAbonnement(getCarteBancaire(noCarte),null,noCarte,null);
         try{
             Statement req = connect.createStatement();
             ResultSet resultat = req.executeQuery("select *" +
-                    "from LesCarteAbonnements "+"where libelle='"+libelle+"'");//noCarte,libelle,dateIns,solde, carteBancaire
+                    "from LesCarteAbonnements "+"where noCarte='"+noCarte+"'");//noCarte,libelle,dateIns,solde, carteBancaire
             while (resultat.next()) {
                 //date transformer aux localdate
                 LocalDate dateInsA = resultat.getDate("dateIns").toLocalDate();
-                int noCarte = resultat.getInt("noCarte");
+                String libelle  = resultat.getString("libelle");
                 int solde =resultat.getInt("solde");
-                carteabonnement.setNoCarte(noCarte);
+                carteabonnement.setLibelle(libelle);
                 carteabonnement.setSolde(solde);
                 carteabonnement.setDateIns(dateInsA);
             }
