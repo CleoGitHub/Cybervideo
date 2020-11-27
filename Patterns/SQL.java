@@ -103,6 +103,299 @@ public class SQL {
         return buf;
     }
     
+        public static CarteBancaire getCarteBancaire(String libelle) {
+    //CarteBancaire cartebancaire = new CarteBancaire(0, libelle, null, null);
+    CarteBancaire cartebancaire=null;
+    try{
+
+        Statement req = connect.createStatement();
+        ResultSet resultat = req.executeQuery("select *" +
+                "from LesCarteBancaires "+"where libelle='"+libelle+"'");//noCarte,libelle,code,dateExp,solde
+
+        while (resultat.next())
+        {
+            int noCarte = resultat.getInt("noCarte");
+            String code = resultat.getString("code");
+
+            //date transformer aux localdate
+
+            LocalDate dateExpA = resultat.getDate("dateExp").toLocalDate();////////////正确
+            cartebancaire = new CarteBancaire(noCarte, libelle, dateExpA, code);
+
+
+        }
+        req.close();
+    }
+    catch(SQLException e)
+    {
+        e.printStackTrace();
+    }
+
+    return cartebancaire;
+
+}
+    public static String getTechnicienPassword(String nom){
+        String password=null;
+        try{
+            Statement req = connect.prepareStatement("select password from LesTechniciens where nom=?");
+            ((PreparedStatement) req).setString(1,nom);
+            ResultSet res = ((PreparedStatement) req).executeQuery();
+            if(res.next()) {
+                password = res.getString("password");
+            }
+            req.close();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        return password;
+    }
+    public static ArrayList<String> abonnements(String carteBancaire){
+        ArrayList<String> libelles =new ArrayList<>();
+        try{
+            Statement req = connect.prepareStatement("select libelle from LesCarteAbonnements where carteBancaire=?");
+            ((PreparedStatement) req).setString(1,carteBancaire);
+            ResultSet res = ((PreparedStatement) req).executeQuery();
+            while(res.next()) {
+                libelles.add(res.getString("libelle"));
+            }
+            req.close();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        return libelles;
+    }
+    public static Location getLocation(int codeDVD, LocalDate dateDebut,String libelleCarte){
+        Location location;
+        try{
+            Statement req = connect.prepareStatement("select * from LesLocations where DVD=? and dateDebut=? and carteLoueur=?");
+            ((PreparedStatement) req).setInt(1,codeDVD);
+            ((PreparedStatement) req).setDate(2,Date.valueOf(dateDebut));
+            ((PreparedStatement) req).setString(3,libelleCarte);
+
+            ResultSet res = ((PreparedStatement) req).executeQuery();
+            if(res.next()) {
+                DVD dvd = new DVD(res.getInt(1), null);
+                try {
+                    location = new Location(dvd, dateDebut, res.getInt(3), getCarteBancaire(libelleCarte));
+                    location.setRendu(res.getString(4) == "oui");
+                    location.setEndommage(res.getString(5) == "oui");
+                    return location;
+                } catch (Exception e) {
+                    System.out.println("erreur de construction de location");
+                }
+            }
+            req.close();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+
+
+        return null;
+    }
+    public static ArrayList<Location> getAllLocations(){
+        ArrayList<Location> list = new ArrayList<>();
+        int code;
+        LocalDate dateDebut;
+        String libelleCarte;
+        try{
+            Statement req = connect.prepareStatement("select * from LesLocations");
+            ResultSet res = ((PreparedStatement) req).executeQuery();
+            while (res.next()){
+                code = res.getInt(1);
+                dateDebut = res.getDate(2).toLocalDate();
+                libelleCarte = res.getString(6);
+                list.add(getLocation(code,dateDebut,libelleCarte));
+            }
+            req.close();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+    public static ArrayList<Location> locationsSousAbonnement(String libelle){
+        ArrayList<Location> list = new ArrayList<>();
+        try{
+            Statement req = connect.prepareStatement("select DVD,dateDebut from LesLocations where carteLoueur=?");
+            ((PreparedStatement) req).setString(1,libelle);
+            ResultSet res = ((PreparedStatement) req).executeQuery();
+            while (res.next()){
+                list.add(getLocation(res.getInt(1),res.getDate(2).toLocalDate(),libelle));
+            }
+            req.close();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return list;
+    }
+    public static Film getFilm(String titre) {
+        Film film =new Film(titre, null);
+        try{
+            Statement req = connect.createStatement();
+            ResultSet resultat = req.executeQuery("select *" +
+                    "from LesFilms "+"where titre='"+titre+"'");
+            while (resultat.next()) {
+                Realisateur realisateurA = new Realisateur(resultat.getString("realisateur"));
+                LocalDate localDateA = resultat.getDate("LocalDate").toLocalDate();
+                film.setRealisateur(realisateurA);
+                film.setDate(localDateA);
+            }
+            resultat = req.executeQuery("select *" +
+                    "from LesFilmActeurs "+"where nomFilm='"+titre+"'");
+            while (resultat.next()){
+                film.addActeur(new Acteur(resultat.getString("nomActeur")));
+            }
+            resultat = req.executeQuery("select *" +
+                    "from LesFilmGenres "+"where nomFilm='"+titre+"'");
+            while (resultat.next())
+            {
+                String g = resultat.getString("nomGenre");
+                Genre G=null;
+                switch (g){
+                    case "Horreur":
+                        G=Genre.HORREUR;
+                        break;
+                    case "Comédie":
+                        G=Genre.COMEDIE;
+                        break;
+                    case "Fiction":
+                        G=Genre.FICTION;
+                        break;
+                    case "Documentaire":
+                        G=Genre.DOCUMENTAIRE;
+                        break;
+                    case "Drama":
+                        G=Genre.DRAMA;
+                        break;
+                }
+                film.addGenre(G);
+            }
+            resultat = req.executeQuery("select codeBarre from LesDVDs where film = '"+titre+"'");
+            while(resultat.next()){
+                film.addDVD(new DVD(resultat.getInt(1),null));
+            }
+            req.close();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return film;
+    }
+    public static DVD getDVD(int codeBarre) {
+        DVD dvd = new DVD(codeBarre,null);
+        Location location = null;
+        try{
+            Statement req = connect.createStatement();
+            ResultSet resultat = req.executeQuery("select * " +
+                    "from LesDVDs "+"where codeBarre='"+codeBarre+"'");//codeBarre, emdommage, film
+
+            while (resultat.next())
+            {
+
+                dvd.setEndommage(resultat.getString("endommage")=="oui");
+                String titrefilm = resultat.getString("film");
+                Film film = getFilm(titrefilm);
+                dvd.setFilm(film);
+            }
+
+            //"where (noCage ='"+noCage+"'and nomE='"+nomGardien+"')");
+            Statement req1 = connect.prepareStatement("select * " +
+                    "from LesLocations where (DVD =? and rendu = 'non')");
+            ((PreparedStatement) req1).setInt(1,codeBarre);
+            resultat = ((PreparedStatement) req1).executeQuery();
+
+            if (resultat.next())
+
+            {
+                LocalDate dateDebutA = resultat.getDate("dateDebut").toLocalDate();
+                //(int codeDVD, LocalDate dateDebut,String libelleCarte)
+                location = getLocation(codeBarre,dateDebutA,resultat.getString("carteLoueur"));
+                dvd.setLocationEnCours(location);
+            }
+            else
+            {
+                dvd.setLocationEnCours(null);
+            }
+            req.close();
+
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return dvd;
+    }
+
+    public static ArrayList<String> realisateurs() {
+        ArrayList<String> buf = new ArrayList<>();
+        try{
+            Statement req = connect.createStatement();
+            ResultSet resultat = req.executeQuery("select distinct realisateur " +
+                    "from LesFilms ");
+            while (resultat.next()){
+                buf.add(resultat.getString("realisateur"));
+            }
+            req.close();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return buf;
+    }
+    public static CarteAbonnement getCarteAbonnement(String libelle) {
+        CarteAbonnement carteabonnement= new CarteAbonnement(null,0,libelle,genreInterdit(libelle));
+        try{
+            Statement req = connect.createStatement();
+            ResultSet resultat = req.executeQuery("select *" +
+                    "from LesCarteAbonnements "+"where libelle='"+libelle+"'");//noCarte,libelle,dateIns,solde, carteBancaire
+            while (resultat.next()) {
+                //date transformer aux localdate
+                LocalDate dateInsA = resultat.getDate("dateIns").toLocalDate();
+                int noCarte = resultat.getInt("noCarte");
+                int solde =resultat.getInt("solde");
+                carteabonnement.setNoCarte(noCarte);
+                carteabonnement.setSolde(solde);
+                carteabonnement.setDateIns(dateInsA);
+            }
+            req.close();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return carteabonnement;
+
+    }
+    public static ArrayList<String> carteBancaires() {
+        ArrayList<String> buf = new ArrayList<>();
+        try{
+            Statement req = connect.createStatement();
+            ResultSet resultat = req.executeQuery("select libelle " +
+                    "from LesCarteBancaires ");////////
+            while (resultat.next()){
+                buf.add(resultat.getString("libelle"));
+            }
+            req.close();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return buf;
+    }
+    public static ArrayList<String> carteAbonnement() {
+        ArrayList<String> buf = new ArrayList<>();
+        try{
+            Statement req = connect.createStatement();
+            ResultSet resultat = req.executeQuery("select libelle " +
+                    "from LesCarteAbonnements ");////////
+            while (resultat.next()){
+                buf.add(resultat.getString("libelle"));
+            }
+            req.close();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return buf;
+    }
+    
     //ecriture
 //film et DVD
     public static void putFilm(Film f){
@@ -346,7 +639,7 @@ public class SQL {
         createTechnicien(technicien);
     }
     
-    public void connect(){
+    public static void connect(){
         connect = DBConnection.getInstance();
         System.out.println("connected:");
     }
