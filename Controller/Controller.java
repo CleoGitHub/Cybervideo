@@ -37,6 +37,7 @@ public class Controller {
     private VueMonCompte vueMonCompte;
     private VueGestionFilms vueGestionFilms;
     private VueRendreDVD vueRendreDVD;
+    private VueHistorique vueHistorique;
 
     public Controller() {
         this.model = new CyberVideo();
@@ -52,6 +53,7 @@ public class Controller {
         vueMonCompte = new VueMonCompte(this, model);
         vueGestionFilms = new VueGestionFilms(this, model);
         vueRendreDVD = new VueRendreDVD(this, model);
+        vueHistorique = new VueHistorique(this, model);
 
         start();
     }
@@ -97,6 +99,10 @@ public class Controller {
 
 	public VueRendreDVD getVueRendreDVD() {
 		return vueRendreDVD;
+	}
+	
+	public VueHistorique getVueHistorique() {
+		return vueHistorique;
 	}
 	
     // navigation between panels
@@ -154,7 +160,7 @@ public class Controller {
 		return d;
 	}
 	
-	public void setFimVueInfoFilm(Film film) {
+	public void setFilmVueInfoFilm(Film film) {
 		vueInfoFilm.setFilm(film);
 	}
 	
@@ -232,4 +238,8 @@ public class Controller {
     public void supprimerRealisateur(String nom) {
         model.supprimerRealisateur(nom);
     }
+
+	public void setHistoriqueCard(Carte c) {
+		vueHistorique.setCard(c);
+	}
 }

@@ -22,6 +22,7 @@ public abstract class Carte {
 	public abstract void ajouterLocation(Location l) throws LocationCountExceededException, NotEnoughMoneyException;
 	public abstract void retirerLocation(Location l);
 	public abstract boolean canPay(ArrayList<DVD> dvds) throws NotEnoughMoneyException, LocationCountExceededException, ForbiddenGenreException;
+	public abstract ArrayList<Location> getHistorique();
 	
 	public int getNoCarte() {
 		return noCarte;

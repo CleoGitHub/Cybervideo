@@ -77,11 +77,11 @@ public class CyberVideo {
 		films.add(onceUponATimeInHollywood);
 		
 		for(int i = 0; i < 25; i++) {
-			CarteBancaire carteB = new CarteBancaire(i, "Joe Doe " + i, LocalDate.of(2020, 1, 8), "15 151 151 5351 51 53");	
+			CarteBancaire carteB = new CarteBancaire(i, "Joe" + i, LocalDate.of(2020, 1, 8), "15 151 151 5351 51 53");	
 			cartesBancaires.add(carteB);
 			for(int j = 0; j < 4; j++) {
 				try {
-					CarteAbonnement carteA = new CarteAbonnement(carteB, LocalDate.of(2020, 1, 8), j+(j*i), "Abonnement de " + i + " n°" + j);
+					CarteAbonnement carteA = new CarteAbonnement(carteB, LocalDate.of(2020, 1, 8), j+(j*i), "Abonnement de " + carteB.getLibelle() + " "+ j);
 					carteA.ajouterSolde(15);
 					carteA.ajouterGenreInterdit(Genre.COMEDIE);
 					cartesAbonnements.add(carteA);

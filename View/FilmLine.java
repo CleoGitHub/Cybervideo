@@ -76,7 +76,7 @@ public class FilmLine extends JPanel {
 		info.addMouseListener(new MouseInputAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				c.setFimVueInfoFilm(film);
+				c.setFilmVueInfoFilm(film);
 			}				
 		});
 		

@@ -4,21 +4,20 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-import javax.swing.ComboBoxModel;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.table.DefaultTableModel;
@@ -45,9 +44,10 @@ public class VueMonCompte extends Vue {
 	private JPanel panelAbo;
 	private JPanel panelBancaire;
 	private JTable locations;
+	private JScrollPane locationsScrollPanel;
     private DefaultTableModel locationsModel;
     private JPanel panelCrediterBancaire;
-
+    private JLabel caSolde;
 	
 	public VueMonCompte(Controller c, CyberVideo model) {
         super(c, model);
@@ -56,20 +56,14 @@ public class VueMonCompte extends Vue {
         this.cartesAbonnements= model.getCartesAbonnements();
         this.cartesAbonnementsDispo = this.cartesAbonnements;
 
-
-		locationsModel = new DefaultTableModel(new Object[] {"Date début", "Nombre de jours", "status", "carte", "film", "genres"}, 0);
-        locations = new JTable(locationsModel);  
-
-        JScrollPane locationsScrollPanel = new JScrollPane(locations);
-        
-		setLayout(new BorderLayout());
-        add(locationsScrollPanel);
+		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 		
 		model.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent e) {
 				if(e.getPropertyName() == EventType.PAYMENT.toString())
-					drawView();
+					drawPanelAbo();
+					loadLocations();
 			}
 		});
 		
@@ -82,8 +76,10 @@ public class VueMonCompte extends Vue {
 	}
 	
 	private void drawCards() {
-		cardsPanel = new JPanel(new GridBagLayout());
-		add(cardsPanel, BorderLayout.NORTH);
+		if(cardsPanel != null)
+			remove(cardsPanel);
+		cardsPanel = new JPanel(new GridLayout(1, 2));
+		add(cardsPanel);
 		
 		drawPanelBancaire();
 		drawPanelAbo();
@@ -98,7 +94,7 @@ public class VueMonCompte extends Vue {
 		JLabel labelBancaire = new JLabel("Carte Bancaire :");
 		
 		if(cb == null) {
-			JPanel insertPanel = new JPanel();
+			JPanel insertPanel = new JPanel(new BorderLayout());
 			insertPanel.setOpaque(false);
 			
 			// Build cards string array
@@ -123,11 +119,13 @@ public class VueMonCompte extends Vue {
 					}
 				}
 			});
-			insertPanel.add(cbList);
-			insertPanel.add(buttonAbo);
-			panelBancaire.add(insertPanel, BorderLayout.SOUTH);
+			insertPanel.add(cbList, BorderLayout.CENTER);
+			insertPanel.add(buttonAbo, BorderLayout.EAST);
+			panelBancaire.add(insertPanel, BorderLayout.CENTER);
 		} else {
 			JPanel cbOptions = new JPanel();
+			cbOptions.setLayout(new BoxLayout(cbOptions,BoxLayout.Y_AXIS));
+			JPanel cbInfo = new JPanel(new GridLayout(1,2));
 			JLabel cbLabel = new JLabel(cb.getLibelle());
 			Button buttonRetirer = new Button("ressources/images/button-thick-long.png", "Retirer");
 			buttonRetirer.addMouseListener(new MouseInputAdapter() {
@@ -141,15 +139,35 @@ public class VueMonCompte extends Vue {
 					}
 				}
 			});
-			cbOptions.add(cbLabel);
-			cbOptions.add(buttonRetirer);
+			Button buttonHistorique = new Button("ressources/images/button-thick-long.png", "Voir l'historique");
+	        NavigationListener listener = new NavigationListener(getController());
+	        buttonHistorique.setId(NavigationListener.HISTORIQUE);
+	        buttonHistorique.addMouseListener(listener);
+	        buttonHistorique.addMouseListener(new MouseInputAdapter() {
+	        	@Override
+	        	public void mouseClicked(MouseEvent e) {
+	        		getController().setHistoriqueCard(cb);
+	        	}
+	        });
+			cbInfo.add(cbLabel);
+			JPanel panel = new JPanel(new BorderLayout());
+			JPanel buttonsPanel = new JPanel();
+			buttonsPanel.setLayout(new BoxLayout(buttonsPanel,BoxLayout.Y_AXIS));
+
+			buttonsPanel.add(buttonRetirer);
+			buttonsPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+			buttonsPanel.add(buttonHistorique);
+			panel.add(buttonsPanel, BorderLayout.EAST);
+			cbInfo.add(panel);
+			cbOptions.add(cbInfo);
 			panelBancaire.add(cbOptions, BorderLayout.SOUTH);
+			drawCrediterCarteAbonnement(cbOptions);
 		}
 		
 		panelBancaire.add(labelBancaire, BorderLayout.NORTH);
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridx=1;
-		cardsPanel.add(panelBancaire, gbc);
+		cardsPanel.add(panelBancaire, BorderLayout.WEST);
 		revalidate();
 		repaint();
 	}
@@ -164,8 +182,7 @@ public class VueMonCompte extends Vue {
 		JLabel labelAbo = new JLabel("Abonnement :");
 		
 		if(ca == null) {
-			
-			JPanel insertPanel = new JPanel();
+			JPanel insertPanel = new JPanel(new BorderLayout());
 			insertPanel.setOpaque(false);
 			
 			// Build cards string array
@@ -190,12 +207,17 @@ public class VueMonCompte extends Vue {
 					}
 				}
 			});
-			insertPanel.add(caList);
-			insertPanel.add(buttonAbo);
+			insertPanel.add(caList, BorderLayout.CENTER);
+			insertPanel.add(buttonAbo, BorderLayout.EAST);
 			panelAbo.add(insertPanel, BorderLayout.SOUTH);
 		} else {
-			JPanel caOptions = new JPanel();
+			JPanel caOptions = new JPanel(new BorderLayout());
+			JPanel caInfo = new JPanel();
+			JPanel caButtons = new JPanel();
+			caButtons.setLayout(new BoxLayout(caButtons,BoxLayout.Y_AXIS));
+			caInfo.setLayout(new BoxLayout(caInfo,BoxLayout.Y_AXIS));
 			JLabel caLabel = new JLabel(ca.getLibelle());
+			caSolde = new JLabel("Solde : " + Integer.toString(ca.getSolde()) + "€");
 			Button buttonRetirer = new Button("ressources/images/button-thick-long.png", "Retirer");
 			buttonRetirer.addMouseListener(new MouseInputAdapter() {
 				@Override
@@ -208,27 +230,54 @@ public class VueMonCompte extends Vue {
 					}
 				}
 			});
-			caOptions.add(caLabel);
-			caOptions.add(buttonRetirer);
-			panelAbo.add(caOptions, BorderLayout.SOUTH);
+			Button buttonHistorique = new Button("ressources/images/button-thick-long.png", "Voir l'historique");
+	        NavigationListener listener = new NavigationListener(getController());
+	        buttonHistorique.setId(NavigationListener.HISTORIQUE);
+	        buttonHistorique.addMouseListener(listener);
+	        buttonHistorique.addMouseListener(new MouseInputAdapter() {
+	        	@Override
+	        	public void mouseClicked(MouseEvent e) {
+	        		getController().setHistoriqueCard(ca);
+	        	}
+	        });
+			caInfo.add(caLabel);
+			caInfo.add(caSolde);
+			caButtons.add(buttonRetirer);
+			caButtons.add(Box.createRigidArea(new Dimension(0, 5)));
+			caButtons.add(buttonHistorique);
+			caOptions.add(caInfo, BorderLayout.WEST);
+			caOptions.add(caButtons, BorderLayout.EAST);
+			panelAbo.add(caOptions, BorderLayout.CENTER);
 		}
 		panelAbo.add(labelAbo, BorderLayout.NORTH);
 		
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridx=2;
-		cardsPanel.add(panelAbo, gbc);
+		cardsPanel.add(panelAbo, BorderLayout.EAST);
 		revalidate();
 		repaint();
 	}
 	
 	public void drawLocations() {
+		if(locationsScrollPanel != null)
+			remove(locationsScrollPanel);
+		
+		locationsModel = new DefaultTableModel(new Object[] {"Date début", "Nombre de jours", "Status", "Carte", "Film", "Genres", "Code Barre"}, 0);
+        locations = new JTable(locationsModel);  
+    
+        locationsScrollPanel = new JScrollPane(locations);
+        add(locationsScrollPanel);
+        loadLocations();
+	}
+	
+	public void loadLocations() {
 		locationsModel.setRowCount(0);
 		
 		if(ca != null) {
-			chargerLocations(ca.getLocationsEnCours(),"abonnemnet");
+			chargerLocations(ca.getLocationsEnCours(),ca.getLibelle());
 		}
 		if(cb != null) {
-			chargerLocations(cb.getLocationsEnCours(),"bancaire");
+			chargerLocations(cb.getLocationsEnCours(),cb.getLibelle());
 		} 
 		
 	}
@@ -246,13 +295,14 @@ public class VueMonCompte extends Vue {
 				loc.estRendu() ? "RENDU" : "A RENDRE",
 				carte,
 				loc.getDvdLoue().getFilm().getTitre(),
-				loc.getDvdLoue().getFilm().getGenres()
+				loc.getDvdLoue().getFilm().getGenres(),
+				loc.getDvdLoue().getCodeBarre()
 		});
 	}
 	
-	public void drawCrediterCarteAbonenement() {
+	public void drawCrediterCarteAbonnement(JPanel panel) {
 		if(panelCrediterBancaire != null)
-			cardsPanel.remove(panelCrediterBancaire);
+			panel.remove(panelCrediterBancaire);
 		
 		if(ca != null && cb != null) {
 			
@@ -261,54 +311,38 @@ public class VueMonCompte extends Vue {
 			JTextField montanAjoutCarteAbonne = new JTextField();
 			panelCrediterBancaire.add(montanAjoutCarteAbonne,BorderLayout.CENTER);
 			
-			JLabel labelCrediter = new JLabel("Ajouter a la carte abonnement");
+			JLabel labelCrediter = new JLabel("Créditer la carte d'abonnement");
 			panelCrediterBancaire.add(labelCrediter,BorderLayout.NORTH);
 			
 			Button validerCreditCarte = new Button("ressources/images/button-thick-long.png", "Valider");
-			panelCrediterBancaire.add(validerCreditCarte, BorderLayout.SOUTH);
+			panelCrediterBancaire.add(validerCreditCarte, BorderLayout.EAST);
 			
 			validerCreditCarte.addMouseListener(new MouseInputAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					String texte = montanAjoutCarteAbonne.getText();
-					if(texte.length() > 0 && Integer.parseInt(texte) > 10) {
-						try {
-							ca.ajouterSolde(Integer.parseInt(texte));
-							montanAjoutCarteAbonne.setText("");
-							Dialog.showSuccess("Vous venez d'ajouter " + texte + " a votre carte abonnement");
-						} catch(Exception ex) {
-							Dialog.showError(ex.getMessage());
-						}
-					} else {
-						Dialog.showError("Le montant minimum est de 10 pour recharger une carte abonnement");
+					try {
+						ca.ajouterSolde(Integer.parseInt(texte));
+						montanAjoutCarteAbonne.setText("");
+						drawView();
+						Dialog.showSuccess("Vous venez d'ajouter " + texte + " à votre carte abonnement");
+					} catch(Exception ex) {
+						Dialog.showError(ex.getMessage());
 					}
 				}
 			});		
 			
-			cardsPanel.add(panelCrediterBancaire);
+			panel.add(panelCrediterBancaire);
 		}
 	}
 	
 	public void setCb(CarteBancaire cb) {
 		this.cb = cb;
-		drawPanelBancaire();
-		drawLocations();
-		drawCrediterCarteAbonenement();
-		// this.cartesAbonnementsDispo = cb == null ? this.cartesAbonnements : cb.getAbonnements();
-		// drawPanelAbo();
+		drawView();
 	}
 	
 	public void setCa(CarteAbonnement ca) {
 		this.ca = ca;
-		
-		/* if(ca == null) { // Cas où la carte abonnement a été retirée
-			this.cartesBancairesDispo = new ArrayList<CarteBancaire>(Arrays.asList(ca.getCb()));
-			drawPanelBancaire();
-		}
-		*/
-		
-		drawPanelAbo();
-		drawLocations();
-		drawCrediterCarteAbonenement();
+		drawView();
 	}
 }

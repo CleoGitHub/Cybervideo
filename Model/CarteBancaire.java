@@ -78,4 +78,12 @@ public class CarteBancaire extends Carte {
 		
 		return true;
 	}
+	
+	public ArrayList<Location> getHistorique(){
+		ArrayList<Location> locations = new ArrayList<>();
+		for(CarteAbonnement ca : abonnements) {
+			locations.addAll(ca.getHistorique());
+		}
+		return locations;
+	}
 }

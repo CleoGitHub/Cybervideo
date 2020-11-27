@@ -16,6 +16,7 @@ public class NavigationListener extends MouseAdapter {
     static final int ACCOUNT = 6;
     static final int GESTION = 7;
     static final int MENU = 8;
+    static final int HISTORIQUE = 9;
 
     private Controller controller;
 
@@ -59,9 +60,16 @@ public class NavigationListener extends MouseAdapter {
                 
             case GESTION:
                 controller.vueSuiv(controller.getVueGestionFilms());
-
+                break;
+                
             case RENDRE:
                 controller.vueSuiv(controller.getVueRendreDVD());
+                break;
+                
+            case HISTORIQUE:
+                controller.vueSuiv(controller.getVueHistorique());
+                break;
+                
             default:
                 break;
         }
