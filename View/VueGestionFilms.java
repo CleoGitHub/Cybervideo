@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 public class VueGestionFilms extends Vue {
 
+    private JPanel container;
     private JComboBox<String> realisateursBox;
     private JComboBox<String> acteursBox;
     private DefaultComboBoxModel<String> realisateursModel;
@@ -38,10 +39,83 @@ public class VueGestionFilms extends Vue {
     public VueGestionFilms(Controller controller, CyberVideo model) {
         super(controller, model);
 
-        ArrayList<String> acteurs = controller.getActeurs();
-        ArrayList<String> realisateurs = controller.getRealisateurs();
+
+
+
+        // super-contianer
+        container = new JPanel(new StackLayout());
+
+        // titre & date
+        JPanel titrePanel = creerTitrePanel();
+        ajouterPanel(titrePanel);
+
+        JPanel datePanel = creerDatePanel();
+        ajouterPanel(datePanel);
+
+        // realisateurs panel
+        JPanel realisateurPanel = creerRealisateurPanel();
+        ajouterPanel(realisateurPanel);
 
         // acteurs panel
+        JPanel acteursPanel = creerActeursPanel();
+        ajouterPanel(acteursPanel);
+
+        // DVDs panel
+        JPanel dvdsPanel = creerDVDpanel();
+        ajouterPanel(dvdsPanel);
+
+        // TODO: genresPanel
+
+        // ajout du container dans la VurGestionFilms
+        add(container);
+
+        // submit button
+        insererFilm = new Button("ressources/images/button.png", "Inserer Film");
+        JPanel insererPanel = new JPanel(new GridBagLayout());
+        insererPanel.add(insererFilm);
+        add(insererPanel, BorderLayout.SOUTH);
+
+        setListners();
+    }
+
+    private JPanel creerTitrePanel() {
+        titreField = new JTextField();
+        JPanel titrePanel = new JPanel(new BorderLayout());
+        titrePanel.add(new JLabel("Titre: "), BorderLayout.NORTH);
+        titrePanel.add(titreField);
+
+        return titrePanel;
+    }
+
+    private JPanel creerDatePanel() {
+        dateField = new JTextField();
+        JPanel datePanel = new JPanel(new BorderLayout());
+        datePanel.add(new JLabel("Date: (\"dd/MM/yyyy\")"), BorderLayout.NORTH);
+        datePanel.add(dateField);
+
+        return datePanel;
+    }
+
+    private JPanel creerRealisateurPanel() {
+        ArrayList<String> realisateurs = controller.getRealisateurs();
+        realisateursModel = new DefaultComboBoxModel<String>(realisateurs.toArray(new String[realisateurs.size()]));
+        realisateursBox = new JComboBox<>(realisateursModel);
+        JPanel realisateursPanel = new JPanel(new BorderLayout());
+        insererRealisateur = new Button("ressources/images/button-thick.png", "+");
+        suppRealisateur= new Button("ressources/images/button-thick.png", "-");
+        JPanel realisateursButtons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        realisateursButtons.add(insererRealisateur);
+        realisateursButtons.add(suppRealisateur);
+        JPanel realisateurPanel = new JPanel(new BorderLayout());
+        realisateurPanel.add(new JLabel("Realisateur: "), BorderLayout.NORTH);
+        realisateurPanel.add(realisateursBox);
+        realisateurPanel.add(realisateursButtons, BorderLayout.EAST);
+
+        return realisateurPanel;
+    }
+
+    private JPanel creerActeursPanel() {
+        ArrayList<String> acteurs = controller.getActeurs();
         acteursModel = new DefaultComboBoxModel<String>(acteurs.toArray(new String[acteurs.size()]));
         acteursBox = new JComboBox<>(acteursModel);
 
@@ -73,33 +147,10 @@ public class VueGestionFilms extends Vue {
         acteursPanel.add(acteursButtons, BorderLayout.EAST);
         acteursPanel.add(acteurSelecPanel, BorderLayout.SOUTH);
 
+        return acteursPanel;
+    }
 
-        // realisateurs panel
-        realisateursModel = new DefaultComboBoxModel<String>(realisateurs.toArray(new String[realisateurs.size()]));
-        realisateursBox = new JComboBox<>(realisateursModel);
-        JPanel realisateursPanel = new JPanel(new BorderLayout());
-        insererRealisateur = new Button("ressources/images/button-thick.png", "+");
-        suppRealisateur= new Button("ressources/images/button-thick.png", "-");
-        JPanel realisateursButtons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        realisateursButtons.add(insererRealisateur);
-        realisateursButtons.add(suppRealisateur);
-        JPanel realisateurPanel = new JPanel(new BorderLayout());
-        realisateurPanel.add(new JLabel("Realisateur: "), BorderLayout.NORTH);
-        realisateurPanel.add(realisateursBox);
-        realisateurPanel.add(realisateursButtons, BorderLayout.EAST);
-
-        // titre & date
-        titreField = new JTextField();
-        JPanel titrePanel = new JPanel(new BorderLayout());
-        titrePanel.add(new JLabel("Titre: "), BorderLayout.NORTH);
-        titrePanel.add(titreField);
-
-        dateField = new JTextField();
-        JPanel datePanel = new JPanel(new BorderLayout());
-        datePanel.add(new JLabel("Date: (\"dd/MM/yyyy\")"), BorderLayout.NORTH);
-        datePanel.add(dateField);
-
-        // DVDs panel
+    private JPanel creerDVDpanel() {
         nbDVDsFiels = new JTextField("10");
         incDVDbtn = new Button("ressources/images/button-thick.png", "+");
         decDVDbtn = new Button("ressources/images/button-thick.png", "-");
@@ -111,31 +162,12 @@ public class VueGestionFilms extends Vue {
         dvdsPanel.add(nbDVDsFiels);
         dvdsPanel.add(dvdsButtons, BorderLayout.EAST);
 
+        return dvdsPanel;
+    }
 
-
-        // super-contianer
-        JPanel container = new JPanel(new StackLayout());
+    private void ajouterPanel(JPanel panel) {
         container.add(Box.createRigidArea(new Dimension(0, 15)));
-        container.add(titrePanel);
-        container.add(Box.createRigidArea(new Dimension(0, 15)));
-        container.add(datePanel);
-        container.add(Box.createRigidArea(new Dimension(0, 15)));
-        container.add(realisateurPanel);
-        container.add(Box.createRigidArea(new Dimension(0, 15)));
-        container.add(acteursPanel);
-        container.add(Box.createRigidArea(new Dimension(0, 15)));
-        container.add(dvdsPanel);
-
-        // ajout du container dans la VurGestionFilms
-        add(container);
-
-        // submit
-        insererFilm = new Button("ressources/images/button.png", "Inserer Film");
-        JPanel insererPanel = new JPanel(new GridBagLayout());
-        insererPanel.add(insererFilm);
-        add(insererPanel, BorderLayout.SOUTH);
-
-        setListners();
+        container.add(panel);
     }
 
     private void ajouterNouvActeur(String nom) {

@@ -53,7 +53,7 @@ public class VueAccueil extends Vue {
     }
 
     private void setNavigationListeners() {
-        NavigationListener listener = new NavigationListener(getController());
+        NavigationListener listener = new NavigationListener(controller);
         // TODO: add listener to navigation buttons
         panierBtn.setId(NavigationListener.PANIER);
         panierBtn.addMouseListener(listener);

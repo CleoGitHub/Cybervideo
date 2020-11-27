@@ -9,12 +9,12 @@ import Model.CyberVideo;
 import java.awt.*;
 
 public abstract class Vue extends JPanel {
-	private Controller c;
-	private CyberVideo model;
+	Controller controller;
+	CyberVideo model;
 	
-    public Vue(Controller c, CyberVideo model) {
+    public Vue(Controller controller, CyberVideo model) {
         super();
-        this.c = c;
+        this.controller = controller;
         this.model = model;
         
         setLayout(new BorderLayout());
@@ -23,6 +23,6 @@ public abstract class Vue extends JPanel {
     }
 
 	public Controller getController() {
-		return c;
+		return controller;
 	}
 }
