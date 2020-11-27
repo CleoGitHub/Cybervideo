@@ -41,9 +41,6 @@ public class VueGestionFilms extends Vue {
     public VueGestionFilms(Controller controller, CyberVideo model) {
         super(controller, model);
 
-
-
-
         // super-contianer
         container = new JPanel(new StackLayout());
 

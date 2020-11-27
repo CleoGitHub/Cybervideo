@@ -48,6 +48,7 @@ public class VueMonCompte extends Vue {
     private DefaultTableModel locationsModel;
     private JPanel panelCrediterBancaire;
     private JLabel caSolde;
+    private Button buttonAbonnement;
 	
 	public VueMonCompte(Controller c, CyberVideo model) {
         super(c, model);
@@ -61,9 +62,12 @@ public class VueMonCompte extends Vue {
 		model.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent e) {
-				if(e.getPropertyName() == EventType.PAYMENT.toString())
+				if(e.getPropertyName() == EventType.PAYMENT.toString()) {
 					drawPanelAbo();
 					loadLocations();
+				} else if(e.getPropertyName() == EventType.ABONNEMENT.toString()) {
+					drawView();
+				}
 			}
 		});
 		
@@ -153,10 +157,20 @@ public class VueMonCompte extends Vue {
 			JPanel panel = new JPanel(new BorderLayout());
 			JPanel buttonsPanel = new JPanel();
 			buttonsPanel.setLayout(new BoxLayout(buttonsPanel,BoxLayout.Y_AXIS));
+			
+			
 
 			buttonsPanel.add(buttonRetirer);
 			buttonsPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 			buttonsPanel.add(buttonHistorique);
+			
+			if(this.ca == null) {
+				buttonAbonnement = new Button("ressources/images/button-thick-long.png", "S'abonner");
+				buttonsPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+				buttonsPanel.add(buttonAbonnement);
+				setNavigationListeners();
+			}
+			
 			panel.add(buttonsPanel, BorderLayout.EAST);
 			cbInfo.add(panel);
 			cbOptions.add(cbInfo);
@@ -345,4 +359,11 @@ public class VueMonCompte extends Vue {
 		this.ca = ca;
 		drawView();
 	}
+	
+	private void setNavigationListeners() {
+        NavigationListener listener = new NavigationListener(controller);
+//        // TODO: add listener to navigation buttons
+        buttonAbonnement.setId(NavigationListener.ABONNEMENT);
+        buttonAbonnement.addMouseListener(listener);
+    }
 }

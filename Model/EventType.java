@@ -4,7 +4,8 @@ public enum EventType {
 	PANIER("panier"),
 	FILMS("films"),
 	PAYMENT("payment"),
-	RENDU("rendu");
+	RENDU("rendu"),
+	ABONNEMENT("abonnement");
 	
 	public final String nomEvent;
 	

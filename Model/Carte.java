@@ -13,6 +13,7 @@ public abstract class Carte {
 	private ArrayList<Location> locationsEnCours = new ArrayList<>();
 	
 	public Carte(int noCarte, String libelle) {
+		
 		this.noCarte = noCarte;
 		this.libelle = libelle;
 	}

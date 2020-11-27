@@ -271,6 +271,12 @@ public class CyberVideo {
 
 	public ArrayList<DVD> getDvds() {
 		return dvds;
+	}	
+
+	
+	public void ajouterCarteAbonnement(CarteAbonnement ca) {
+		this.cartesAbonnements.add(ca);
+		this.pcs.firePropertyChange(EventType.ABONNEMENT.toString(), null, null);		
 	}
 	
 	public DVD findDvd(int codeBarre) {

@@ -38,6 +38,7 @@ public class Controller {
     private VueGestionFilms vueGestionFilms;
     private VueRendreDVD vueRendreDVD;
     private VueHistorique vueHistorique;
+    private VueAbonnement vueAbonnement;
 
     public Controller() {
         this.model = new CyberVideo();
@@ -54,6 +55,7 @@ public class Controller {
         vueGestionFilms = new VueGestionFilms(this, model);
         vueRendreDVD = new VueRendreDVD(this, model);
         vueHistorique = new VueHistorique(this, model);
+        vueAbonnement = new VueAbonnement(this, model);
 
         start();
     }
@@ -103,6 +105,10 @@ public class Controller {
 	
 	public VueHistorique getVueHistorique() {
 		return vueHistorique;
+	}
+	
+	public VueAbonnement getVueAbonnement() {
+		return vueAbonnement;
 	}
 	
     // navigation between panels
@@ -255,4 +261,25 @@ public class Controller {
 	public void setHistoriqueCard(Carte c) {
 		vueHistorique.setCard(c);
 	}
+	
+	public void creerAbonnement(String nomCarte, int montant, ArrayList<Genre> genresInterdit) throws Exception {
+		if(model.getCarteSlotCarteBancaire() == null) {
+			throw new Exception("Aucune carte bancaire insérer");
+		}
+		if(montant < 15) {
+			throw new Exception("Le montant minimum pour une nouvelle carte est de 15€");
+		}
+		int idCarteAbonnement = 0;
+		for(CarteAbonnement carte: model.getCartesAbonnements()) {
+			if(carte.getNoCarte() > idCarteAbonnement) {
+				idCarteAbonnement = carte.getNoCarte();
+			}
+		}
+		idCarteAbonnement++;
+		
+		CarteAbonnement ca = new CarteAbonnement(model.getCarteSlotCarteBancaire(), LocalDate.now(), idCarteAbonnement, nomCarte);
+		ca.setSolde(montant);
+		model.ajouterCarteAbonnement(ca);
+	}
+	
 }
