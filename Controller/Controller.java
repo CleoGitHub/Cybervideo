@@ -273,6 +273,9 @@ public class Controller {
 		idCarteAbonnement++;
 		
 		CarteAbonnement ca = new CarteAbonnement(model.getCarteSlotCarteBancaire(), LocalDate.now(), idCarteAbonnement, nomCarte);
+		for(Genre genre: genresInterdit) {
+			ca.ajouterGenreInterdit(genre);
+		}
 		ca.setSolde(montant);
 		model.ajouterCarteAbonnement(ca);
 	}
