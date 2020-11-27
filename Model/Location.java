@@ -86,4 +86,8 @@ public class Location {
 	public int calculerPrix() {
 		return this.carteLoueur.getPrixParJour() * this.nbJours;
 	}
+	
+	public String toString() {
+		return "Location du DVD #" + dvdLoue.getCodeBarre() + " par " + getCarteLoueur().getLibelle() + " le " + getDateDebut() + " - " + (!estRendu() ? "A rendre" : "Rendu") ;
+	}
 }

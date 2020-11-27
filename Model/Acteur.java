@@ -2,36 +2,22 @@ package Model;
 
 import java.util.Objects;
 
-public class Acteur {
-	private String nom;
+public class Acteur extends Personne {
 	
 	public Acteur(String nom) {
-		this.nom = nom;
-	}
-
-	public String getNom() {
-		return nom;
-	}
-	
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
-
-	@Override
-	public String toString() {
-		return nom;
+		super(nom);
 	}
 
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof Acteur)) return false;
-		Acteur acteur = (Acteur) o;
-		return Objects.equals(nom, acteur.nom);
+		Acteur that = (Acteur) o;
+		return Objects.equals(getNom(), that.getNom());
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(nom);
+		return Objects.hash(getNom());
 	}
 }

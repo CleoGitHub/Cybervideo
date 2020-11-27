@@ -29,6 +29,10 @@ public class Panier
 	{
 		this.dvds = dvds;
 	}
+	
+	public void vider() {
+		this.dvds.clear();
+	}
 
 	public void ajouter(DVD dvd) throws PanierFullException
 	{
@@ -64,7 +68,7 @@ public class Panier
 					locationsTraitees.add(l);
 			}
 			// Vider le panier
-			dvds.clear();
+			vider();
 			return locationsTraitees;
 		} else {
 			return null;
