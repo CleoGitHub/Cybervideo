@@ -66,10 +66,10 @@ public class Main {
 		Panier panier = new Panier();
 		
 		
-		System.out.println("================= TEST 1 =================================");
+		System.out.println("================= TEST 1 - SOLDE INSUFFISANT ==============");
 		System.out.println("== Paiement avec une carte abonnement de solde 0        ==");
 		System.out.println("== Le panier contient 2 DVD.                            ==");
-		System.out.println("== Résultat attendu : solde insuffisante pour les 2dvds ==");
+		System.out.println("== Résultat attendu : solde insuffisant pour les 2dvds ===");
 		System.out.println("==========================================================");
 
 		try {
@@ -86,13 +86,12 @@ public class Main {
 		try {
 			panier.payer(ca);
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		System.out.println("DVDs dans le panier :"+panier.getDvds());
 		System.out.println("Solde de la carte abonnement ca :" + ca.getSolde());
 		
-		System.out.println("======================= TEST 2 =====================");
+		System.out.println("============= TEST 2 - PAIEMENT SUCCESS ============");
 		System.out.println("== Paiement avec une carte abonnement de solde 15 ==");
 		System.out.println("== Le panier contient 2 DVD.                      ==");
 		System.out.println("== Résultat attendu : panier vidé et solde à 7    ==");
@@ -110,14 +109,13 @@ public class Main {
 		try {
 			ArrayList<Location> ls = panier.payer(ca);
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		System.out.println("DVDs dans le panier :"+panier.getDvds());
 		System.out.println("Solde de la carte abonnement ca :" + ca.getSolde());
+		System.out.println("DVDs en cours pour la carte d'abonnement"+ca.getLocationsEnCours());
 		
-		
-		System.out.println("=================== TEST 3 =============================");
+		System.out.println("============== TEST 3 - TROP DE LOCATIONS ==============");
 		System.out.println("== Ajouter 2 Locations à une carte abonnement         ==");
 		System.out.println("== possédant déjà 2 locations                         ==");
 		System.out.println("== Resultat attendu : exception levée lors de l'ajout ==");
@@ -129,13 +127,13 @@ public class Main {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		films.get(1).addDVD(new DVD(11, films.get(1)));
-		films.get(1).addDVD(new DVD(12, films.get(1)));
+		DVD dvd11 = new DVD(11, films.get(1));
+		films.get(1).addDVD(dvd11); // Inception
+		films.get(1).addDVD(new DVD(12, films.get(1))); // Inception
 		try {
 			panier.ajouter(getFirstAvailabeDVD(panier, films.get(1)));
 			panier.ajouter(getFirstAvailabeDVD(panier, films.get(1)));
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -146,12 +144,38 @@ public class Main {
 		try {
 			panier.payer(ca);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		System.out.println("DVDs dans le panier :"+panier.getDvds());
 		System.out.println("Solde de la carte abonnement ca :" + ca.getSolde());
 		System.out.println("Nombre de DVDs loués de ca : " + ca.getLocationsEnCours().size());
+		
+		System.out.println("=================== TEST 4 - RENDU =====================");
+		System.out.println("== Rendu du DVD possédant le code barre #11           ==");
+		System.out.println("== Resultat attendu : -ca n'a plus la location de #11 ==");
+		System.out.println("== - l'historique de ca a la location de #11          ==");
+		System.out.println("== - le DVD #11 n'a plus de location en cours         ==");
+		System.out.println("========================================================");
+		
+		// Location de #11
+		Location l = ca.getLocationsEnCours().get(0);
+		
+		System.out.println("DVDs en cours pour la carte d'abonnement "+ca.getLocationsEnCours());
+		System.out.println("Historique de location pour la carte d'abonnement "+ca.getHistorique());
+		System.out.println("Location en cours de #11 : " + l.getDvdLoue().getLocationEnCours());
+		System.out.println("==== RENDU DE #11 ===");
+		l.rendreDVD(false); // Pas endommagé
+		System.out.println("DVDs en cours pour la carte d'abonnement "+ca.getLocationsEnCours());
+		System.out.println("Historique de location pour la carte d'abonnement "+ca.getHistorique());
+		System.out.println("Location en cours de #11 : " + l.getDvdLoue().getLocationEnCours());
+		
+		
+		System.out.println("=================== TEST 5 - HISTORIQUE =================");
+		System.out.println("== Historique de la CB qui a la CA comme abonnement   ==");
+		System.out.println("== Resultat attendu : - l'historique de CA s'affiche  ==");
+		System.out.println("========================================================");
+		
+		System.out.println("Historique de la carte bancaire : " + cb.getHistorique());
 	}
 
 }
