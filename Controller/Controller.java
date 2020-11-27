@@ -192,7 +192,7 @@ public class Controller {
         model.supprimerFilm(film);
     }
 
-    public void ajouterFilm(String titre, String nomRealisateur, String[] nomsActeurs, LocalDate date, int dvds) {
+    public void ajouterFilm(String titre, String nomRealisateur, String[] nomsActeurs, Boolean[] genres, LocalDate date, int dvds) {
         ArrayList<Acteur> acteurs = new ArrayList<>();
         Film film = new Film(titre,date);
         Realisateur realisateur = model.getRealisateur(nomRealisateur);
@@ -206,8 +206,17 @@ public class Controller {
             film.addActeur(acteur);
         }
 
+        // ajout genres
+
+        int i = 0;
+        Genre[] GenresList = Genre.values();
+        for (Genre genre : Genre.values()) {
+            if (genres[i])
+                film.addGenre(GenresList[i]);
+            i++;
+        }
         // l'ajout du DVDs
-        for (int i = 0; i < dvds; i++)
+        for (i = 0; i < dvds; i++)
             film.addDVD(new DVD(i, film));
 
         model.ajouterNouvFilm(film);

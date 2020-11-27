@@ -20,7 +20,6 @@ import java.util.ArrayList;
 public class VueTechnicien extends Vue {
 
     private JTable films;
-    private ArrayList<Film> filmsList;
     private DefaultTableModel filmsModel;
     private Button suppFilmBtn;
     private Button insererFilmBtn;
@@ -28,7 +27,6 @@ public class VueTechnicien extends Vue {
 
     public VueTechnicien(Controller controller, CyberVideo model) {
         super(controller, model);
-        this.filmsList = model.getFilms();
         setBackground(Color.WHITE);
 
         // creation du films model/pane
@@ -83,7 +81,7 @@ public class VueTechnicien extends Vue {
     }
 
     private void chargerFilms() {
-        ArrayList<Film> films = filmsList;
+        ArrayList<Film> films = model.getFilms();
         for (Film film : films)
             insererFilm(film);
     }

@@ -2,6 +2,7 @@ package View;
 
 import Controller.Controller;
 import Model.CyberVideo;
+import Model.Genre;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,6 +22,7 @@ public class VueGestionFilms extends Vue {
     private DefaultComboBoxModel<String> acteursModel;
     private JList acteurSelectionnes;
     private DefaultListModel<String> acteurSelecModel;
+    private ArrayList<JCheckBox> genresList;
     private JTextField titreField;
     private JTextField dateField;
     private JTextField nbDVDsFiels;
@@ -64,10 +66,12 @@ public class VueGestionFilms extends Vue {
         JPanel dvdsPanel = creerDVDpanel();
         ajouterPanel(dvdsPanel);
 
-        // TODO: genresPanel
+        // genresPanel
+        JPanel genresPanel = creerGenrePanel();
+        ajouterPanel(genresPanel);
 
         // ajout du container dans la VurGestionFilms
-        add(container);
+        add(new JScrollPane(container));
 
         // submit button
         insererFilm = new Button("ressources/images/button.png", "Inserer Film");
@@ -152,6 +156,7 @@ public class VueGestionFilms extends Vue {
 
     private JPanel creerDVDpanel() {
         nbDVDsFiels = new JTextField("10");
+        nbDVDsFiels.setEditable(false);
         incDVDbtn = new Button("ressources/images/button-thick.png", "+");
         decDVDbtn = new Button("ressources/images/button-thick.png", "-");
         JPanel dvdsButtons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -163,6 +168,23 @@ public class VueGestionFilms extends Vue {
         dvdsPanel.add(dvdsButtons, BorderLayout.EAST);
 
         return dvdsPanel;
+    }
+
+    private JPanel creerGenrePanel() {
+        genresList = new ArrayList<>();
+        Genre[] genres = Genre.values();
+        JPanel genresContainer = new JPanel(new GridLayout(0, 3));
+        for (Genre genre : genres) {
+            JCheckBox genreBox = new JCheckBox(genre.toString());
+            genresList.add(genreBox);
+            genresContainer.add(genreBox);
+        }
+        JPanel genresPanel = new JPanel(new BorderLayout());
+        genresPanel.add(new JLabel("Genres:"), BorderLayout.NORTH);
+        genresPanel.add(genresContainer);
+
+        return genresPanel;
+
     }
 
     private void ajouterPanel(JPanel panel) {
@@ -194,7 +216,7 @@ public class VueGestionFilms extends Vue {
         titreField.setText("");
         dateField.setText("");
         acteurSelecModel.clear();
-        nbDVDsFiels.setText("");
+        nbDVDsFiels.setText("10");
     }
     
     private String lireNom(String msg) {
@@ -217,17 +239,24 @@ public class VueGestionFilms extends Vue {
 
     private void insererNouvFilm() throws ParseException {
         String titre, realisateur;
-        int nb_acteurs = acteurSelectionnes.getSelectedIndices().length;
-        String[] acteurs = (String[])acteurSelectionnes.getSelectedValuesList().toArray(new String[nb_acteurs]);
+        int nb_acteurs = acteurSelecModel.getSize();
+        String[] acteurs = new String[nb_acteurs];
+        for (int i = 0; i < nb_acteurs; i++)
+            acteurs[i] = acteurSelecModel.getElementAt(i);
         int dvds = Integer.parseInt(nbDVDsFiels.getText());
         titre = titreField.getText();
         realisateur = (String)realisateursBox.getSelectedItem();
         LocalDate date = LocalDate.parse(dateField.getText(), DateTimeFormatter.ofPattern("d/MM/yyyy"));
+        Boolean[] genres = new Boolean[Genre.values().length];
+        int i = 0;
+        for (JCheckBox genre : genresList)
+            genres[i++] = genre.isSelected();
 
         getController().ajouterFilm(
                 titre,
                 realisateur,
                 acteurs,
+                genres,
                 date,
                 dvds
         );
