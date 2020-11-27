@@ -155,6 +155,17 @@ public class CyberVideo {
 			throw new IllegalArgumentException("Acteur n'existe pas");
 	}
 
+	public Realisateur getRealisateur(String nom) {
+		Realisateur realisateur;
+		for (int i = 0; i < realisateurs.size(); i++) {
+			realisateur = realisateurs.get(i);
+			if (realisateur.getNom().equals(nom))
+				return realisateur;
+		}
+
+		return null;
+	}
+
 	public void ajouterRealisateur(String nom) {
 		Realisateur nouvRealisateur = new Realisateur(nom);
 		if (!realisateurs.contains(nouvRealisateur)) {
