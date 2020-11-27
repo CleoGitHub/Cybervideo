@@ -3,6 +3,7 @@ drop table LesLocations;
 drop table LesDVDs;
 drop table LesFilmGenres;
 drop table LesFilmActeurs;
+drop table LesFilmsRealisateur;
 drop table LesFilms;
 drop table LesTechniciens;
 drop table LesInterdits;
@@ -66,9 +67,7 @@ create table LesRealisateurs(
 create table LesFilms(
   	titre varchar(30),
   	LocalDate date,
-  	realisateur varchar(30),
-  	constraint LesFilms_PK primary key(titre),
-  	constraint LesFilms_FK1 foreign key (realisateur) references LesRealisateurs(nomRealisateur)
+  	constraint LesFilms_PK primary key(titre)
 );
 create table LesFilmActeurs(
   	nomFilm varchar(30),
@@ -76,6 +75,13 @@ create table LesFilmActeurs(
   	constraint LesFilmActeurs_PK primary key(nomFilm,nomActeur),
   	constraint LesFilmActeurs_FK1 foreign key (nomFilm) references LesFilms(titre),
   	constraint LesFilmActeurs_FK2 foreign key (nomActeur) references LesActeurs(nomActeur)
+);
+create table LesFilmsRealisateur(
+  	nomFilm varchar(30),
+  	nomRealisateur varchar(30),
+  	constraint LesFilmsRealisateur_PK primary key(nomFilm,nomRealisateur),
+  	constraint LesFilmsRealisateur_FK1 foreign key (nomFilm) references LesFilms(titre),
+  	constraint LesFilmsRealisateur_FK2 foreign key (nomRealisateur) references LesRealisateurs(nomRealisateur)
 );
 create table LesFilmGenres(
   	nomFilm varchar(30),
@@ -142,12 +148,19 @@ insert into LesRealisateurs values ('George Lucas');
 insert into LesRealisateurs values ('Robert Zemeckis');
 insert into LesRealisateurs values ('Paul W. S. Anderson');
 
-insert into LesFilms values ('The Godfather' , to_date('1972-11-20','YYYY-MM-DD'),'Francis Ford Coppola');
-insert into LesFilms values ('The Shawshank Redemption' , to_date('1994-05-20','YYYY-MM-DD') ,'Frank Darabont');
-insert into LesFilms values ('E.T. The Extra-Terrestrial' ,to_date('1982-05-20','YYYY-MM-DD'),'Steven Spielberg');
-insert into LesFilms values ('Star Wars' , to_date('1977-05-20','YYYY-MM-DD'),'George Lucas');
-insert into LesFilms values ('Forrest Gump' , to_date('1994-05-20','YYYY-MM-DD'),'Robert Zemeckis');
-insert into LesFilms values ('Resident Evil' ,to_date('2002-05-20','YYYY-MM-DD'),'Paul W. S. Anderson');
+insert into LesFilms values ('The Godfather' , to_date('1972-11-20','YYYY-MM-DD'));
+insert into LesFilms values ('The Shawshank Redemption' , to_date('1994-05-20','YYYY-MM-DD'));
+insert into LesFilms values ('E.T. The Extra-Terrestrial' ,to_date('1982-05-20','YYYY-MM-DD'));
+insert into LesFilms values ('Star Wars' , to_date('1977-05-20','YYYY-MM-DD'));
+insert into LesFilms values ('Forrest Gump' , to_date('1994-05-20','YYYY-MM-DD'));
+insert into LesFilms values ('Resident Evil' ,to_date('2002-05-20','YYYY-MM-DD'));
+
+insert into LesFilmsRealisateur values ('The Godfather','Francis Ford Coppola');
+insert into LesFilmsRealisateur values ('The Shawshank Redemption','Frank Darabont');
+insert into LesFilmsRealisateur values ('E.T. The Extra-Terrestrial','Steven Spielberg');
+insert into LesFilmsRealisateur values ('Star Wars','George Lucas');
+insert into LesFilmsRealisateur values ('Forrest Gump','Robert Zemeckis');
+insert into LesFilmsRealisateur values ('Resident Evil' ,'Paul W. S. Anderson');
 
 insert into LesActeurs values ('Marlon Brando');
 insert into LesActeurs values ('Tim Robbins');
