@@ -263,6 +263,7 @@ public class VueGestionFilms extends Vue {
 
         // clear
         clearInputs();
+        Dialog.showSuccess("Film ajouté !");
 
     }
 

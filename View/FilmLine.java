@@ -62,7 +62,6 @@ public class FilmLine extends JPanel {
 						}
 					} catch (Exception e1) {
 						Dialog.showError(e1.getMessage());
-						e1.printStackTrace();
 					}
 				}
 			});

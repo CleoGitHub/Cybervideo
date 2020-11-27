@@ -49,7 +49,8 @@ public class VueTechnicien extends Vue {
         model.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent e) {
-				if(e.getPropertyName() == EventType.PAYMENT.toString())
+				if(e.getPropertyName() == EventType.PAYMENT.toString()
+						|| e.getPropertyName() == EventType.FILMS_UPDATE.toString())
 					refreshModel();
 			}
 		});

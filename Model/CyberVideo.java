@@ -186,9 +186,25 @@ public class CyberVideo {
 			throw new IllegalArgumentException("Realisateur n'existe pas");
 	}
 
-	public void ajouterNouvFilm(Film film) {
+	public void ajouterNouvFilm(Film film, int nbDvds) {
 		if (!films.contains(film)) {
 			films.add(film);
+			
+	        // Find highest code barre existing
+			int max = 0;
+			for(DVD dvd : dvds) {
+				if(dvd.getCodeBarre() > max) {
+					max = dvd.getCodeBarre();
+				}
+			}
+			
+			// Ajout des DVDs
+	        for (int i = max+1; i < max + 1 + nbDvds; i++) {
+	        	DVD dvd = new DVD(i, film);
+	        	film.addDVD(dvd);
+	        	dvds.add(dvd);
+	        }
+	        
 			// TODO: update BD
 		} else
 			throw new IllegalArgumentException("Film existe");
