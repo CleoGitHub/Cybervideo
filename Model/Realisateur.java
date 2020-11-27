@@ -2,19 +2,10 @@ package Model;
 
 import java.util.Objects;
 
-public class Realisateur {
-	private String nom;
+public class Realisateur extends Personne {
 	
 	public Realisateur(String nom) {
-		this.nom = nom;
-	}
-	
-	public String getNom() {
-		return nom;
-	}
-	
-	public void setNom(String nom) {
-		this.nom = nom;
+		super(nom);
 	}
 
 	@Override
@@ -22,11 +13,11 @@ public class Realisateur {
 		if (this == o) return true;
 		if (!(o instanceof Realisateur)) return false;
 		Realisateur that = (Realisateur) o;
-		return Objects.equals(nom, that.nom);
+		return Objects.equals(getNom(), that.getNom());
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(nom);
+		return Objects.hash(getNom());
 	}
 }
