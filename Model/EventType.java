@@ -1,8 +1,8 @@
 package Model;
 
 public enum EventType {
-	PANIER("panier"),
-	FILMS("films"),
+	PANIER_UPDATE("panier"),
+	FILMS_UPDATE("films_update"),
 	PAYMENT("payment"),
 	RENDU("rendu");
 	
