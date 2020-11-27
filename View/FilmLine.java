@@ -60,6 +60,7 @@ public class FilmLine extends JPanel {
 							buttonsPanel.repaint();
 							addNotAvailableLabel();
 						}
+						Dialog.showSuccess("DVD ajouté au panier !");
 					} catch (Exception e1) {
 						Dialog.showError(e1.getMessage());
 					}
