@@ -84,12 +84,11 @@ create table LesLocations(
   	dateDebut date ,
   	nbJours number(5),
   	rendu varchar(5),
- 	  endommage varchar(5),
-	  carteLoueur varchar(20),
- 	  constraint LesLocations_FK foreign key (DVD) references LesDVDs (codeBarre),
-	  constraint LesLocations_PK primary key (DVD,dateDebut,carteLoueur),
-	  constraint LesLocations_C1 check (rendu in ('oui','non')),
-	  constraint LesLocations_C2 check (endommage in ('oui','non'))
+	carteLoueur varchar(20),
+	constraint LesLocations_FK foreign key (DVD) references LesDVDs (codeBarre),
+	constraint LesLocations_PK primary key (DVD,dateDebut,carteLoueur),
+	constraint LesLocations_C1 check (rendu in ('oui','non')),
+	constraint LesLocations_C2 check (endommage in ('oui','non'))
 );
 
 insert into LesCarteBancaires values (100000 ,  'abcdaaaa', '142857',to_date('2021-04-22','YYYY-MM-DD'));
@@ -165,12 +164,12 @@ insert into LesDVDs values (2000051 ,  'non', 'Resident Evil');
 insert into LesDVDs values (2000052 ,  'non', 'Resident Evil');
 
 
-insert into LesLocations values (2000000 ,to_date('2020-11-02','YYYY-MM-DD'), 5  ,'oui','non','abcdaaaa');
-insert into LesLocations values (2000011 ,to_date('2020-11-10','YYYY-MM-DD'), 25  ,'non','non','abcdaaaa');
-insert into LesLocations values (2000020 ,to_date('2020-11-03','YYYY-MM-DD'), 10  ,'oui','non','abcdbbbb');
-insert into LesLocations values (2000021 ,to_date('2020-11-20','YYYY-MM-DD'), 15  ,'non','non','abcdcccc');
-insert into LesLocations values (2000030 ,to_date('2020-10-30','YYYY-MM-DD'), 6  ,'oui','oui','abcddddd');
-insert into LesLocations values (2000052 ,to_date('2020-10-30','YYYY-MM-DD'), 6  ,'non','non','abcdeeee');
+insert into LesLocations values (2000000 ,to_date('2020-11-02','YYYY-MM-DD'), 5  , 'non','abcdaaaa');
+insert into LesLocations values (2000011 ,to_date('2020-11-10','YYYY-MM-DD'), 25  , 'non','abcdaaaa');
+insert into LesLocations values (2000020 ,to_date('2020-11-03','YYYY-MM-DD'), 10  , 'non','abcdbbbb');
+insert into LesLocations values (2000021 ,to_date('2020-11-20','YYYY-MM-DD'), 15  , 'non','abcdcccc');
+insert into LesLocations values (2000030 ,to_date('2020-10-30','YYYY-MM-DD'), 6  , 'oui','abcddddd');
+insert into LesLocations values (2000052 ,to_date('2020-10-30','YYYY-MM-DD'), 6  , 'non','abcdeeee');
 
 
 insert into LesTechniciens values ('Chirac',  '10086');
