@@ -67,6 +67,8 @@ public class VueMonCompte extends Vue {
 					loadLocations();
 				} else if(e.getPropertyName() == EventType.ABONNEMENT.toString()) {
 					drawView();
+				} else if(e.getPropertyName() == EventType.RENDU.toString()) {
+					loadLocations();
 				}
 			}
 		});
