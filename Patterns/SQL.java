@@ -287,7 +287,7 @@ public class SQL {
     }
     public static void createLocation(Location l){
         try{
-            Statement req = connect.prepareStatement("insert into LesLocations values(?,?,?,?,?,?)");
+            Statement req = connect.prepareStatement("insert into LesLocations values(?,?,?,?,?)");
             ((PreparedStatement) req).setInt(1,l.getDvdLoue().getCodeBarre());
             ((PreparedStatement) req).setDate(2,Date.valueOf(l.getDateDebut()));
             ((PreparedStatement) req).setInt(3,l.getNbJours());
@@ -297,13 +297,7 @@ public class SQL {
             else {
                 ((PreparedStatement) req).setString(4,"non");
             }
-            if(l.getDvdLoue().estEndommage()){
-                ((PreparedStatement) req).setString(5,"oui");
-            }
-            else {
-                ((PreparedStatement) req).setString(5,"non");
-            }
-            ((PreparedStatement) req).setString(6,l.getCarteLoueur().getLibelle());
+            ((PreparedStatement) req).setString(5,l.getCarteLoueur().getLibelle());
             ((PreparedStatement) req).execute();
             req.close();
         }catch(SQLException e){
